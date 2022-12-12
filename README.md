@@ -1,14 +1,15 @@
 # Cinetree for Kodi #
 
-__Jump to [Nederlands](#nederlands)__
+__[Nederlandse](#nederlands)__ versie
 
 
 ### Introduction ###
 
-This add-on enables playing films and documentaries from the Dutch film 
+This add-on enables playing films and documentaries from Dutch film 
 platform Cinetree.nl. This an unofficial plugin. It is not created, or endorsed 
 by Cinetree, nor is the developer in any way affiliated with Cinetree. The addon
-only provides a frontend to Cinetree's web services.
+only provides a frontend to the Cinetree web services. Access is 
+restricted to the Benelux countries.
 
 It is possible to browse through the whole collection of films and 
 documentaries, but an account is required to be able to play any content. 
@@ -24,22 +25,25 @@ official Cinetree Android/Apple app or Cinetree's website, the film will be
 available in the menu 'My Films'
 
 ### Installation ###
-Only kodi 19 (Matrix) is supported.
-At present the addon can only be installed as zip file.
+Only Kodi 19 (Matrix) is supported.
+At present the add-on can only be installed as zip file.
 
 * Ensure that installing from unknown sources is enabled in kodi. Click here for
   [instructions](https://dimkroon.net/guides/enable-unknown-sources.html).
 * Add https://dimkroon.net/kodi-addons as file source to Kodi's file 
   manager ([instructions](https://dimkroon.net/guides/howto-add-file-source.html)), 
-  or download the latest zip file manually from the GitHub release page.
-* choose _install from zip_ from the addon menu. Check [how to install 
+  or download the latest zip file manually from the
+  [GitHub releases](https://github.com/dimkroon/cinetree-for-kodi/releases) 
+  page.
+* Choose _install from zip_ from Kodi's add-on menu. Check [how to 
+  install 
   from zip file](https://dimkroon.net/guides/install-from-zip.html) for detailed 
-  instruction.
+  instructions.
 
 ### Issues ###
 
-The best place for help, questions or discussions regarding this addon are 
-the threads in the English or Dutch or forum.
+The preferred place for help, questions or discussions regarding this addon is 
+[this thread](https://forum.kodi.tv/showthread.php?tid=370761) in the Kodi forum.
 Issues can be reported on GitHub.
 
 ### Disclaimer ###
@@ -48,7 +52,7 @@ This addon is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR 
 A PARTICULAR PURPOSE.
 
-
+------
 ## Nederlands ##
 
 ### Introductie ###
@@ -73,7 +77,7 @@ _Mijn films/gehuurd_ en kan je hem via kodi bekijken.
 
 
 ### Installatie ###
-Voor deze addon is kodi 19 (Matrix) vereist. Mogelijk werkt het op hogere 
+Voor deze addon is Kodi 19 (Matrix) vereist. Mogelijk werkt het op hogere 
 versies, maar dat is (nog) niet getest. 
 
 Op dit moment kan je alleen de addon installeren via zip bestand.
@@ -83,15 +87,19 @@ Op dit moment kan je alleen de addon installeren via zip bestand.
   Klik hier voor [instructies](https://dimkroon.net/nl/guides/enable-unknown-sources.html).
 * Voeg https://dimkroon.net/kodi-addons als bestandslocatie to aan 
   bestandsbeheer in Kodi ([instructies](https://dimkroon.net/nl/guides/howto-add-file-source.html)), 
-  of download de laatste zip file van de GitHub releases pagina.
-* Installeer via de optie _Add-ons installeren via zipbestand_. Zie
+  of download de laatste zip file van de 
+  [GitHub releases](https://github.com/dimkroon/cinetree-for-kodi/releases) 
+  pagina.
+* Installeer via de optie _Add-ons installeren via zipbestand_ in het add-on 
+  menu van Kodi. Zie
   [Installer addon als zip](https://dimkroon.net/nl/guides/install-from-zip.html) 
   voor gedetailleerde instructies.
 
 
 ### Problemen ###
-Voor hulp, vragen of discussie over deze addon kun je terecht op het Nederlandse
-of Engelse forum. Fouten bij voorkeur melden op github.
+Voor hulp, vragen of discussie over deze addon kun je bij voorkeur terecht op 
+het [kodi forum](https://forum.kodi.tv/showthread.php?tid=370761).
+Fouten bij voorkeur melden op github.
 
 ### Disclaimer ###
 
