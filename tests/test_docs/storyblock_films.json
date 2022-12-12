@@ -1,0 +1,781 @@
+{
+  "stories": [
+    {
+      "name": "The Sound of Philadelphia",
+      "created_at": "2021-03-04T08:05:26.008Z",
+      "published_at": "2022-03-02T10:42:19.520Z",
+      "id": 40062412,
+      "uuid": "ea2cfefb-2251-4d49-93cc-e3d692f7747f",
+      "content": {
+        "_uid": "26a569ec-eaaa-4bed-950f-c3042275751b",
+        "cast": "Matthias Schoenaerts, Joel Kinnaman, Maika Monroe ",
+        "asset": {
+          "_uid": "17b7e6f8-5704-47f9-b789-793a29b2ab02",
+          "plugin": "autocomplete",
+          "selected": "600a770e0f5408001c5172ad"
+        },
+        "genre": "Crime, Action, Drama",
+        "shops": [
+          "cinetree.nl"
+        ],
+        "title": "The Sound of Philadelphia",
+        "blocks": [
+          {
+            "_uid": "46deca62-e15c-4f5e-8424-ffb8cd5519dc",
+            "lines": [
+              {
+                "_uid": "09918515-2f02-4e2f-b5b3-98c017a8931c",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "1\\. *The Sound of Philadelphia* een spannende misdaadfilm over broederschap en loyaliteit is. Al zit er veel actie in, het geweld wordt (op knappe wijze) slechts gesuggereerd in plaats van letterlijk in beeld gebracht.",
+                "noMargin": false,
+                "component": "text",
+                "readMoreContent": ""
+              },
+              {
+                "_uid": "5252bf1e-30b4-4cd1-a861-b8f0af825bfd",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "2\\. Het fantastische acteerwerk een extra laag aan dit verhaal geeft. Het is knap hoe Matthias Schoenaerts in iedere scène het trauma van zijn personage subtiel naar boven weet te brengen.",
+                "noMargin": false,
+                "component": "text",
+                "readMoreContent": ""
+              },
+              {
+                "_uid": "cdb23112-2226-49fa-ab0e-8ef121956b87",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "3\\. De soundtrack van componist Séverin Favriau de spanning nog eens extra ondersteunt.",
+                "noMargin": false,
+                "component": "text",
+                "readMoreContent": ""
+              }
+            ],
+            "title": "Must-see, omdat:",
+            "component": "fifteen"
+          },
+          {
+            "_uid": "8b640942-51aa-4029-9818-625e9ceefd7a",
+            "size": "",
+            "image": "//a.storyblok.com/f/53852/6048x4024/5416c92d8a/9549-mop02853.jpg",
+            "component": "image"
+          },
+          {
+            "_uid": "e284938a-e38b-42b6-a9af-cb424f7d8fb3",
+            "lines": [
+              {
+                "_uid": "bd9219b6-4190-4895-bc39-8559a40d30b8",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "1\\. Philadelphia (tevens de stad waarin dit verhaal zich afspeelt) is een oud Grieks woord voor “Brotherly love”. Een belangrijk thema dat in deze film erg krachtig in beeld is gebracht.",
+                "noMargin": false,
+                "component": "text",
+                "readMoreContent": ""
+              },
+              {
+                "_uid": "79b40663-7ff7-4073-a288-b1ba9fa19c19",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "2\\. Peter en Michael zijn neven van elkaar en komen uit een Ierse maffiafamilie gevestigd in Philadelphia, waar ook andere rivaliserende criminele families wonen.",
+                "noMargin": false,
+                "component": "text",
+                "readMoreContent": ""
+              },
+              {
+                "_uid": "b49c4327-ec41-4ee1-9b74-7697a055823f",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "3\\. De film is gebaseerd op het boek *Brotherly Love* uit 1991, geschreven door Pete Dexter – die voor eerder werk de U.S. National Book Award won.",
+                "noMargin": false,
+                "component": "text",
+                "readMoreContent": ""
+              }
+            ],
+            "title": "Film in feiten",
+            "component": "fifteen"
+          },
+          {
+            "_uid": "e1e8629b-cdcb-462a-94e7-569146cdf2a9",
+            "size": "",
+            "image": "//a.storyblok.com/f/53852/5634x3756/b1e4569e71/9552-l1001065.jpg",
+            "component": "image"
+          },
+          {
+            "_uid": "71bc7d1a-04bf-4ecb-9a7a-b4290ace2149",
+            "from": "Michael (The Sound of Philadelphia)",
+            "text": "“You have to be on my side, you’re my brother.” ",
+            "component": "quote"
+          }
+        ],
+        "poster": "//a.storyblok.com/f/53852/2835x3850/fd801c4140/9542-thesoundofphiladelphiahr3-miniii.jpg",
+        "public": false,
+        "country": "US",
+        "endDate": "",
+        "ogImage": "",
+        "ogTitle": "",
+        "director": "Jérémie Guez",
+        "duration": "90",
+        "mainMenu": "",
+        "seoTitle": "",
+        "component": "film",
+        "startDate": "2021-03-05 00:00",
+        "tvodPrice": "499",
+        "background": "//a.storyblok.com/f/53852/3840x2159/e16f2fa840/soundofphiladelphia.jpg",
+        "kijkwijzer": [
+          "12",
+          "drugs",
+          "angst",
+          "geweld"
+        ],
+        "selectedBy": "",
+        "seoNoIndex": false,
+        "titleImage": "",
+        "buttonColor": {
+          "_uid": "efea8308-3f0b-4dcd-88d0-e7b10aa0a48a",
+          "title": "Color option",
+          "plugin": "color-option",
+          "description": "Choose from a predefined color swatch"
+        },
+        "hideReviews": false,
+        "posterColor": {
+          "_uid": "0d716f96-cb72-4491-9a59-b2a49cf05cf2",
+          "title": "Color option",
+          "plugin": "color-option",
+          "description": "Choose from a predefined color swatch"
+        },
+        "svodEndDate": "",
+        "campaignName": "",
+        "overviewText": "Al op jonge leeftijd wordt Peter – fantastisch vertolkt door Matthias Schoenaerts ([De rouille et d’os](/films/de-rouille-et-d-os), Rundskop) – geconfronteerd met geweld. Hij ziet zijn zusje overreden, en zijn vader vermoord worden. Peter groeit vervolgens op bij zijn neef Michael, met wie hij een hechte broederband ontwikkelt. Hij probeert los te komen van de criminele zaken van zijn familie, maar dat blijkt niet makkelijk wanneer Michael steeds hoger in de hiërarchie komt.",
+        "trailerAsset": {
+          "_uid": "5bb8f850-3e3c-4fce-9170-dda0e1c4ccd7",
+          "plugin": "autocomplete",
+          "selected": "600a77070f5408001c5172ac"
+        },
+        "trailerStill": "//a.storyblok.com/f/53852/5976x3984/9a4c1fd374/9545-l1002078.jpg",
+        "ogDescription": "",
+        "overviewLabel": "",
+        "relatedVideos": [],
+        "shortSentence": "The Sound of Philadelphia is een ingetogen misdaadfilm over broederschap en loyaliteit.",
+        "shortSynopsis": "Al op jonge leeftijd wordt Peter – fantastisch vertolkt door Matthias Schoenaerts ([De rouille et d’os](/films/de-rouille-et-d-os), Rundskop) – geconfronteerd met geweld. Hij ziet zijn zusje overreden, en zijn vader vermoord worden. Peter groeit vervolgens op bij zijn neef Michael, met wie hij een hechte broederband ontwikkelt. Hij probeert los te komen van de criminele zaken van zijn familie, maar dat blijkt niet makkelijk wanneer Michael steeds hoger in de hiërarchie komt.",
+        "conditionTitle": "",
+        "productionYear": "2020",
+        "seoDescription": "",
+        "trailerCaption": "Cinetree deelt 'The Sound of Philadelphia'",
+        "campaignValidTo": "",
+        "conditionBlocks": [],
+        "originalTrailer": {
+          "_uid": "e00e69ca-77bc-4fcb-8a5c-b51b842b74f9",
+          "plugin": "cinetree-autocomplete",
+          "selected": "600a77070f5408001c5172ac"
+        },
+        "selectedByQuote": "",
+        "titleImageWidth": "20",
+        "trailerVimeoURL": "",
+        "geoAllowCountries": "",
+        "festivalsAndAwards": "",
+        "originalTrailerURL": "",
+        "overviewLabelColor": "",
+        "tvodSubscribersPrice": 399
+      },
+      "slug": "the-sound-of-philadelphia",
+      "full_slug": "films/the-sound-of-philadelphia",
+      "sort_by_date": null,
+      "position": 1010,
+      "tag_list": [],
+      "is_startpage": false,
+      "parent_id": 549145,
+      "meta_data": null,
+      "group_id": "c661820e-6375-41fa-8ad8-e74fbac6cff0",
+      "first_published_at": "2021-03-05T08:26:54.951Z",
+      "release_id": null,
+      "lang": "default",
+      "path": "",
+      "alternates": [],
+      "default_full_slug": null,
+      "translated_slugs": null
+    },
+    {
+      "name": "The Burnt Orange Heresy",
+      "created_at": "2021-01-29T12:17:31.585Z",
+      "published_at": "2022-03-02T10:42:20.896Z",
+      "id": 35493937,
+      "uuid": "4f9d9bac-bb07-408b-afb8-0c27c8804285",
+      "content": {
+        "_uid": "cd403b77-fbc0-4a1a-9f0e-e2e5ef564f20",
+        "cast": "Claes Bang, Elizabeth Debicki, Mick Jagger ",
+        "asset": {
+          "_uid": "759acf0d-9bc4-47ea-a864-210233343127",
+          "plugin": "autocomplete",
+          "selected": "600a76ef0f5408001c5172a9"
+        },
+        "genre": "Action, Drama, Thriller",
+        "shops": [
+          "cinetree.nl"
+        ],
+        "title": "The Burnt Orange Heresy",
+        "blocks": [
+          {
+            "_uid": "1f3eefc8-c594-4992-ada7-b623542ae3dc",
+            "lines": [
+              {
+                "_uid": "698682a7-da1f-494d-adc3-ef3c7bfa6e2b",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "1\\. De film in première ging op het Filmfestival van Venetië en daar bekroond werd met de Mimmo Rotella Award. Deze prestigieuze prijs wordt ieder jaar uitgereikt aan een filmmaker die een uitzonderlijke verbintenis laat zien met de kunsten.",
+                "noMargin": false,
+                "component": "text",
+                "readMoreContent": ""
+              },
+              {
+                "_uid": "cc475627-d20f-439a-9ad6-202040bb5111",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "2\\. *The Burnt Orange Heresy* niet alleen over kunst gaat, maar zelf ook een klein kunstwerk is. De prachtige decors, aankleding en magische locatie aan het Comomeer maken de film alleen al een feestje om naar te kijken. ",
+                "noMargin": false,
+                "component": "text",
+                "readMoreContent": ""
+              },
+              {
+                "_uid": "f7a4aeb9-0050-417a-acc5-cef1ad9ad63d",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "3\\. Claes Bang, Elizabeth Debicki, Donald Sutherland en Mick Jagger in de hoofdrollen – *need we say more*?",
+                "noMargin": false,
+                "component": "text",
+                "readMoreContent": ""
+              }
+            ],
+            "title": "Must-see, omdat:",
+            "component": "fifteen"
+          },
+          {
+            "_uid": "4fb6be3f-ebaa-493c-bebe-7443f5bc7ca2",
+            "size": "",
+            "image": "//a.storyblok.com/f/53852/2560x1440/c1dd99d39f/burntorangeheresy2.jpg",
+            "component": "image"
+          },
+          {
+            "_uid": "8420fb86-07e7-4a4e-b275-e36de13db311",
+            "lines": [
+              {
+                "_uid": "99372b62-9741-4bca-be7d-ae769b1b9662",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "1\\. De film speelt zich grotendeels af rond het Italiaanse Comomeer – om precies te zijn in de villa naast die van George Clooney.",
+                "noMargin": false,
+                "component": "text",
+                "readMoreContent": ""
+              },
+              {
+                "_uid": "4706d722-9dd9-4b19-a271-b6eabac00e90",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "2\\. *The Burnt Orange Heresy* is gebaseerd op de gelijknamige roman van Charles Willeford uit 1971.",
+                "noMargin": false,
+                "component": "text",
+                "readMoreContent": ""
+              },
+              {
+                "_uid": "c683e7fb-76c7-4d2a-ba41-b0d93673c255",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "3\\. Ook in ons eigen land blijken de kunst- en onderwereld meer met elkaar verweven dan je zou denken. Mocht je na *The Burnt Orange Heresy* de smaak te pakken hebben, raden we je aan [de documentaires](https://www.npostart.nl/de-kunstdetective/POW_03867648) van kunstdetective Arthur Brand eens te kijken.",
+                "noMargin": false,
+                "component": "text",
+                "readMoreContent": ""
+              }
+            ],
+            "title": "Film in feiten",
+            "component": "fifteen"
+          },
+          {
+            "_uid": "1a560df7-b88e-4cfe-a178-aba92110f9b1",
+            "size": "",
+            "image": "//a.storyblok.com/f/53852/1240x827/4d9f621530/1240.jpeg",
+            "component": "image"
+          },
+          {
+            "_uid": "16f4f427-038d-4125-bdf7-58ccbdc2a78b",
+            "from": "Joseph (The Burnt Orange Heresy)",
+            "text": "“I'd value a Debney, James. And I'd like you to procure one for me.”",
+            "component": "quote"
+          }
+        ],
+        "poster": "//a.storyblok.com/f/53852/1748x2480/f875120f86/9453-tboh-a5-poster-hr.jpg",
+        "public": false,
+        "country": "GB",
+        "endDate": "",
+        "ogImage": "",
+        "ogTitle": "",
+        "director": "Giuseppe Capotondi",
+        "duration": "99",
+        "mainMenu": "",
+        "seoTitle": "",
+        "component": "film",
+        "startDate": "2021-02-05 00:00",
+        "tvodPrice": "499",
+        "background": "//a.storyblok.com/f/53852/3543x2362/3f6aa62fc1/8713-theburntorangeheresy-01cjoseharo.jpg",
+        "kijkwijzer": [
+          "12",
+          "geweld",
+          "angst",
+          "seks",
+          "taalgebruik"
+        ],
+        "selectedBy": "",
+        "seoNoIndex": false,
+        "titleImage": "",
+        "buttonColor": {
+          "_uid": "535e2fab-87e7-4da4-9049-4c5a47fd17db",
+          "title": "Color option",
+          "plugin": "color-option",
+          "description": "Choose from a predefined color swatch"
+        },
+        "hideReviews": false,
+        "posterColor": {
+          "_uid": "7a771b93-d235-4b76-a26f-864b4cde252a",
+          "title": "Color option",
+          "plugin": "color-option",
+          "description": "Choose from a predefined color swatch"
+        },
+        "svodEndDate": "",
+        "campaignName": "",
+        "overviewText": "Leugens, leugens en nog eens leugens… *In The Burnt Orange Heresy* kruisen de kunst- en onderwereld elkaar wanneer kunstcriticus James het werk van een legendarische kunstenaar probeert te bemachtigen. Met in de hoofdrollen Claes Bang (*[The Square](/films/the-square)*), Elizabeth Debicki (*Tenet*) en, jawel, Mick Jagger gooide de film hoge ogen op het Filmfestival van Venetië.",
+        "trailerAsset": {
+          "_uid": "76eb1363-3a91-4174-90d6-7932ddfdeced",
+          "plugin": "autocomplete",
+          "selected": "600a76de0f5408001c5172a8"
+        },
+        "trailerStill": "//a.storyblok.com/f/53852/3840x2160/a21883e1ef/burntorangeheresy3.jpg",
+        "ogDescription": "",
+        "overviewLabel": "",
+        "relatedVideos": [],
+        "shortSentence": "Over een kunstcriticus die tegen elke prijs een werk van een legendarische kunstenaar probeert te bemachtigen",
+        "shortSynopsis": "Leugens, leugens en nog eens leugens… *In The Burnt Orange Heresy* kruisen de kunst- en onderwereld elkaar wanneer kunstcriticus James het werk van een legendarische kunstenaar probeert te bemachtigen. Met in de hoofdrollen Claes Bang (*[The Square](/films/the-square)*), Elizabeth Debicki (*Tenet*) en, jawel, Mick Jagger gooide de film hoge ogen op het Filmfestival van Venetië.",
+        "conditionTitle": "",
+        "productionYear": "2019",
+        "seoDescription": "",
+        "trailerCaption": "Cinetree deelt 'The Burnt Orange Heresy'",
+        "campaignValidTo": "",
+        "conditionBlocks": [],
+        "originalTrailer": {
+          "_uid": "31c8e239-afdd-4065-932e-37a18f60bc9e",
+          "plugin": "cinetree-autocomplete",
+          "selected": "600a76de0f5408001c5172a8"
+        },
+        "selectedByQuote": "",
+        "titleImageWidth": "20",
+        "trailerVimeoURL": "",
+        "geoAllowCountries": "",
+        "festivalsAndAwards": "Mimmo Rotella Award op het Filmfestival van Venetië",
+        "originalTrailerURL": "",
+        "overviewLabelColor": "",
+        "tvodSubscribersPrice": 399
+      },
+      "slug": "the-burnt-orange-heresy",
+      "full_slug": "films/the-burnt-orange-heresy",
+      "sort_by_date": null,
+      "position": 1090,
+      "tag_list": [],
+      "is_startpage": false,
+      "parent_id": 549145,
+      "meta_data": null,
+      "group_id": "0e12a3cf-b927-4f16-85ff-9490008d9ef0",
+      "first_published_at": "2021-01-29T13:23:41.515Z",
+      "release_id": null,
+      "lang": "default",
+      "path": "",
+      "alternates": [],
+      "default_full_slug": null,
+      "translated_slugs": null
+    },
+    {
+      "name": "A Most Violent Year",
+      "created_at": "2020-02-03T15:36:11.813Z",
+      "published_at": "2020-04-23T13:37:48.394Z",
+      "id": 6436315,
+      "uuid": "abee4dd7-9418-4a90-87ed-be619f9f74e9",
+      "content": {
+        "_uid": "80a8b031-1c79-4deb-be94-7d0ad1cf5a71",
+        "cast": "Oscar Isaac, Jessica Chastain, David Oyelowo",
+        "asset": {
+          "_uid": "aeba2931-7e9d-474f-bd0c-10b4afbca5d6",
+          "plugin": "autocomplete",
+          "selected": "5e3281b155d2ba001c794b7c"
+        },
+        "genre": "Action, Crime, Drama",
+        "shops": [
+          "cinetree.nl"
+        ],
+        "title": "A Most Violent Year",
+        "blocks": [
+          {
+            "_uid": "c463c848-3a7a-45e9-bff1-2298ab7e4095",
+            "from": "",
+            "text": "Welcome to Fear City",
+            "component": "quote"
+          },
+          {
+            "_uid": "85d59413-ff0f-4b01-ab38-4259297ec35b",
+            "font": "",
+            "size": "normal",
+            "align": "left",
+            "width": "normal",
+            "content": "We kennen allemaal de verhalen over het New York van de jaren ‘70 en ‘80 wel. Geweld, corruptie, drugs- en wapenhandel waren aan de orde van de dag, en de lijn tussen de gewone wereld en de onderwereld leek steeds verder te vervagen. Sterker nog, de twee werelden raakten haast met elkaar verweven. Toeristen kregen zelfs een overlevingsgids mee van de NYPD om Fear City (zo noemden ze de stad) levend uit te komen. Het contrast had haast niet groter kunnen zijn met het New York van nu: in plaats van met armoede kampt de stad nu met rijkdom. Sinds 2005 heeft New York zelfs de laagste misdaadcijfers van de 25 grootste Amerikaanse steden. Of dat nou komt door nieuwe tactieken van de NYPD, een afname van cocaïnegebruik of door demografische veranderingen staat nog altijd ter discussie- maar feit is dat New York een stuk veiliger is geworden. En hoewel de huidige situatie zonder twijfel voor iedereen beter is, hebben de gewelddadige jaren ons ten minste één ding opgeleverd: héél veel filminspiratie. Voor misdaadklassiekers als *The Godfather, Goodfellas* en *Taxi Driver* maar ook voor nieuwere films als, natuurlijk, *A Most Violent Year*.\n\nIn *A Most Violent Year* staat immigrant Abel Morales voor één van de lastigste beslissingen uit zijn leven. Als transporteur van stookolie is het voor Abel bijna eenvoudiger om wel in illegale praktijken te vervallen dan niet, maar hij is vastbesloten om zijn integriteit te behouden. Dat wordt alleen steeds lastiger wanneer er aan alle kanten druk op hem wordt uitgevoerd…\n\n*A Most Violent Year* is zonder twijfel een bloedstollende misdaadfilm, maar toch hoef je niet alleen maar schiet- en vechtpartijen te verwachten. Zoals we gewend zijn van regisseur J.C. Chandor (*[Margin Call](/films/margin-call)*) speelt de psychologische spanning namelijk een veel grotere rol dan het geweld en de misdaad zelf.  \n*A Most Violent Year* houdt je twee uur lang op het puntje van je stoel - is het niet vanwege de spanning, dan wel vanwege het fenomenale acteerwerk van Oscar Isaac (*Inside Llewyn Davis*) en Jessica Chastain (*The Tree of Life, Interstellar*).",
+            "component": "text",
+            "readMoreContent": ""
+          },
+          {
+            "_uid": "bb3e23d9-7704-4b33-913e-2fa65f7300bb",
+            "size": "",
+            "image": "//a.storyblok.com/f/53852/1500x844/3a19da4d5d/most-violent.jpeg",
+            "component": "image"
+          },
+          {
+            "_uid": "4ecf24f4-1188-4b21-b50c-3b7b04786985",
+            "lines": [
+              {
+                "_uid": "9d5104b3-ec70-45fd-be7f-c6f34d650a96",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "1\\. Het een klassieke misdaadthriller is, maar dan met een *good guy* in de hoofdrol.",
+                "component": "text",
+                "readMoreContent": ""
+              },
+              {
+                "_uid": "cf5e9e47-f55a-4a52-b12f-5b66c14cd2be",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "2\\. *A Most Violent Year* door de National Board of Review (NBR) werd uitgeroepen tot Beste Film van 2014. Ook werd Oscar Isaac voor zijn rol als Abel bekroond tot Beste Acteur, en Jessica Chastain tot Beste Actrice in een bijrol.",
+                "component": "text",
+                "readMoreContent": ""
+              },
+              {
+                "_uid": "1bdeaae1-9540-46ec-8946-4bb85007b5fa",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "3\\. De New Yorkse jaren ‘80 sfeer voelbaar is in alles: van de kostuums en  sets tot het camerawerk.",
+                "component": "text",
+                "readMoreContent": ""
+              }
+            ],
+            "title": "Must-see, omdat:",
+            "component": "fifteen"
+          },
+          {
+            "_uid": "3ebee772-f5a7-4354-b9f0-65559dcabe5b",
+            "size": "",
+            "image": "//a.storyblok.com/f/53852/1500x844/ac700265cb/most-post.jpg",
+            "component": "image"
+          },
+          {
+            "_uid": "c38991c6-da6e-4898-9202-4593253e8242",
+            "from": "Abel Morales (A Most Violent Year)",
+            "text": "“When it feels scary to jump, that is exactly when you jump. Otherwise you end up staying in the same place your whole life, and that I can't do.”",
+            "component": "quote"
+          }
+        ],
+        "poster": "//a.storyblok.com/f/53852/1280x1920/4d90ec8968/pzrafabx5zjjqnmvngdgqtxbzj2.jpg",
+        "public": false,
+        "country": "US",
+        "endDate": "",
+        "ogImage": "",
+        "ogTitle": "",
+        "director": "J.C. Chandor",
+        "duration": "125",
+        "seoTitle": "",
+        "component": "film",
+        "startDate": "2020-02-04 00:00",
+        "tvodPrice": "299",
+        "background": "//a.storyblok.com/f/53852/1566x880/9aa614b6f1/141229-shayger-godfather-tease_fn4kvl.jpeg",
+        "kijkwijzer": [
+          "12",
+          "geweld",
+          "taalgebruik"
+        ],
+        "selectedBy": "693007ab-e7ef-4d94-873c-c9607de84ad1",
+        "titleImage": "//a.storyblok.com/f/53852/314x173/f71834f0b8/a-most-violent-year.svg",
+        "hideReviews": false,
+        "posterColor": {
+          "_uid": "f8137da9-6686-450f-8aac-ddf5d96a7789",
+          "title": "Color option",
+          "plugin": "color-option",
+          "description": "Choose from a predefined color swatch"
+        },
+        "svodEndDate": "2020-04-14 00:00",
+        "overviewText": "Het is 1981: het meest gewelddadige jaar uit de geschiedenis van New York City.  Abel Morales (Oscar Isaac) zit dankzij een grote schuld muurvast tussen de zaken- en onderwereld, maar hij weigert om zelf ook naar geweld te grijpen. Bloedstollend, psychologisch misdaaddrama over de keerzijde van *the American dream*.",
+        "trailerAsset": {
+          "_uid": "3cd3e00a-ea05-4c4e-83f5-fb99209ec0bd",
+          "plugin": "autocomplete",
+          "selected": null
+        },
+        "trailerStill": "",
+        "ogDescription": "",
+        "overviewLabel": "",
+        "relatedVideos": [],
+        "shortSentence": "Het leven van een immigrant in New York, 1981",
+        "shortSynopsis": "Het is 1981: het meest gewelddadige jaar uit de geschiedenis van New York City.  Abel Morales (Oscar Isaac) zit dankzij een grote schuld muurvast tussen de zaken- en onderwereld, maar hij weigert om zelf ook naar geweld te grijpen. Bloedstollend, psychologisch misdaaddrama over de keerzijde van *the American dream*.",
+        "productionYear": "2014",
+        "seoDescription": "",
+        "trailerCaption": "Regisseur Michiel ten Horn over 'A Most Violent Year'",
+        "originalTrailer": {
+          "_uid": "801bf240-ae67-4dbc-af02-4be1feca5c0e",
+          "plugin": "cinetree-autocomplete",
+          "selected": "5e31a23755d2ba001c794b7b"
+        },
+        "selectedByQuote": "\"Hier en daar wordt er geschoten, er vloeit wat bloed... Maar het is vooral de onderhuidse, sluimerende spanning die je voelt.\"",
+        "titleImageWidth": "25",
+        "trailerVimeoURL": "https://vimeo.com/389176001",
+        "geoAllowCountries": "",
+        "festivalsAndAwards": "Beste Film (NBR)",
+        "originalTrailerURL": "",
+        "overviewLabelColor": "",
+        "tvodSubscribersPrice": "199"
+      },
+      "slug": "a-most-violent-year",
+      "full_slug": "films/a-most-violent-year",
+      "sort_by_date": null,
+      "position": 2340,
+      "tag_list": [],
+      "is_startpage": false,
+      "parent_id": 549145,
+      "meta_data": null,
+      "group_id": "4665d1fa-24e0-4c43-9fb1-569c3b621465",
+      "first_published_at": "2020-02-04T14:44:08.218Z",
+      "release_id": null,
+      "lang": "default",
+      "path": null,
+      "alternates": [],
+      "default_full_slug": null,
+      "translated_slugs": null
+    },
+    {
+      "name": "Bloody Marie",
+      "created_at": "2019-06-26T14:13:25.096Z",
+      "published_at": "2022-03-02T10:42:46.133Z",
+      "id": 1318114,
+      "uuid": "93d595ed-fcaf-4250-8ee3-87b006b92b87",
+      "content": {
+        "_uid": "4d036dc1-9891-43e5-a35a-0fd41e153e18",
+        "cast": "Susanne Wolff, Dragos Bucur, Alexia Lestiboudois",
+        "asset": {
+          "_uid": "7a5f98c0-f5bc-45dc-8d17-fd74ac7b461e",
+          "plugin": "autocomplete",
+          "selected": "5c90a81a54df70000d44fc4b"
+        },
+        "genre": "Action, Drama",
+        "shops": [
+          "cinetree.nl"
+        ],
+        "title": "Bloody Marie",
+        "blocks": [
+          {
+            "_uid": "733a6769-3823-4fa4-bba4-6370b608ed56",
+            "lines": [
+              {
+                "_uid": "adf73899-46dc-40aa-9ab7-f0d3f82dfa6b",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "1\\. Regisseur Guido van Driel noemde *Bloody Marie* “een overlevingsfilm met oog en oor voor de schoonheid van het alledaagse.”",
+                "component": "text"
+              },
+              {
+                "_uid": "f6497ba9-c1ef-4137-91aa-957d37705a2f",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "2\\. Lennert Hillege, bekend van zijn camerawerk waarvoor hij o.a. een Gouden Kalf won, debuteert met *Bloody Marie* als scenarioschrijver en regisseur.",
+                "component": "text"
+              },
+              {
+                "_uid": "23b36ec2-3ca1-4f3d-9f43-cffc31b4d955",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "3\\. Het werd de filmmakers afgeraden om écht op de Wallen te gaan filmen. Er werd voorgesteld om de buurt na te bouwen, maar Hillege en van Driel waren vastbesloten om voor het echte werk te gaan.",
+                "component": "text"
+              }
+            ],
+            "title": "Film in feiten",
+            "component": "fifteen"
+          },
+          {
+            "_uid": "029103e4-acf5-470a-b9cb-d8f75bc1dee5",
+            "size": "",
+            "image": "//a.storyblok.com/f/53852/2048x1152/c6dfb06052/bm-1.jpg",
+            "component": "image"
+          },
+          {
+            "_uid": "e135d280-6bbb-4d09-9513-0cb6c49146f6",
+            "lines": [
+              {
+                "_uid": "388ac34c-778f-4a3b-8740-3cdbefe31041",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "1\\. Guido van Driel en Lennert Hillege ramen uitkochten, dronken toeristen ontweken en echte dorpsbewoners werden in de rosse buurt. Alles voor het perfecte decor van hun film over de Duitse dronkenlap Marie.",
+                "component": "text"
+              },
+              {
+                "_uid": "dcfb5e93-11f6-4ee8-83f5-27273f9f323c",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "2\\. De film je meeneemt naar plekken in Amsterdam waar camera’s zelden komen.",
+                "component": "text"
+              },
+              {
+                "_uid": "3ddb907d-458e-47dc-8062-aadaac461e6a",
+                "font": "",
+                "size": "normal",
+                "align": "left",
+                "width": "normal",
+                "content": "3\\. *Bloody Marie* alleen al voor de sfeer en waanzinnige beelden de moeite waard is.",
+                "component": "text"
+              }
+            ],
+            "title": "Must-see, omdat:",
+            "component": "fifteen"
+          },
+          {
+            "_uid": "f4ff91d6-e022-4369-ae88-969bc05c7d70",
+            "size": "",
+            "image": "//a.storyblok.com/f/53852/2048x1152/88b6ecdd15/bm-2.jpg",
+            "component": "image"
+          },
+          {
+            "_uid": "a9fc15e9-0f5b-4daf-886f-d0e3c6eb303b",
+            "from": "Marie (Bloody Marie)",
+            "text": "“Kom op. Geld, drank, klaar.”",
+            "component": "quote"
+          }
+        ],
+        "poster": "//a.storyblok.com/f/53852/1280x1824/aea6ff8397/dhodf8lo6e9huqwbggl7ffdsoro.jpg",
+        "public": false,
+        "country": "",
+        "endDate": "",
+        "ogImage": "//a.storyblok.com/f/53852/2048x1152/fe06089b68/bm-2.jpg",
+        "ogTitle": "Spanning en sensatie op de Wallen in Bloody Marie",
+        "trailer": "",
+        "director": "Lennert Hillege, Guido van Driel",
+        "duration": "87",
+        "mainMenu": "",
+        "seoTitle": "",
+        "component": "film",
+        "opengraph": "",
+        "startDate": "2019-06-26 00:00",
+        "tvodPrice": "499",
+        "background": "//a.storyblok.com/f/53852/2048x1007/b783ca7cb5/bm-4.jpg",
+        "kijkwijzer": [
+          "16",
+          "taalgebruik",
+          "geweld"
+        ],
+        "properties": "",
+        "selectedBy": "",
+        "seoNoIndex": false,
+        "titleImage": "",
+        "buttonColor": {
+          "_uid": "3b5ba849-b71d-492f-a5d0-1eb21b7f6c0f",
+          "title": "Color option",
+          "plugin": "color-option",
+          "description": "Choose from a predefined color swatch"
+        },
+        "hideReviews": false,
+        "posterColor": {
+          "_uid": "afca3041-a3c0-4b86-aabc-a1830d07d2bd",
+          "title": "Color option",
+          "plugin": "color-option",
+          "description": "Choose from a predefined color swatch"
+        },
+        "svodEndDate": "",
+        "campaignName": "",
+        "overviewText": "",
+        "trailerAsset": {
+          "_uid": "dcd29fa5-2ad7-4499-84b7-73cb72b9af45",
+          "plugin": "autocomplete",
+          "selected": "5c8fd96d54df70000d44fc46"
+        },
+        "trailerStill": "",
+        "ogDescription": "",
+        "overviewLabel": "",
+        "relatedVideos": [],
+        "shortSentence": "",
+        "shortSynopsis": "Eigenzinnige film over de ooit succesvolle striptekenares Marie Wankelmut. Tegenwoordig woont ze met een flink alcoholprobleem tussen de prostituees op de Amsterdamse Wallen. Marie rolt van het ene conflict in het andere, totdat er iets gruwelijks gebeurt bij haar buren en ze besluit om in actie te komen.",
+        "productionYear": "2019",
+        "seoDescription": "",
+        "trailerCaption": "Cinetree deelt 'Bloody Marie'",
+        "campaignValidTo": "",
+        "originalTrailer": {
+          "_uid": "6a921818-6da7-486d-b536-1f160108a4ff",
+          "plugin": "cinetree-autocomplete",
+          "selected": null
+        },
+        "selectedByQuote": "De rosse buurt van Amsterdam zoals je die nog nooit eerder zag!",
+        "titleImageWidth": "20",
+        "trailerVimeoURL": "",
+        "technicalDetails": "",
+        "geoAllowCountries": "",
+        "festivalsAndAwards": "",
+        "originalTrailerURL": "",
+        "overviewLabelColor": "",
+        "tvodSubscribersPrice": 399
+      },
+      "slug": "bloody-marie",
+      "full_slug": "films/bloody-marie",
+      "sort_by_date": null,
+      "position": 2680,
+      "tag_list": [],
+      "is_startpage": false,
+      "parent_id": 549145,
+      "meta_data": null,
+      "group_id": "35e88db6-5e6a-462a-916d-1208250e7f26",
+      "first_published_at": "2019-06-26T15:16:52.711Z",
+      "release_id": null,
+      "lang": "default",
+      "path": null,
+      "alternates": [],
+      "default_full_slug": null,
+      "translated_slugs": null
+    }
+  ],
+  "cv": 1657115375,
+  "rels": [],
+  "links": []
+}

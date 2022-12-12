@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.cinetree" name="Cinetree" version="1.0.0" provider-name="Dimitri Kroon">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0"/>
+    <import addon="inputstream.adaptive" version="19.0.5"/>
+    <import addon="script.module.requests"/>
+    <import addon="script.module.inputstreamhelper"/>
+    <import addon="script.module.codequick"/>
+    <import addon="script.module.pytz"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="addon.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary lang="en">Films and documentaries from Cinetree.nl</summary>
+    <summary lang="nl">Films en documentaires van Cinetree.nl</summary>
+    <description lang="en">
+      This add-on enables playing films and documentaries from the Dutch film platform Cinetree. To be able to play any content a Cinetree account is required. Films available from the subscription can be played directly from kodi. You can also browse through the whole rental collection. Rental films can be watched after the payment has been made using the official Cinetree Android/Apple app or Cinetree's website.
+    </description>
+    <description lang="nl">
+      Met deze addon kunnen films worden doorzocht en afgespeeld van het Nederlandse filmplatform Cinetree. Een Cinetree-account is vereist om films af te spelen. Films die beschikbaar zijn binnen het maand abonnement kan je direct bekijken en je kan het hele assortiment aan huurfilms doorzoeken. Huurfilms kun je bekijken nadat je ze betaald hebt via de officiële Cinetree Android/Apple app of de Cinetree-website.
+    </description>
+    <disclaimer lang="en">
+      This an unofficial plugin. It is not created or endorsed by Cinetree.
+    </disclaimer>
+    <disclaimer lang="nl">
+      Dit is een onofficiële plugin. Het is niet gemaakt of goedgekeurd door Cinetree.
+    </disclaimer>
+    <language>nl</language>
+    <assets>
+      <icon>resources/icon.png</icon>
+      <fanart>resources/fanart.jpg</fanart>
+    </assets>
+    <reuselanguageinvoker>true</reuselanguageinvoker>
+  </extension>
+</addon>
