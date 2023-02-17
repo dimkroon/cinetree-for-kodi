@@ -126,13 +126,12 @@ def _substitute_args(jsonp_doc: str, args_map: dict) -> str:
     def insert_vars_and_quote_keys(match):
         """Search for parameter sequence in the match and perform a replace on found
         parameters. Also search for keys and enclose them in double quotes in order to
-        comply to json standards
+        comply to json standards.
 
         The passed match can contain quoted as wel as un-quoted string, but only un-quoted
-        string are in capture group 1.
-
-        To ensure not te replace anything resembling a parameter or a key in normal text,
-        only perform the operations on the parts that are not enclosed in double quotes.
+        string are in capture group 1. To ensure not te replace anything resembling a
+        parameter or a key in normal text, only perform the operations on the parts that are
+        not enclosed in double quotes, i.e when match has group 1.
 
         """
         orig_str = match.group(1)

@@ -60,7 +60,8 @@ A PARTICULAR PURPOSE.
 Met deze addon kunnen films worden doorzocht en afgespeeld van het Nederlandse
 filmplatform Cinetree. Dit is een onofficiële addon. Het is niet gemaakt, of 
 goedgekeurd door Cinetree en de ontwikkelaar is op geen enkele wijze verbonden
-met Cinetree. De addon biedt slechts toegang tot de van Cinetree.nl.
+met Cinetree. De addon biedt slechts toegang tot de internetdiensten van 
+Cinetree.nl.
 
 Je kan altijd door het assortiment van films en documentaires bladeren, maar 
 je hebt een Cinetree-account nodig om films af te spelen. 
@@ -86,14 +87,15 @@ Op dit moment kan je alleen de addon installeren via zip bestand.
 * Zorg ervoor dat installeren van onbekende bronnen is ingeschakeld in het 
   systeem menu van kodi. 
   Klik hier voor [instructies](https://dimkroon.net/nl/guides/enable-unknown-sources.html).
-* Voeg https://dimkroon.net/kodi-addons als bestandslocatie to aan 
+* Voeg https://dimkroon.net/kodi-addons als bestandslocatie toe aan 
   bestandsbeheer in Kodi ([instructies](https://dimkroon.net/nl/guides/howto-add-file-source.html)), 
   of download de laatste zip file van de 
   [GitHub releases](https://github.com/dimkroon/cinetree-for-kodi/releases) 
   pagina.
 * Installeer via de optie _Add-ons installeren via zipbestand_ in het add-on 
   menu van Kodi. Zie
-  [Installer addon als zip](https://dimkroon.net/nl/guides/install-from-zip.html) 
+  [Installeer addon als zip](https://dimkroon.net/nl/guides/install-from-zip.
+  html) 
   voor gedetailleerde instructies.
 
 

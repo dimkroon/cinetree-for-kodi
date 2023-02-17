@@ -70,7 +70,7 @@ def _get_url_page(path, page=None, items_per_page=None, **kwargs):
     """Make a webrequest to url `path`. Optionally return only a subset of the available
     items by passing in 'page` and 'items_per_page`.
 
-    Returns a tuple of 2 elements. The first is the list of items, seconds is the
+    Returns a tuple of 2 elements. The first is the list of items, second is the
     total number of available items.
     """
     if items_per_page is not None and not 0 < items_per_page <= 100:
