@@ -1,8 +1,8 @@
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2023 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 from __future__ import absolute_import, unicode_literals
@@ -113,7 +113,7 @@ def create_film_item(film_info):
 def _select_trailer_url(film_data: dict, prefer_original: bool) -> str:
     """Retrieve trailer from the *film_data*.
 
-    Returns either Cinetree's trialer, or the original trailer depending on the presence of
+    Returns either Cinetree's trailer, or the original trailer depending on the presence of
     various trailer info and parameter *prefer_original*.
 
     :param film_data: A dict of film info, as in content field of a json object returned by Cinetree.

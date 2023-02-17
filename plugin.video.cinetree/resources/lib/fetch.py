@@ -111,7 +111,7 @@ def fetch_authenticated(funct, url, **kwargs):
     If the server responds with an authentication error, refresh tokens, or
     login and try once again.
 
-    To prevent headers argument to tun up as both positional and keyword argument,
+    To prevent `headers` to turn up as both positional and keyword argument,
     accept keyword arguments only apart from the callable and url.
 
     """

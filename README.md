@@ -25,7 +25,7 @@ official Cinetree Android/Apple app or Cinetree's website, the film will be
 available in the menu 'My Films'
 
 ### Installation ###
-Only Kodi 19 (Matrix) and Kodi 20 (Nexus) is supported.
+Only Kodi 19 (Matrix) and Kodi 20 (Nexus) are supported.
 At present the add-on can only be installed as zip file.
 
 * Ensure that installing from unknown sources is enabled in kodi. Click here for
