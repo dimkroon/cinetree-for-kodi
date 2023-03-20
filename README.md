@@ -94,8 +94,7 @@ Op dit moment kan je alleen de addon installeren via zip bestand.
   pagina.
 * Installeer via de optie _Add-ons installeren via zipbestand_ in het add-on 
   menu van Kodi. Zie
-  [Installeer addon als zip](https://dimkroon.net/nl/guides/install-from-zip.
-  html) 
+  [Installeer addon als zip](https://dimkroon.net/nl/guides/install-from-zip.html) 
   voor gedetailleerde instructies.
 
 
