@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2023 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
@@ -52,17 +52,21 @@ class TestGetHeight(TestCase):
 @patch('resources.lib.vimeo.get_json', return_value=open_json('vimeo_stream_config.json'))
 class TestGetVideoStream(TestCase):
     def test_get_stream_1080p(self, _):
-        s = vimeo.get_steam_url('https://some/video', 1080)
-        self.assertTrue(len(s) > 10)
+        t, s = vimeo.get_steam_url('https://some/video', 1080)
+        self.assertGreater(len(s), 10)
+        self.assertEqual(t, 'file')
 
     def test_get_stream_540p(self, _):
-        s = vimeo.get_steam_url('https://some/video', 540)
-        self.assertTrue(len(s) > 10)
+        t, s = vimeo.get_steam_url('https://some/video', 540)
+        self.assertGreater(len(s), 10)
+        self.assertEqual(t, 'file')
 
     def test_get_stream_max_resolution(self, _):
-        s = vimeo.get_steam_url('https://some/video')
+        t, s = vimeo.get_steam_url('https://some/video')
         self.assertTrue(len(s) > 10)
+        self.assertEqual(t, 'file')
 
     def test_get_stream_with_trailing_slash(self, _):
-        s = vimeo.get_steam_url('https://some/video/')
+        t, s = vimeo.get_steam_url('https://some/video/')
         self.assertTrue(len(s) > 10)
+        self.assertEqual(t, 'file')

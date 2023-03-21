@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2023 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 
@@ -154,24 +154,9 @@ def monitor_progress(watch_id):
     ct_api.set_resume_time(watch_id, player.playtime)
 
 
-def play_ct_video(stream_info: dict, title: str = ''):
-    """ From the info provided in *stream_info*, prepare subtitles and build
-    a playable codequick.Listitem to play a film, short film, or trailer
-    from Cinetree.
-
-    """
+def create_hls_item(url, title):
     # noinspection PyImport,PyUnresolvedReferences
     import inputstreamhelper
-
-    try:
-        subtitles_file = ct_api.get_subtitles(stream_info['subtitles']['nl'])
-        logger.debug("using subtitles '%s'", subtitles_file)
-    except KeyError:
-        logger.debug("No subtitels available for video '%s'", title)
-        subtitles_file = None
-    except errors.FetchError as e:
-        logger.error("Failed to fetch subtitles: %r", e)
-        subtitles_file = None
 
     PROTOCOL = 'hls'
 
@@ -182,9 +167,7 @@ def play_ct_video(stream_info: dict, title: str = ''):
 
     play_item = Listitem()
     play_item.label = title
-    play_item.set_path(stream_info.get('url'), is_playable=True)
-    if subtitles_file:
-        play_item.subtitles = (subtitles_file, )
+    play_item.set_path(url, is_playable=True)
 
     play_item.listitem.setContentLookup(False)
 
@@ -198,6 +181,31 @@ def play_ct_video(stream_info: dict, title: str = ''):
             'Sec-Fetch-Dest=empty&'
             'Sec-Fetch-Mode=cors&'
             'Sec-Fetch-Site=same-site'))
+    return play_item
+
+
+def play_ct_video(stream_info: dict, title: str = ''):
+    """ From the info provided in *stream_info*, prepare subtitles and build
+    a playable codequick.Listitem to play a film, short film, or trailer
+    from Cinetree.
+
+    """
+    try:
+        subtitles_file = ct_api.get_subtitles(stream_info['subtitles']['nl'])
+        logger.debug("using subtitles '%s'", subtitles_file)
+    except KeyError:
+        logger.debug("No subtitels available for video '%s'", title)
+        subtitles_file = None
+    except errors.FetchError as e:
+        logger.error("Failed to fetch subtitles: %r", e)
+        subtitles_file = None
+
+    play_item = create_hls_item(stream_info.get('url'), title)
+    if play_item is False:
+        return False
+
+    if subtitles_file:
+        play_item.subtitles = (subtitles_file, )
 
     resume_time = stream_info.get('playtime')
     if resume_time and int(resume_time):
@@ -249,18 +257,23 @@ def play_film(plugin, title, uuid, slug, end_date=None):
 
 @Resolver.register
 def play_trailer(plugin, url):
-    logger.debug("playing trailer %s", url)
-
     if 'youtube' in url:
+        logger.info("Play youtube trailer: '%s'", url)
         return plugin.extract_source(url)
 
     if 'vimeo' in url:
         from resources.lib.vimeo import get_steam_url
-        stream_url = get_steam_url(url)
-        return stream_url
+        url_type, stream_url = get_steam_url(url)
+        if url_type == 'file':
+            logger.info("Play vimeo file trailer: '%s'", stream_url)
+            return stream_url
+        elif url_type == 'hls':
+            logger.info("Play vimeo HLS trailer: '%s'", stream_url)
+            return create_hls_item(stream_url, 'trailer')
 
     if 'cinetree' in url:
         stream_info = ct_api.get_stream_info(url)
+        logger.info("Play cinetree trailer: '%s'", stream_info.get('url'))
         return play_ct_video(stream_info, 'trailer')
 
     logger.warning("Cannot play trailer from unknown source: '%s'.", url)

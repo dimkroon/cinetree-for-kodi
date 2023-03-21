@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2023 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 import xbmcgui
@@ -24,19 +24,36 @@ def get_steam_url(video_url, max_resolution=None):
     video_id = video_url.split('/')[-1]
     config_url = ''.join(('https://player.vimeo.com/video/', video_id, '/config'))
     config = get_json(config_url)
+
     stream_config = config['request']['files']['progressive']
+    if stream_config:
+        return 'file', get_progressive_url(stream_config, max_resolution)
 
-    max_video_height = get_height(max_resolution)
-    best_match = {}
-    matched_h = 0
+    stream_config = config['request']['files']['hls']
+    if stream_config:
+        return 'hls', get_hls_url(stream_config)
 
-    for stream in stream_config:
-        h = stream['height']
-        if matched_h < h <= max_video_height:
-            best_match = stream
-            matched_h = h
+    return None, None
 
-    return best_match.get('url', '')
+
+def get_progressive_url(stream_config, max_resolution):
+        max_video_height = get_height(max_resolution)
+        best_match = {}
+        matched_h = 0
+
+        for stream in stream_config:
+            h = stream['height']
+            if matched_h < h <= max_video_height:
+                best_match = stream
+                matched_h = h
+
+        return best_match.get('url', '')
+
+
+def get_hls_url(stream_config):
+    def_cdn = stream_config.get('default_cdn')
+    urls = stream_config['cdns'].get(def_cdn)
+    return urls['url']
 
 
 def get_height(resolution):
