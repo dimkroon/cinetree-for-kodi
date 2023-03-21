@@ -1,2 +1,5 @@
 /tests/addon_profile_dir/
 account_login.py
+
+*.py[doc]
+*__pycache__*
