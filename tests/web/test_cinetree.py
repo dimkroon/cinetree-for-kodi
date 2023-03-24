@@ -1,10 +1,9 @@
 
-
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2023 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
@@ -56,15 +55,15 @@ class FetchJsonp(TestCase):
 
 # noinspection PyMethodMayBeStatic
 class GetFilmUrls(TestCase):
-    def test_get_urls_maand_abo_selected(self):
-        # To view films from the selected list have uuid
-        url = ct_api.create_stream_info_url('7a88224a-370e-4c0b-9330-730ca74d6b39', None)
+    def test_get_urls_by_uuid(self):
+        # To view films from the selected list, which have uuid
+        url = ct_api.create_stream_info_url('c1321650-7394-4106-952d-e38872ab5f47', None)
         stream_info = ct_api.get_stream_info(url)
         check_stream_info(stream_info)
 
-    def test_get_urls_maand_abo(self):
+    def test_get_urls_by_slug(self):
         # Films listed in month subscription do not have a key uuid, so are requested by their full_slug
-        url = ct_api.create_stream_info_url(None, 'films/kapsalon-romy')
+        url = ct_api.create_stream_info_url(None, 'shorts/moffenmeid')
         stream_info = ct_api.get_stream_info(url)
         check_stream_info(stream_info)
 
