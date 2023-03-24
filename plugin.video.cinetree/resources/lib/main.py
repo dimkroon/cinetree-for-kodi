@@ -10,7 +10,7 @@
 from codequick import Route, Resolver, Listitem, Script
 from codequick import run as cc_run
 
-from resources.lib.logging import logger
+from resources.lib.addon_log import logger
 from resources.lib.ctree import ct_api
 from resources.lib.ctree import ct_data
 from resources.lib import storyblok, kodi_utils

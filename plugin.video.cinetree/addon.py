@@ -7,7 +7,7 @@
 
 import sys
 from resources.lib import main
-from resources.lib.logging import logger, shutdown_log
+from resources.lib.addon_log import logger, shutdown_log
 from resources.lib import cc_patch
 
 

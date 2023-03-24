@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2023 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 import logging
@@ -13,7 +13,7 @@ from codequick.support import addon_data, logger_id
 
 from resources.lib.ctree import ct_account
 from resources.lib import kodi_utils
-from resources.lib import logging as ct_logging
+from resources.lib import addon_log as ct_logging
 
 logger = logging.getLogger('.'.join((logger_id, __name__)))
 
