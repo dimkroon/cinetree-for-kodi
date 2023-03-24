@@ -211,6 +211,14 @@ msgctxt "#30807"
 msgid "Search"
 msgstr ""
 
+msgctxt "#30808"
+msgid "Already Watched"
+msgstr ""
+
+msgctxt "#30809"
+msgid "Rented"
+msgstr ""
+
 # Error texts
 msgctxt "#30901"
 msgid "Access not allowed."

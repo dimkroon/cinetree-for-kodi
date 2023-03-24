@@ -29,6 +29,8 @@ TXT_MONTH_SELECTION = 30803
 TXT_RENTALS_COLLECTIONS = 30805
 TXT_RENTALS_GENRES = 30806
 TXT_SEARCH = 30807
+TXT_ALREADY_WATCHED = 30808
+TXT_RENTED = 30809
 TXT_NOTHING_FOUND = 30608
 TXT_TOO_MANY_RESULTS = 30609
 
@@ -51,10 +53,10 @@ def list_my_films(_, subcategory=None):
 
     if subcategory is None:
         yield Listitem.from_dict(list_my_films,
-                                 'Reeds Bekeken',
+                                 Script.localize(TXT_ALREADY_WATCHED),
                                  params={'subcategory': 'finished', '_cache_to_disc_': False})
         yield Listitem.from_dict(list_my_films,
-                                 'Gehuurd',
+                                 Script.localize(TXT_RENTED),
                                  params={'subcategory': 'purchased', '_cache_to_disc_': False})
 
     if subcategory == 'purchased':
