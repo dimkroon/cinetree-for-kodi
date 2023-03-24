@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.cinetree" name="Cinetree" version="1.0.0" provider-name="Dimitri Kroon">
+<addon id="plugin.video.cinetree" name="Cinetree" version="1.1.0" provider-name="Dimitri Kroon">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="inputstream.adaptive" version="19.0.5"/>
@@ -13,19 +13,19 @@
   </extension>
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
-    <summary lang="en">Films and documentaries from Cinetree.nl</summary>
-    <summary lang="nl">Films en documentaires van Cinetree.nl</summary>
+    <summary lang="en">Films and documentaries from Cinetree.nl (Benelux only, account required)</summary>
+    <summary lang="nl">Films en documentaires van Cinetree.nl (Benelux only, account required)</summary>
     <description lang="en">
-      This add-on enables playing films and documentaries from the Dutch film platform Cinetree. To be able to play any content a Cinetree account is required. Films available from the subscription can be played directly from kodi. You can also browse through the whole rental collection. Rental films can be watched after the payment has been made using the official Cinetree Android/Apple app or Cinetree's website.
+      This add-on enables playing films and documentaries from Dutch film platform Cinetree.[CR]This an unofficial addon. It is not created or endorsed by Cinetree.[CR][CR]To be able to play any content a Cinetree account is required. Films available in the monthy subscription account can be played directly from kodi. You can also browse through the whole rental collection.[CR]Just like the official TV-apps, it's not possible to rent a film directly from this addon. In order to watch a rental film you first have to make the payment via the Cinetree's website or official Cinetree Android/Apple app. Once paid the film will be available in the menu 'My Films' > 'Rented' for the duration of the rental period, which is usually 48 hours.
     </description>
     <description lang="nl">
-      Met deze addon kunnen films worden doorzocht en afgespeeld van het Nederlandse filmplatform Cinetree. Een Cinetree-account is vereist om films af te spelen. Films die beschikbaar zijn binnen het maand abonnement kan je direct bekijken en je kan het hele assortiment aan huurfilms doorzoeken. Huurfilms kun je bekijken nadat je ze betaald hebt via de officiële Cinetree Android/Apple app of de Cinetree-website.
+      Met deze addon kunnen films en documentaires worden afgespeeld van het Nederlandse filmplatform Cinetree.[CR]Dit is een onofficiële addon. Het is niet gemaakt of goedgekeurd door Cinetree.[CR][CR]Een Cinetree-account is vereist om films af te spelen. Films die beschikbaar zijn binnen het maand abonnement kan je direct bekijken en je kan het hele assortiment aan huurfilms doorzoeken.[CR]Net zoals met de officiële TV-apps kan je films niet direct huren vanuit deze addon. Om een huurfilm te kunnen bekijken moet je eerst betalen via de Cinetree-website of de officiële Cinetree Android/Apple app. Zodra er betaald is, is de film beschikbaar in het menu 'Mijn Films' > 'Gehuurd' voor de duur van de huurperiode, wat meestal 48 uur is.
     </description>
     <disclaimer lang="en">
-      This an unofficial plugin. It is not created or endorsed by Cinetree.
+      This addon is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
     </disclaimer>
     <disclaimer lang="nl">
-      Dit is een onofficiële plugin. Het is niet gemaakt of goedgekeurd door Cinetree.
+      Deze addon is gedistribueerd in de hoop dat het nuttig zal zijn maar ZONDER ENIGE GARANTIE; zelfs zonder de impliciete garantie voor BRUIKBAARHEID VOOR EEN SPECIFIEK DOEL.
     </disclaimer>
     <language>nl</language>
     <assets>
