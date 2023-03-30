@@ -26,7 +26,15 @@ available in the menu 'My Films'
 
 ### Installation ###
 Only Kodi 19 (Matrix) and Kodi 20 (Nexus) are supported.
-At present the add-on can only be installed as zip file.
+
+The Cinetree addon is available in the official Kodi repository.
+From the home screen select Settings > Add-ons > Install from repository > 
+Kodi Add-on repository > Video add-ons. Scroll down to Cinetree, select and 
+clik on Install.
+
+
+For those who prefer manual installation, or want to try out beta versions, 
+the installation method described below remains available.
 
 * Ensure that installing from unknown sources is enabled in kodi. Click here for
   [instructions](https://dimkroon.net/guides/enable-unknown-sources.html).
@@ -79,11 +87,15 @@ _Mijn films/gehuurd_ en kan je hem via kodi bekijken.
 
 ### Installatie ###
 Voor deze addon is Kodi 19 (Matrix) of Kodi 20 (Nexus) vereist. Mogelijk werkt 
-het op hogere 
-versies, maar dat is (nog) niet getest. 
+het op hogere versies, maar dat is (nog) niet getest. 
 
-Op dit moment kan je alleen de addon installeren via zip bestand.
+De Cinetree addon is beschikbaar in de officiele Kodi repository. Om te installeren
+ga je naar het Thuis scherm, selecteer Instellingen > Add-ons > Installeer van 
+repository > Kodi Add-on repository > Video add-ons.
+Scroll naar beneden, selecteer Cinetree en klik op Installeren.
 
+Voor degene die liever handmatig installeren, of beta versies willen uitproberen,
+blijft de onderstaande methode beschikbaar.
 * Zorg ervoor dat installeren van onbekende bronnen is ingeschakeld in het 
   systeem menu van kodi. 
   Klik hier voor [instructies](https://dimkroon.net/nl/guides/enable-unknown-sources.html).
