@@ -37,15 +37,15 @@ For those who prefer manual installation, or want to try out beta versions,
 the installation method described below remains available.
 
 * Ensure that installing from unknown sources is enabled in kodi. Click here for
-  [instructions](https://dimkroon.net/guides/enable-unknown-sources.html).
+  [instructions](https://dimkroon.net/en/guides/enable-unknown-sources.html).
 * Add https://dimkroon.net/kodi-addons as file source to Kodi's file 
-  manager ([instructions](https://dimkroon.net/guides/howto-add-file-source.html)), 
+  manager ([instructions](https://dimkroon.net/en/guides/howto-add-file-source.html)), 
   or download the latest zip file manually from the
   [GitHub releases](https://github.com/dimkroon/cinetree-for-kodi/releases) 
   page.
 * Choose _install from zip_ from Kodi's add-on menu. Check [how to 
   install 
-  from zip file](https://dimkroon.net/guides/install-from-zip.html) for detailed 
+  from zip file](https://dimkroon.net/en/guides/install-from-zip.html) for detailed 
   instructions.
 
 ### Issues ###
