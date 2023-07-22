@@ -6,6 +6,8 @@
 #  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
+import xbmcplugin
+import sys
 
 from codequick import Route, Resolver, Listitem, Script
 from codequick import run as cc_run
@@ -283,4 +285,5 @@ def play_trailer(plugin, url):
 
 
 def run():
-    cc_run()
+    if isinstance(cc_run(), Exception):
+        xbmcplugin.endOfDirectory(int(sys.argv[1]), False)
