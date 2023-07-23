@@ -12,6 +12,8 @@ fixtures.global_setup()
 import unittest
 from unittest.mock import MagicMock
 
+import xbmcgui
+
 from codequick import Listitem
 from resources.lib import main
 
@@ -73,7 +75,7 @@ class MainTest(unittest.TestCase):
     def test_play_film_from_uuid(self):
         # Using uuid of gratis film 'Woman at war', so it can be played with every type of account.
         playitem = main.play_film(MagicMock(), '', 'aa97748e-1981-4f34-80fe-5846756908fa', None)
-        self.assertIsInstance(playitem, Listitem)
+        self.assertIsInstance(playitem, xbmcgui.ListItem)
 
     def test_list_genre_drama(self):
         """As there are a lot of film in genre drama, only the maximum of 50 per page ar returned."""
