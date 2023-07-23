@@ -14,6 +14,8 @@ from tests.support.testutils import open_jsonp, open_json, get_sb_film
 import unittest
 from unittest.mock import MagicMock, patch
 
+import xbmcgui
+
 from codequick import Listitem
 
 from resources.lib import main
@@ -124,18 +126,21 @@ class MainTest(unittest.TestCase):
         # test subtitles and steam info present
         with patch('resources.lib.ctree.ct_api.get_subtitles', return_value='my_subtitle.srt'):
             playitem = main.play_ct_video(stream_inf)
-            self.assertEqual(('my_subtitle.srt', ), playitem.subtitles)
-            self.assertEqual('https://my.stream', playitem.path)
+            self.assertIsInstance(playitem, xbmcgui.ListItem)
+            self.assertTupleEqual(('my_subtitle.srt', ), playitem._subtitles)
+            self.assertEqual('https://my.stream', playitem._path)
 
         # test ignore subtitles when fetch encounters HTTP Error
         with patch('resources.lib.ctree.ct_api.get_subtitles', side_effect=errors.FetchError):
             playitem = main.play_ct_video(stream_inf)
-            self.assertEqual([], playitem.subtitles)
+            self.assertIsInstance(playitem, xbmcgui.ListItem)
+            self.assertFalse([], hasattr(playitem, '_subtitles'))
 
         # play item without any subtitle information
         playitem = main.play_ct_video({'url': 'https://my.stream'})
-        self.assertEqual([], playitem.subtitles)
-        self.assertEqual('https://my.stream', playitem.path)
+        self.assertIsInstance(playitem, xbmcgui.ListItem)
+        self.assertFalse([], hasattr(playitem, '_subtitles'))
+        self.assertEqual('https://my.stream', playitem._path)
 
         # test HLS protocol not supported fails silently
         with patch("inputstreamhelper.Helper.check_inputstream", return_value=False):
@@ -146,7 +151,7 @@ class MainTest(unittest.TestCase):
         with patch('resources.lib.ctree.ct_api.get_stream_info', return_value=open_json('stream_info.json')):
             with patch("resources.lib.ctree.ct_api.get_subtitles", return_value=None):
                 playitem = main.play_film(MagicMock(), '', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
-                self.assertIsInstance(playitem, Listitem)
+                self.assertIsInstance(playitem, xbmcgui.ListItem)
         with patch('resources.lib.ctree.ct_api.get_stream_info', side_effect=errors.NotPaidError):
             playitem = main.play_film(MagicMock(), '', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
             self.assertFalse(playitem)
@@ -181,10 +186,10 @@ class MainTest(unittest.TestCase):
     def test_play_film_resume_dialog_result(self, _, __):
         with patch('resources.lib.kodi_utils.ask_resume_film', return_value=0):
             item = main.play_film(MagicMock(), '', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
-            self.assertIsInstance(item, Listitem)
+            self.assertIsInstance(item, xbmcgui.ListItem)
         with patch('resources.lib.kodi_utils.ask_resume_film', return_value=1):
             item = main.play_film(MagicMock(), '', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
-            self.assertIsInstance(item, Listitem)
+            self.assertIsInstance(item, xbmcgui.ListItem)
         with patch('resources.lib.kodi_utils.ask_resume_film', return_value=-1):
             item = main.play_film(MagicMock(), '', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
             self.assertIsInstance(item, type(False))
