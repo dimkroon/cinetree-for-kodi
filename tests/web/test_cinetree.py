@@ -160,15 +160,15 @@ class SearchFilm(TestCase):
                 is_uuid(film_uuid)
 
     def test_search_country(self):
-        """Only 2 character uppercase country codes are accepted"""
-        result = ct_api.search_films(country='NL')
-        self.assertGreater(len(result), 0, "Country 'NL' returned an empty list")
-        for film_uuid in result:
+        """Only 2 character country codes are accepted, both upper, lower case and combinations"""
+        result_1 = ct_api.search_films(country='NL')
+        self.assertGreater(len(result_1), 0, "Country 'NL' returned an empty list")
+        for film_uuid in result_1:
             is_uuid(film_uuid)
-        result = ct_api.search_films(country='Nl')
-        self.assertListEqual(result, [])
-        result = ct_api.search_films(country='nl')
-        self.assertListEqual(result, [])
+        result_2 = ct_api.search_films(country='Nl')
+        self.assertListEqual(result_1, result_2)
+        result_3 = ct_api.search_films(country='nl')
+        self.assertListEqual(result_1, result_3)
 
     def test_search_duration(self):
         result = ct_api.search_films(duration=60)
