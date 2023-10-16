@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.cinetree" name="Cinetree" version="1.1.0" provider-name="Dimitri Kroon">
+<addon id="plugin.video.cinetree" name="Cinetree" version="1.2.0" provider-name="Dimitri Kroon">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
     <import addon="inputstream.adaptive" version="19.0.5"/>
-    <import addon="script.module.requests"/>
-    <import addon="script.module.inputstreamhelper"/>
-    <import addon="script.module.codequick"/>
-    <import addon="script.module.pytz"/>
+    <import addon="script.module.requests" version="2.31.0"/>
+    <import addon="script.module.inputstreamhelper" version="0.6.1"/>
+    <import addon="script.module.codequick" version="1.0.3"/>
+    <import addon="script.module.pytz" version="2023.3.0"/>
   </requires>
   <extension point="xbmc.python.pluginsource" library="addon.py">
     <provides>video</provides>
@@ -36,5 +36,12 @@
       <fanart>resources/fanart.jpg</fanart>
     </assets>
     <reuselanguageinvoker>true</reuselanguageinvoker>
+    <news>
+- Fix: Some folders failed to open with parse error.
+- Added support for all available subtitles in various languages.
+- Info like plot and cast is now available while the video plays.
+- Fix: Kodi-20 freezes for a long time after an error in the add-on.
+- Increased timeout for web requests.
+    </news>
   </extension>
 </addon>
