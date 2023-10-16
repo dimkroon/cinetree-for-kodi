@@ -71,7 +71,8 @@ def tear_down_local_tests():
 def setup_web_test(*args):
     try:
         from tests import account_login
-        account_login.set_credentials()
+        if not account_login.credentials_set:
+            account_login.set_credentials()
     except ImportError:
         pass
 
