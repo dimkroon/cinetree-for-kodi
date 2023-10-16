@@ -30,6 +30,16 @@ def global_setup():
         patch_g = patch('xbmcaddon.Addon.getAddonInfo', new=lambda self, item: profile_dir if item == 'profile' else '')
         patch_g.start()
 
+        # Enable logging to file during tests with a new file each test run.
+        try:
+            os.remove(os.path.join(profile_dir, 'addon.log'))
+        except FileNotFoundError:
+            pass
+        patch('xbmcaddon.Addon.getSettingString',
+              new=lambda self, item: 'file' if item == 'log-handler' else '').start()
+        # Import module to setup logging
+        from resources.lib import addon_log
+
         # Use an xbmcgui.ListItem that stores the values which have been set.
         patch_listitem()
 
