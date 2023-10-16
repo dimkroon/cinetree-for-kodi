@@ -109,6 +109,8 @@ class ParseNuxtJsonp(TestCase):
     def test__parse_details_of_a_single_film(self):
         result = open_jsonp('films_el-sicatio_room_164-payload.js')
         self.assertIsInstance(result, dict)
+        result = open_jsonp('films-ema-payload.js')
+        self.assertIsInstance(result, dict)
 
     def test_parse_empty_document(self):
         self.assertRaises(errors.ParseError, jsonp.parse, "")
