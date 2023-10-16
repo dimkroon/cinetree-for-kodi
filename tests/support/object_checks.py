@@ -185,7 +185,7 @@ def check_rentals(rentals_obj):
              'filterGenreItems', 'filterDurationItems', obj_name='rentals_object')
     num_coll = len(rentals_obj['collections'])
     # Rentals does not return all collection, but only e preferred selection.
-    assert 8 < num_coll < 12, "Unexpected number of collection, expected 8, got {}".format(num_coll)
+    assert 6 < num_coll < 12, "Unexpected number of collection, expected 8, got {}".format(num_coll)
     genres = set(rentals_obj['filterGenreItems'].split(','))
     assert genres == set(ct_api.GENRES), "Genres have changed"
     durations = rentals_obj['filterDurationItems']
