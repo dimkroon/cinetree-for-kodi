@@ -204,21 +204,21 @@ def play_ct_video(stream_info: dict, title: str = ''):
 
     """
     try:
-        subtitles_file = ct_api.get_subtitles(stream_info['subtitles']['nl'])
-        logger.debug("using subtitles '%s'", subtitles_file)
+        subtitles = [ct_api.get_subtitles(url, lang) for lang, url in stream_info['subtitles'].items()]
+        logger.debug("using subtitles '%s'", subtitles)
     except KeyError:
         logger.debug("No subtitels available for video '%s'", title)
-        subtitles_file = None
+        subtitles = None
     except errors.FetchError as e:
         logger.error("Failed to fetch subtitles: %r", e)
-        subtitles_file = None
+        subtitles = None
 
     play_item = create_hls_item(stream_info.get('url'), title)
     if play_item is False:
         return False
 
-    if subtitles_file:
-        play_item.setSubtitles((subtitles_file, ))
+    if subtitles:
+        play_item.setSubtitles(subtitles)
 
     resume_time = stream_info.get('playtime')
     if resume_time and int(resume_time):

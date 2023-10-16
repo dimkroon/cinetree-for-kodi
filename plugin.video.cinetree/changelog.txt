@@ -1,4 +1,5 @@
 v.1.2.0
+- Added support for all available subtitles in various languages.
 - Info like plot and cast is now available while the video plays.
 - Fix: Kodi-20 freezes for a long time after an error in the add-on.
 

@@ -109,12 +109,12 @@ class Collections(TestCase):
 
 
 class Gen(TestCase):
-    def test_get_subtitels(self):
+    def test_get_subtitles(self):
         # noinspection PyTypeChecker
         # Check return value when url to subtitles is not provided.
-        srt_file = ct_api.get_subtitles(None)
+        srt_file = ct_api.get_subtitles(None, None)
         self.assertEqual(srt_file, '')
-        srt_file = ct_api.get_subtitles('')
+        srt_file = ct_api.get_subtitles('', '')
         self.assertEqual(srt_file, '')
 
         # check if the file is actually written
@@ -124,7 +124,7 @@ class Gen(TestCase):
             pass
         with patch('resources.lib.fetch.get_document', open_doc('vtt/subtitles-woman_at_war.vtt')):
             self.assertFalse(os.path.isfile(srt_file))              # assert that initially file does not exist
-            srt_file = ct_api.get_subtitles("https://my/subtitles")
+            srt_file = ct_api.get_subtitles("https://my/subtitles", 'nl')
             self.assertTrue(os.path.isfile(srt_file))               # assert that file now exists and has content
             with open(srt_file, 'r') as f:
                 self.assertGreater(len(f.read()), 100)

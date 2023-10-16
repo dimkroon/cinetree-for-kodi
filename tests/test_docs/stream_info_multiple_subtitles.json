@@ -1,0 +1,11 @@
+{
+  "playtime": 2196.689,
+  "watchHistoryId": "64e7fd881426a073fd551c8b",
+  "type": "vaem",
+  "url": "https://cdn.api.cinetree.nl/streams/weLiEMRgN41R1G4MIDceY6JLhuyu8jGwDfGm192SyvM/1697504391592/5e97302b71c7a7001c151d2e.m3u8",
+  "duration": 5738.64,
+  "subtitles": {
+    "nl": "https://cdn.api.cinetree.nl/streams/weLiEMRgN41R1G4MIDceY6JLhuyu8jGwDfGm192SyvM/1697504391592/5e97302b71c7a7001c151d2e/subtitles/nl.vtt",
+    "en": "https://cdn.api.cinetree.nl/streams/weLiEMRgN41R1G4MIDceY6JLhuyu8jGwDfGm192SyvM/1697504391592/5e97302b71c7a7001c151d2e/subtitles/en.vtt"
+  }
+}

@@ -127,19 +127,25 @@ class MainTest(unittest.TestCase):
         with patch('resources.lib.ctree.ct_api.get_subtitles', return_value='my_subtitle.srt'):
             playitem = main.play_ct_video(stream_inf)
             self.assertIsInstance(playitem, xbmcgui.ListItem)
-            self.assertTupleEqual(('my_subtitle.srt', ), playitem._subtitles)
+            self.assertListEqual(['my_subtitle.srt'], playitem._subtitles)
             self.assertEqual('https://my.stream', playitem._path)
+
+        # test multiple subtitles
+        stream_inf_2_subs = {'url': 'https://my.stream', 'subtitles': {'nl': 'nl.subtitles', 'en': 'en.subtitles'}}
+        with patch('resources.lib.ctree.ct_api.get_subtitles', return_value='my_subtitle.srt'):
+            playitem = main.play_ct_video(stream_inf_2_subs)
+            self.assertListEqual(['my_subtitle.srt', 'my_subtitle.srt'], playitem._subtitles)
 
         # test ignore subtitles when fetch encounters HTTP Error
         with patch('resources.lib.ctree.ct_api.get_subtitles', side_effect=errors.FetchError):
             playitem = main.play_ct_video(stream_inf)
             self.assertIsInstance(playitem, xbmcgui.ListItem)
-            self.assertFalse([], hasattr(playitem, '_subtitles'))
+            self.assertFalse(hasattr(playitem, '_subtitles'))
 
         # play item without any subtitle information
         playitem = main.play_ct_video({'url': 'https://my.stream'})
         self.assertIsInstance(playitem, xbmcgui.ListItem)
-        self.assertFalse([], hasattr(playitem, '_subtitles'))
+        self.assertFalse(hasattr(playitem, '_subtitles'))
         self.assertEqual('https://my.stream', playitem._path)
 
         # test HLS protocol not supported fails silently

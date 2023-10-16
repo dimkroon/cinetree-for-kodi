@@ -41,13 +41,17 @@ class Generic(TestCase):
         self.assertGreater(len(cur_os), 2)
 
     def test_get_subtitles_temp_file(self):
+        # default language is nl
         fname = utils.get_subtitles_temp_file()
-        self.assertTrue(fname.endswith('.srt'))
+        self.assertTrue(fname.endswith('.nl.srt'))
         # check it is a full path
         if platform.system().startswith('Win'):
             self.assertTrue(fname[1:3], ':\\')
         else:
             self.assertTrue((fname.startswith('/')))
+        # specify language
+        fname = utils.get_subtitles_temp_file('en')
+        self.assertTrue(fname.endswith('.en.srt'))
 
     def test_random_string(self):
         s = utils.random_string(8)
