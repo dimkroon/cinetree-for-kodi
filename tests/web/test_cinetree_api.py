@@ -71,8 +71,17 @@ class GetStreamsOfFilm(unittest.TestCase):
     Other films return a http error 401 - not authorized.
 
     """
-    def test_stream_info_from_playable_subscription_film(self):
-        # Ensure to select a currently playable film from the subscription
+    def test_stream_info_from_free_film(self):
+        """Request ino of free film 'For Sama'."""
+        url ='https://api.cinetree.nl/films/8b9d9b9d-0865-4b44-bfcf-529fadff0efe'
+        resp = fetch.fetch_authenticated(fetch.get_json, url)
+        object_checks.check_stream_info(resp)
+        # optionally store the content for use in local tests
+        # with open('../test_docs/stream_info.json', 'w') as f:
+        #     json.dump(resp, f)
+
+    def test_stream_info_without_subscription(self):
+        # Ensure to select a currently available film from the subscription
         resp = ct_api.get_jsonp('films-en-documentaires/payload.js')['fetch']
         uuid = None
         full_slug = None
@@ -88,15 +97,7 @@ class GetStreamsOfFilm(unittest.TestCase):
 
         # Get info by film uuid, should succeed
         url = 'https://api.cinetree.nl/films/' + uuid
-        resp = fetch.fetch_authenticated(fetch.get_json, url)
-        object_checks.check_stream_info(resp)
-        # optionally store the content for use in local tests
-        # with open('../test_docs/stream_info.json', 'w') as f:
-        #     json.dump(resp, f)
-
-        # Get info by film name, should fail
-        url = 'https://api.cinetree.nl/' + full_slug
-        self.assertRaises(errors.HttpError, fetch.fetch_authenticated, fetch.get_json, url)
+        self.assertRaises(errors.NoSubscriptionError, fetch.fetch_authenticated, fetch.get_json, url)
 
     def test_stream_info_from_not_paid_rentable_uuid(self):
         """Request info of 'girlhood'. Ensure this film is not currently being rented.
