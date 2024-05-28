@@ -11,6 +11,7 @@ import os
 
 from unittest.mock import patch
 
+import xbmcvfs
 
 patch_g = None
 
@@ -26,9 +27,17 @@ def global_setup():
     # some code want to write, whether intentional or not.
     global patch_g
     if patch_g is None:
+        # Ensure that kodi's special://profile refers to a predefined folder. Just in case
+        # some code want to write, whether intentional or not.
         profile_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), '..', 'addon_profile_dir'))
-        patch_g = patch('xbmcaddon.Addon.getAddonInfo', new=lambda self, item: profile_dir if item == 'profile' else '')
+        info_map = {'profile': profile_dir,
+                    'id': 'plugin.video.cinetree',
+                    'name': 'Cinetree'}
+        patch_g = patch('xbmcaddon.Addon.getAddonInfo',
+                         new=lambda self, item: info_map.get(item, ''))
         patch_g.start()
+
+        xbmcvfs.translatePath = lambda path: path
 
         # Enable logging to file during tests with a new file each test run.
         try:
