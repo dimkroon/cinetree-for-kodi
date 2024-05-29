@@ -48,16 +48,22 @@ class MainTest(unittest.TestCase):
         for item in items:
             self.assertIsInstance(item, (Listitem, type(False)))
 
-    @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('films_en_docus-payload.js'))
-    def test_list_films_and_docus_deze_maand(self, _):
-        items = list(main.list_films_and_docus(MagicMock(), category='subscription'))
-        self.assertAlmostEqual(19, len(items), delta=3)
-        for item in items:
-            self.assertIsInstance(item, Listitem)
-        items = list(main.list_films_and_docus(MagicMock(), category='recommended'))
-        self.assertAlmostEqual(3, len(items), delta=1)
-        for item in items:
-            self.assertIsInstance(item, Listitem)
+    @patch('resources.lib.storyblok.stories_by_uuids', new=get_sb_film)
+    def test_list_films_and_docus_deze_maand(self):
+        # all subscription films
+        with patch('resources.lib.fetch.get_json', return_value=open_json('films-svod.json')):
+            items = list(main.list_films_and_docus.test(category='subscription'))
+            self.assertAlmostEqual(19, len(items), delta=3)
+            for item in items:
+                self.assertIsInstance(item, Listitem)
+
+        # Hero items
+        with patch('resources.lib.storyblok.get_url',
+                   new=lambda *args, **kwargs: (open_json('st_blok/films-en-documentaires.json'), None)):
+            items = list(main.list_films_and_docus.test(category='recommended'))
+            self.assertAlmostEqual(3, len(items), delta=1)
+            for item in items:
+                self.assertIsInstance(item, Listitem)
 
     @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('films-payload.js'))
     def test_list_rental_collections(self, _):

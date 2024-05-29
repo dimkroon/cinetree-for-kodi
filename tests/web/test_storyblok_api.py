@@ -9,7 +9,7 @@
 from tests.support import fixtures
 fixtures.global_setup()
 
-from tests.support import object_checks
+from tests.support import object_checks, testutils
 
 import json
 import time
@@ -96,7 +96,7 @@ class StoriesListing(TestCase):
             object_checks.check_film_data(story)
         # Save al stories locally
         # storymap = {story['uuid']: story for story in stories}
-        # with open(doc_path(st_blok/films.json'), 'w') as f:
+        # with open(testutils.doc_path('st_blok/films.json'), 'w') as f:
         #     json.dump(storymap, f, indent=4)
 
     def test_get_all_shorts(self):

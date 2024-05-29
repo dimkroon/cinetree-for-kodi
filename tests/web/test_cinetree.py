@@ -70,15 +70,6 @@ class GetFilmUrls(TestCase):
 
 class GetFilmsList(TestCase):
     # TODO: this more of an api test
-    def test_create_film_list_subscription_from_web(self):
-        data = ct_api.get_jsonp('films-en-documentaires/payload.js')
-        films = list(ct_data.create_films_list(data, 'subscription'))
-        self.assertGreater(len(films), 10)
-        for item in films:
-            # check if a Listitem can be created
-            Listitem.from_dict(MagicMock(), **item)
-
-    # TODO: this more of an api test
     def test_create_film_list_collection_drama_fromweb(self):
         data = ct_api.get_jsonp('collecties/drama/payload.js')
         films = list(ct_data.create_films_list(data))

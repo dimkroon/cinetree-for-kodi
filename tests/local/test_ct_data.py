@@ -88,22 +88,6 @@ class GetFilmsList(TestCase):
         films = ct_data.create_films_list(sb_films, 'storyblok')
         self.assertEqual(len(films), 4)
 
-    def test_create_film_list_suggested(self):
-        data = open_jsonp('films_en_docus-payload.js')
-        films = ct_data.create_films_list(data, 'recommended')
-        self.assertLessEqual(len(films), 4)
-        for item in films:
-            # check if a Listitem can be created
-            Listitem.from_dict(MagicMock(), **item)
-
-    def test_create_film_list_subscription(self):
-        data = open_jsonp('films_en_docus-payload.js')
-        films = ct_data.create_films_list(data, 'subscription')
-        self.assertGreater(len(films), 10)
-        for item in films:
-            # check if a Listitem can be created
-            Listitem.from_dict(MagicMock(), **item)
-
     def test_create_film_list_collection_drama(self):
         data = open_jsonp('collecties-drama-payload.js')
         films = ct_data.create_films_list(data)

@@ -52,9 +52,15 @@ class MainTest(unittest.TestCase):
             else:
                 self.assertIsInstance(item, (Listitem, type(False)))
 
-    def test_list_films_and_docus_deze_maand(self):
-        items = list(main.list_films_and_docus(MagicMock(), category='subscription'))
+    def test_list_subscription_films(self):
+        items = list(main.list_films_and_docus.test( category='subscription'))
         self.assertAlmostEqual(20, len(items), delta=4)
+        for item in items:
+            self.assertIsInstance(item, Listitem)
+
+    def test_list_recommended_films(self):
+        items = list(main.list_films_and_docus.test(category='recommended'))
+        self.assertAlmostEqual(3, len(items), delta=1)
         for item in items:
             self.assertIsInstance(item, Listitem)
 

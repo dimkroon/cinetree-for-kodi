@@ -1,5 +1,3 @@
-
-
 # ------------------------------------------------------------------------------
 #  Copyright (c) 2022 Dimitri Kroon
 #
@@ -7,11 +5,11 @@
 #  This file is part of plugin.video.cinetree
 # ------------------------------------------------------------------------------
 
-import requests
-import unittest
-
 from tests.support import fixtures
 fixtures.global_setup()
+
+import requests
+import unittest
 
 from tests.support import testutils, object_checks
 
@@ -44,6 +42,25 @@ class Login(unittest.TestCase):
         self.assertEqual(401, resp.status_code)
         resp_data = resp.json()
         self.assertEqual('Invalid password', resp_data['message'] )
+
+
+class SubscriptionFilms(unittest.TestCase):
+    def test_get_list_hero_film_ids(self):
+        """Return a list of uuid of the hero items on the subscription page."""
+        resp = ct_api.get_recommended()
+        self.assertIsInstance(resp, list)
+        self.assertEqual(3, len(resp))
+        for item in resp:
+            self.assertTrue(testutils.is_uuid(item))
+
+    def test_get_list_of_subscription_film_ids(self):
+        """This endpoint returns just a list of ID's of the current subscription films"""
+        resp = ct_api.get_subscription_films()
+        testutils.save_json(resp, 'films-svod.json')
+        self.assertIsInstance(resp, list)
+        self.assertAlmostEqual(20, len(resp), delta=3)
+        for item in resp:
+            self.assertTrue(testutils.is_uuid(item))
 
 
 # noinspection PyMethodMayBeStatic
