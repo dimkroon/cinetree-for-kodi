@@ -202,6 +202,19 @@ class SelectTrailerUrl(TestCase):
         trailer = ct_data._select_trailer_url(film_data, True)
         self.assertEqual(self.expect_vimeo, trailer)
 
+    def test_whitspace_in_url(self):
+        film_data = {'trailerVimeoURL': ' ' + self.vimeo_url}
+        trailer = ct_data._select_trailer_url(film_data, True)
+        self.assertEqual(self.expect_vimeo, trailer)
+
+        film_data = {'trailerVimeoURL': self.vimeo_url + ' '}
+        trailer = ct_data._select_trailer_url(film_data, True)
+        self.assertEqual(self.expect_vimeo, trailer)
+
+        film_data = {'originalTrailerURL': ' ' + self.orig_url + ' '}
+        trailer = ct_data._select_trailer_url(film_data, True)
+        self.assertEqual(self.expect_youtube, trailer)
+
     def test_prefer_original_but_originalTrailer_selected_is_None(self):
         # noinspection PyTypedDict
         self.film_data['originalTrailer']['selected'] = None
@@ -229,7 +242,7 @@ class SelectTrailerUrl(TestCase):
         self.assertEqual('', ct_data._select_trailer_url(film_data, False))
 
     def test_invalid_trailer_data(self):
-        """The function should fial silently and just return an empty string
+        """The function should fail silently and just return an empty string
         """
         # First ensure the original trailer is returned on valid data
         self.assertEqual(self.expect_cinetree, ct_data._select_trailer_url(self.film_data, True))

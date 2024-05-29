@@ -129,7 +129,8 @@ def _select_trailer_url(film_data: dict, prefer_original: bool) -> str:
           YouTube as well.
 
 
-    There is no guarantee that fields ar present. Also string type of fields can be empty.
+    There is no guarantee that fields ar present. Also string type of fields can be empty, or have
+    leading or trailing whitespace.
 
         If originalTrailer is present it will be a dict with fields 'plugin' and 'selected'.
     Field 'selected' is a unique string, but may be None to indicate that no  trailer is present.
@@ -139,8 +140,8 @@ def _select_trailer_url(film_data: dict, prefer_original: bool) -> str:
 
     """
 
-    vimeo_url = film_data.get('trailerVimeoURL')
-    orig_url = film_data.get('originalTrailerURL')
+    vimeo_url = film_data.get('trailerVimeoURL', '').strip()
+    orig_url = film_data.get('originalTrailerURL', '').strip()
     orig_trailer = film_data.get('originalTrailer')
 
     try:

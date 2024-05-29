@@ -87,7 +87,7 @@ def check_film_data(film_info, additional_content_keys=None):
                 orig_trailer['plugin'], title + '.originalTitle')
         assert isinstance(orig_trailer['selected'], (str, type(None)))
 
-    orig_trail_url = content.get('originalTrailerURL')
+    orig_trail_url = content.get('originalTrailerURL', '').strip()
     if orig_trail_url:
         assert(orig_trail_url.startswith('https://'))
 
