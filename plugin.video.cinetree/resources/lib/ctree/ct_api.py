@@ -140,7 +140,7 @@ def get_watched_films(finished=False):
 
     for film in my_films:
         duration = utils.duration_2_seconds(film['content'].get('duration', 0))
-        if duration - history[film['uuid']]['playtime'] < min(20, duration * 0.02):
+        if duration - history[film['uuid']]['playtime'] < max(20, duration * 0.02):
             finished_films.append(film)
         else:
             watched_films.append(film)
