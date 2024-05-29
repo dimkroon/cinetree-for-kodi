@@ -87,7 +87,7 @@ def check_film_data(film_info, additional_content_keys=None):
                 orig_trailer['plugin'], title + '.originalTitle')
         assert isinstance(orig_trailer['selected'], (str, type(None)))
 
-    orig_trail_url = content.get('originalTrailerURL')
+    orig_trail_url = content.get('originalTrailerURL', '').strip()
     if orig_trail_url:
         assert(orig_trail_url.startswith('https://'))
 
@@ -177,7 +177,7 @@ def check_films_data_list(films_list, additional_content_keys=None, allow_none_v
 
 
 def check_rentals(rentals_obj):
-    """Check the object that is returns from the js document retreived at
+    """Check the object that is returns from the js document retrieved at
     the page 'huurfilms', or it's equivalent at storyblok.
 
     """
@@ -185,7 +185,7 @@ def check_rentals(rentals_obj):
              'filterGenreItems', 'filterDurationItems', obj_name='rentals_object')
     num_coll = len(rentals_obj['collections'])
     # Rentals does not return all collection, but only e preferred selection.
-    assert 6 < num_coll < 12, "Unexpected number of collection, expected 8, got {}".format(num_coll)
+    assert 4 < num_coll < 8, "Unexpected number of collection, expected 5, got {}".format(num_coll)
     genres = set(rentals_obj['filterGenreItems'].split(','))
     assert genres == set(ct_api.GENRES), "Genres have changed"
     durations = rentals_obj['filterDurationItems']

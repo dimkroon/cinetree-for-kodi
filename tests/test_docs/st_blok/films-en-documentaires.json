@@ -1,0 +1,172 @@
+{
+  "story": {
+    "name": "Abonnement",
+    "created_at": "2019-02-22T14:43:37.311Z",
+    "published_at": "2024-05-22T10:29:14.305Z",
+    "id": 567827,
+    "uuid": "db39a0f6-2481-4c85-a8fe-241cdc027730",
+    "content": {
+      "top": [
+        {
+          "_uid": "b5b64c87-c1b5-4d4e-b9ef-9d300acd2df7",
+          "type": "synopsis",
+          "films": [
+            "20f39ebf-4a2a-46d0-be49-57039f1b31d8",
+            "2124afdc-a0bd-4ea8-ae3c-6e8353399316",
+            "8d513908-70dd-4f38-a048-c8e19960cbc2"
+          ],
+          "component": "row-featured-films",
+          "buttonColor": {
+            "_uid": "16920cb6-bf30-45f2-ae31-75f76faf5186",
+            "title": "Color option",
+            "plugin": "color-option",
+            "description": "Choose from a predefined color swatch"
+          },
+          "numSvodFilms": ""
+        },
+        {
+          "_uid": "3090a8e7-40d2-46ad-b6c1-89fab78eeb81",
+          "blocks": [
+            {
+              "_uid": "937d7463-e5d7-42d9-8590-ddc0c9d08adc",
+              "font": "",
+              "size": "large",
+              "align": "center",
+              "width": "normal",
+              "content": "## Nu te zien binnen het abonnement",
+              "noMargin": false,
+              "component": "text",
+              "readMoreContent": ""
+            },
+            {
+              "_uid": "84f2aa80-34aa-4404-a8df-f6cd8b643d4e",
+              "font": "",
+              "size": "normal",
+              "align": "center",
+              "width": "normal",
+              "content": "Als lid van Cinetree heb je altijd toegang tot deze unieke selectie van 20 films \u0026 documentaires. Elke week worden er twee nieuwe films toegevoegd aan het aanbod, die vervolgens 70 dagen lang te zien zijn. Veel kijkplezier! ",
+              "noMargin": false,
+              "component": "text",
+              "readMoreContent": ""
+            }
+          ],
+          "darkMode": false,
+          "component": "row-content",
+          "paddingBottom": "1",
+          "backgroundColor": {
+            "_uid": "b4fc62e7-f210-4a7b-a36c-abaf78c662c6",
+            "title": "Color option",
+            "plugin": "color-option",
+            "description": "Choose from a predefined color swatch"
+          }
+        }
+      ],
+      "_uid": "40d36b4e-433e-4f40-a170-40ff12176f9f",
+      "films": [],
+      "title": "",
+      "bottom": [
+        {
+          "_uid": "8266727f-92c6-4d94-9636-9a1ac5b3926a",
+          "blocks": [
+            {
+              "_uid": "76e1f2f9-ee3f-4cc1-a7f9-fb01d95d141b",
+              "font": "",
+              "size": "normal",
+              "align": "center",
+              "width": "normal",
+              "content": "Uitgekeken? Als lid krijg je 30% korting op onze huurfilms.",
+              "component": "text",
+              "readMoreContent": ""
+            },
+            {
+              "_uid": "c1875687-6d79-461b-9891-9358a37848b9",
+              "link": {
+                "id": "1ff51fee-4e29-40ed-9a53-f53b0c31f041",
+                "url": "",
+                "linktype": "story",
+                "fieldtype": "multilink",
+                "cached_url": "films/"
+              },
+              "size": "",
+              "text": "Ga naar huurfilms",
+              "color": "yellow",
+              "action": "link",
+              "primary": false,
+              "component": "button",
+              "popupTitle": "",
+              "customColor": {
+                "_uid": "7ecacbb6-6bb2-49cb-920a-1594f3034d76",
+                "title": "Color option",
+                "plugin": "color-option",
+                "selected": "color-3",
+                "description": "Choose from a predefined color swatch"
+              },
+              "popupBlocks": [],
+              "subscription": {
+                "_uid": "0ec052f5-e712-4120-8209-957be69eb95b",
+                "plugin": "autocomplete",
+                "selected": null
+              },
+              "promotionCode": "",
+              "subscriptionRedirect": {
+                "id": "",
+                "url": "",
+                "linktype": "story",
+                "fieldtype": "multilink",
+                "cached_url": ""
+              }
+            }
+          ],
+          "darkMode": false,
+          "component": "row-content",
+          "paddingBottom": "",
+          "backgroundColor": {
+            "_uid": "6a2cd3a4-2f00-430a-9c47-ba461cd90649",
+            "title": "Color option",
+            "plugin": "color-option",
+            "description": "Choose from a predefined color swatch"
+          }
+        }
+      ],
+      "ogImage": "",
+      "ogTitle": "",
+      "mainMenu": "",
+      "onlySvod": true,
+      "component": "filmoverview",
+      "footerMenu": "",
+      "buttonColor": {
+        "_uid": "4009b0fd-d399-4673-958c-8d73c96bf7ab",
+        "title": "Color option",
+        "plugin": "color-option",
+        "description": "Choose from a predefined color swatch"
+      },
+      "ogDescription": "",
+      "showSvodFilms": true,
+      "backgroundColor": {
+        "_uid": "8f6529a0-8b06-47d0-8bd7-4dc2f6e7cbe4",
+        "title": "Color option",
+        "plugin": "color-option",
+        "description": "Choose from a predefined color swatch"
+      }
+    },
+    "slug": "films-en-documentaires",
+    "full_slug": "films-en-documentaires",
+    "sort_by_date": null,
+    "position": 1400,
+    "tag_list": [],
+    "is_startpage": false,
+    "parent_id": 0,
+    "meta_data": null,
+    "group_id": "3d64bcf1-8199-4f5d-a4e1-9ff5233c56b2",
+    "first_published_at": "2019-02-22T14:46:22.000Z",
+    "release_id": "undefined",
+    "lang": "default",
+    "path": null,
+    "alternates": [],
+    "default_full_slug": null,
+    "translated_slugs": null
+  },
+  "cv": 1716979307,
+  "rels": [],
+  "links": []
+}

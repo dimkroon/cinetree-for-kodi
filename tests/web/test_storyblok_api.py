@@ -9,7 +9,7 @@
 from tests.support import fixtures
 fixtures.global_setup()
 
-from tests.support import object_checks
+from tests.support import object_checks, testutils
 
 import json
 import time
@@ -35,7 +35,7 @@ class StoriesListing(TestCase):
         all_stories  = []
 
         while page <= total_pages:
-            data, headers = storyblok._get_url('stories', params={'page': str(page), 'per_page': 100})
+            data, headers = storyblok.get_url('stories', params={'page': str(page), 'per_page': 100})
             total_pages = int(headers.get('total')) / 100
             stories = data.get('stories')
             all_stories.extend(stories)
@@ -62,13 +62,13 @@ class StoriesListing(TestCase):
         page 'huurfilms'
 
         """
-        data, _ = storyblok._get_url('stories/rentals/')
+        data, _ = storyblok.get_url('stories/rentals/')
         story = data['story']
         object_checks.check_rentals(story['content'])
 
     def test_get_all_collections(self):
-        data, _ = storyblok._get_url('stories',
-                                     params={'starts_with': 'collections/',
+        data, _ = storyblok.get_url('stories',
+                                    params={'starts_with': 'collections/',
                                              'page': 1,
                                              'per_page': 100,
                                              'version': 'published'})
@@ -76,7 +76,7 @@ class StoriesListing(TestCase):
         self.assertIsInstance(stories, list)
 
         # this does not return a list of collection, only some very uninteresting info about the collections page.
-        stories, _ = storyblok._get_url('stories/collections/')
+        stories, _ = storyblok.get_url('stories/collections/')
         self.assertNotIsInstance(stories, list)
 
     def test_get_all_films(self):
@@ -85,7 +85,7 @@ class StoriesListing(TestCase):
         stories = []
 
         while page <= total_pages:
-            data, headers = storyblok._get_url('stories', params={'starts_with': 'films/', 'page': str(page), 'per_page': 100})
+            data, headers = storyblok.get_url('stories', params={'starts_with': 'films/', 'page': str(page), 'per_page': 100})
             total_pages = int(headers.get('total')) / 100
             stories.extend(data.get('stories'))
             page += 1
@@ -96,18 +96,18 @@ class StoriesListing(TestCase):
             object_checks.check_film_data(story)
         # Save al stories locally
         # storymap = {story['uuid']: story for story in stories}
-        # with open(doc_path(st_blok/films.json'), 'w') as f:
+        # with open(testutils.doc_path('st_blok/films.json'), 'w') as f:
         #     json.dump(storymap, f, indent=4)
 
     def test_get_all_shorts(self):
-        data, _ = storyblok._get_url('stories', params={'starts_with': 'shorts/', 'page': 1, 'per_page': 100})
+        data, _ = storyblok.get_url('stories', params={'starts_with': 'shorts/', 'page': 1, 'per_page': 100})
         stories = data.get('stories')
         self.assertGreater(len(stories), 0)
         for story in stories:
             object_checks.check_film_data(story)
 
     def test_get_all_kids(self):
-        data, _ = storyblok._get_url('stories', params={'starts_with': 'kids/', 'page': 1, 'per_page': 100})
+        data, _ = storyblok.get_url('stories', params={'starts_with': 'kids/', 'page': 1, 'per_page': 100})
         stories = data.get('stories')
         self.assertGreater(len(stories), 0)
         for story in stories:

@@ -34,7 +34,7 @@ class TestClear(unittest.TestCase):
 class GetUrl(unittest.TestCase):
     @patch('resources.lib.storyblok.requests.get')
     def test_get_url(self, mocked_get):
-        storyblok._get_url("doc.js")
+        storyblok.get_url("doc.js")
         mocked_get.assert_called_once()
         url = mocked_get.call_args[0][0]
         self.assertTrue(url.startswith('https://api.storyblok.com') and url.endswith('doc.js'))
@@ -43,22 +43,22 @@ class GetUrl(unittest.TestCase):
     def test_get_url_with_params(self, mocked_get):
         """Test if the function adds its own parameters of the same type as the caller has passed."""
         # params as string
-        storyblok._get_url("doc.js", params="q=1")
+        storyblok.get_url("doc.js", params="q=1")
         params = mocked_get.call_args[1]['params']
         self.assertIsInstance(params, str)
         self.assertTrue('&token=' in params and '&version=' in params and 'q=1' in params)
         # params as dict
         mocked_get.reset_mock()
-        storyblok._get_url("doc.js", params={'q': 1})
+        storyblok.get_url("doc.js", params={'q': 1})
         params = mocked_get.call_args[1]['params']
         self.assertIsInstance(params, dict)
         has_keys(params, 'q', 'token', 'version')
         # invalid object as params
-        self.assertRaises(TypeError, storyblok._get_url, "doc.js", params=[('q', 1)])
+        self.assertRaises(TypeError, storyblok.get_url, "doc.js", params=[('q', 1)])
 
     @patch('resources.lib.storyblok.requests.get', return_value=HttpResponse(status_code=400))
     def test_get_url_runs_into_http_error(self, mocked_get):
-        self.assertRaises(exceptions.HTTPError, storyblok._get_url, "doc.js")
+        self.assertRaises(exceptions.HTTPError, storyblok.get_url, "doc.js")
         mocked_get.assert_called_once()
 
     @patch('resources.lib.storyblok.requests.get', return_value=HttpResponse(status_code=429))
@@ -66,19 +66,19 @@ class GetUrl(unittest.TestCase):
         """When the server returns HTTP status 429 (Too manyrequests) a retry is
         attempted after a delay of 1 sec.
         """
-        self.assertRaises(exceptions.HTTPError, storyblok._get_url, "doc.js")
+        self.assertRaises(exceptions.HTTPError, storyblok.get_url, "doc.js")
         self.assertEqual(2, mocked_get.call_count)
 
     @patch('resources.lib.storyblok.requests.get')
     def test_add_header(self, mocked_get):
         """Check that a header passed to function is added to the default headers"""
-        storyblok._get_url("doc.js", headers={'custom_type': 'custom_value'})
+        storyblok.get_url("doc.js", headers={'custom_type': 'custom_value'})
         has_keys(mocked_get.call_args[1]['headers'], 'Referer', 'Origin', 'Accept', 'custom_type')
 
     @patch('resources.lib.storyblok.requests.get')
     def test_replace_header(self, mocked_get):
         """Check that a header passed to the function replaces the default header"""
-        storyblok._get_url("doc.js", headers={'Accept': 'custom_value'})
+        storyblok.get_url("doc.js", headers={'Accept': 'custom_value'})
         has_keys(mocked_get.call_args[1]['headers'], 'Referer', 'Origin', 'Accept')
         self.assertEqual('custom_value', mocked_get.call_args[1]['headers']['Accept'])
 
@@ -120,7 +120,7 @@ class GetUrlPage(unittest.TestCase):
 
 
 class StoryByName(unittest.TestCase):
-    @patch('resources.lib.storyblok._get_url', return_value=(open_json('st_blok/films-druk.json'), None))
+    @patch('resources.lib.storyblok.get_url', return_value=(open_json('st_blok/films-druk.json'), None))
     def test_story_by_name(self, _):
         data = storyblok.story_by_name('sldkjfv')
         self.assertEqual('Druk', data['name'])

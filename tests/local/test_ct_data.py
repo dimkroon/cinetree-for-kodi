@@ -88,22 +88,6 @@ class GetFilmsList(TestCase):
         films = ct_data.create_films_list(sb_films, 'storyblok')
         self.assertEqual(len(films), 4)
 
-    def test_create_film_list_suggested(self):
-        data = open_jsonp('films_en_docus-payload.js')
-        films = ct_data.create_films_list(data, 'recommended')
-        self.assertLessEqual(len(films), 4)
-        for item in films:
-            # check if a Listitem can be created
-            Listitem.from_dict(MagicMock(), **item)
-
-    def test_create_film_list_subscription(self):
-        data = open_jsonp('films_en_docus-payload.js')
-        films = ct_data.create_films_list(data, 'subscription')
-        self.assertGreater(len(films), 10)
-        for item in films:
-            # check if a Listitem can be created
-            Listitem.from_dict(MagicMock(), **item)
-
     def test_create_film_list_collection_drama(self):
         data = open_jsonp('collecties-drama-payload.js')
         films = ct_data.create_films_list(data)
@@ -202,6 +186,19 @@ class SelectTrailerUrl(TestCase):
         trailer = ct_data._select_trailer_url(film_data, True)
         self.assertEqual(self.expect_vimeo, trailer)
 
+    def test_whitspace_in_url(self):
+        film_data = {'trailerVimeoURL': ' ' + self.vimeo_url}
+        trailer = ct_data._select_trailer_url(film_data, True)
+        self.assertEqual(self.expect_vimeo, trailer)
+
+        film_data = {'trailerVimeoURL': self.vimeo_url + ' '}
+        trailer = ct_data._select_trailer_url(film_data, True)
+        self.assertEqual(self.expect_vimeo, trailer)
+
+        film_data = {'originalTrailerURL': ' ' + self.orig_url + ' '}
+        trailer = ct_data._select_trailer_url(film_data, True)
+        self.assertEqual(self.expect_youtube, trailer)
+
     def test_prefer_original_but_originalTrailer_selected_is_None(self):
         # noinspection PyTypedDict
         self.film_data['originalTrailer']['selected'] = None
@@ -229,7 +226,7 @@ class SelectTrailerUrl(TestCase):
         self.assertEqual('', ct_data._select_trailer_url(film_data, False))
 
     def test_invalid_trailer_data(self):
-        """The function should fial silently and just return an empty string
+        """The function should fail silently and just return an empty string
         """
         # First ensure the original trailer is returned on valid data
         self.assertEqual(self.expect_cinetree, ct_data._select_trailer_url(self.film_data, True))

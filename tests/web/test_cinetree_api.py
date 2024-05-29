@@ -1,5 +1,3 @@
-
-
 # ------------------------------------------------------------------------------
 #  Copyright (c) 2022 Dimitri Kroon
 #
@@ -7,11 +5,11 @@
 #  This file is part of plugin.video.cinetree
 # ------------------------------------------------------------------------------
 
-import requests
-import unittest
-
 from tests.support import fixtures
 fixtures.global_setup()
+
+import requests
+import unittest
 
 from tests.support import testutils, object_checks
 
@@ -46,6 +44,25 @@ class Login(unittest.TestCase):
         self.assertEqual('Invalid password', resp_data['message'] )
 
 
+class SubscriptionFilms(unittest.TestCase):
+    def test_get_list_hero_film_ids(self):
+        """Return a list of uuid of the hero items on the subscription page."""
+        resp = ct_api.get_recommended()
+        self.assertIsInstance(resp, list)
+        self.assertEqual(3, len(resp))
+        for item in resp:
+            self.assertTrue(testutils.is_uuid(item))
+
+    def test_get_list_of_subscription_film_ids(self):
+        """This endpoint returns just a list of ID's of the current subscription films"""
+        resp = ct_api.get_subscription_films()
+        testutils.save_json(resp, 'films-svod.json')
+        self.assertIsInstance(resp, list)
+        self.assertAlmostEqual(20, len(resp), delta=3)
+        for item in resp:
+            self.assertTrue(testutils.is_uuid(item))
+
+
 # noinspection PyMethodMayBeStatic
 class Films(unittest.TestCase):
     """Get main huurfilms payload.js"""
@@ -72,8 +89,8 @@ class GetStreamsOfFilm(unittest.TestCase):
 
     """
     def test_stream_info_from_free_film(self):
-        """Request ino of free film 'For Sama'."""
-        url ='https://api.cinetree.nl/films/8b9d9b9d-0865-4b44-bfcf-529fadff0efe'
+        """Request info of free film 'Well Fed'."""
+        url ='https://api.cinetree.nl/films/63c77a7f-c84b-4143-9cda-68a99c042fe9'
         resp = fetch.fetch_authenticated(fetch.get_json, url)
         object_checks.check_stream_info(resp)
         # optionally store the content for use in local tests
