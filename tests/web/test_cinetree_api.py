@@ -72,8 +72,8 @@ class GetStreamsOfFilm(unittest.TestCase):
 
     """
     def test_stream_info_from_free_film(self):
-        """Request ino of free film 'For Sama'."""
-        url ='https://api.cinetree.nl/films/8b9d9b9d-0865-4b44-bfcf-529fadff0efe'
+        """Request info of free film 'Well Fed'."""
+        url ='https://api.cinetree.nl/films/63c77a7f-c84b-4143-9cda-68a99c042fe9'
         resp = fetch.fetch_authenticated(fetch.get_json, url)
         object_checks.check_stream_info(resp)
         # optionally store the content for use in local tests

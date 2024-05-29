@@ -31,12 +31,12 @@ class MainTest(unittest.TestCase):
             self.assertIsInstance(item, Listitem)
 
     def test_mijn_films(self):
-        items = list(main.list_my_films(MagicMock()))
+        items = list(main.list_my_films.test())
         for item in items:
             self.assertIsInstance(item, Listitem)
         self.assertGreater(len(items), 1)
 
-        items = list(main.list_my_films(MagicMock(), 'finished'))
+        items = list(main.list_my_films.test('finished'))
         for item in items:
             if item is False:
                 # If there are no items the list should contain one single False
@@ -44,7 +44,7 @@ class MainTest(unittest.TestCase):
             else:
                 self.assertIsInstance(item, (Listitem, type(False)))
 
-        items = list(main.list_my_films(MagicMock(), 'purchased'))
+        items = list(main.list_my_films.test('purchased'))
         for item in items:
             if item is False:
                 # If there are no items the list should contain one single False
@@ -59,8 +59,14 @@ class MainTest(unittest.TestCase):
             self.assertIsInstance(item, Listitem)
 
     def test_list_rental_collections(self):
-        items = list(main.list_rental_collections(MagicMock()))
-        self.assertAlmostEqual(10, len(items), delta=2)
+        items = list(main.list_rental_collections.test())
+        self.assertAlmostEqual(6, len(items), delta=2)
+        for item in items:
+            self.assertIsInstance(item, Listitem)
+
+    def test_list_all_collections(self):
+        items = list(main.list_all_collections.test())
+        self.assertAlmostEqual(25, len(items), delta=5)
         for item in items:
             self.assertIsInstance(item, Listitem)
 
@@ -73,8 +79,8 @@ class MainTest(unittest.TestCase):
         self.assertIsInstance(result, type(False))
 
     def test_play_film_from_uuid(self):
-        # Using uuid of gratis film 'Woman at war', so it can be played with every type of account.
-        playitem = main.play_film(MagicMock(), '', 'aa97748e-1981-4f34-80fe-5846756908fa', None)
+        # Using uuid of gratis film 'Well Fed', so it can be played with every type of account.
+        playitem = main.play_film(MagicMock(), '', '63c77a7f-c84b-4143-9cda-68a99c042fe9', None)
         self.assertIsInstance(playitem, xbmcgui.ListItem)
 
     def test_list_genre_drama(self):
