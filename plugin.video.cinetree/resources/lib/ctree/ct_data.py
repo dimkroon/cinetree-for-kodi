@@ -301,21 +301,7 @@ def create_films_list(data, list_type='generic'):
             if 'shorts' in content.keys():
                 films_list.extend(content['shorts'])
         else:
-            # A data-dict from films-en-documentaires provides two films lists
-            # One list of recommended film which has only a few items, another with the full
-            # list of films available in the monthly subscription.
-            film_items = sorted((v['films'] for k, v in data['fetch'].items() if k.startswith('data-')), key=len)
-
-            if list_type == 'subscription':
-                films_list = film_items[1]
-            elif list_type == 'recommended':
-                # As the recommended items do not have all info we need, select the recommended films from the full list
-                # noinspection PyTypeChecker
-                recommended = tuple(film['full_slug'] for film in film_items[0])
-                # noinspection PyTypeChecker
-                films_list = (film for film in film_items[1] if film['full_slug'] in recommended)
-            else:
-                raise ValueError("Invalid value '{}' for parameter 'list_type'".format(list_type))
+            raise ValueError("Invalid value '{}' for parameter 'list_type'".format(list_type))
     except KeyError:
         raise ValueError("Invalid value of param data")
 
