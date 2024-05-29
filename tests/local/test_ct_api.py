@@ -77,16 +77,16 @@ class CreateStreamInfoUrl(TestCase):
         url = ct_api.create_stream_info_url('123-abc')
         self.assertEqual('https://api.cinetree.nl/films/123-abc', url)
 
-    @patch("resources.lib.storyblok._get_url", return_value=(open_json('st_blok/films-druk.json'), None))
+    @patch("resources.lib.storyblok.get_url", return_value=(open_json('st_blok/films-druk.json'), None))
     def test_create_stream_info_url_from_slug(self, _):
         url = ct_api.create_stream_info_url(None, 'films/druk')
         self.assertEqual('https://api.cinetree.nl/films/' + 'f0770c12-6cb4-4b7e-b977-8385aa3d71bf', url)
 
-    @patch("resources.lib.storyblok._get_url", side_effect=errors.HttpError(404, 'Not Found'))
+    @patch("resources.lib.storyblok.get_url", side_effect=errors.HttpError(404, 'Not Found'))
     def test_create_stream_info_url_from_slug_with_web_error(self, _):
         self.assertRaises(errors.FetchError, ct_api.create_stream_info_url, None, 'films/films_el-sicatio_room_164')
 
-    @patch("resources.lib.storyblok._get_url", return_value=(open_doc('manifest.js'), None))
+    @patch("resources.lib.storyblok.get_url", return_value=(open_doc('manifest.js'), None))
     def test_create_stream_info_url_from_slug_with_invalid_document(self, _):
         self.assertRaises(errors.FetchError, ct_api.create_stream_info_url, None, 'films/films_el-sicatio_room_164')
 
