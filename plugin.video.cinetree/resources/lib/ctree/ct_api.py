@@ -157,7 +157,9 @@ def get_watched_films(finished=False):
 
     for film in my_films:
         duration = utils.duration_2_seconds(film['content'].get('duration', 0))
-        if duration - history[film['uuid']]['playtime'] < max(20, duration * 0.02):
+        # Duration seems to be rounded up to whole minutes, so actual playing time could
+        # still differ by 60 seconds when the video has been fully watched.
+        if duration - history[film['uuid']]['playtime'] < max(60, duration * 0.02):
             finished_films.append(film)
         else:
             watched_films.append(film)
