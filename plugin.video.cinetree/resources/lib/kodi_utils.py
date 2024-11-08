@@ -24,7 +24,7 @@ TXT_LOG_TARGETS = 30112
 TXT_CINETREE_ACCOUNT = 30200
 
 TXT_RENTAL_FILM = 30601
-MSG_PAY_INFO = 30602
+MSG_CREDITS_LOW = 30602
 TXT_MORE_INFO = 30604
 MSG_MORE_PAYMENT_INFO = 30605
 TXT_ACCOUNT_ERROR = 30610
@@ -40,6 +40,10 @@ TXT_TRY_AGAIN = 30618
 TXT_RESUME_FROM = 30619
 TXT_PLAY_FROM_START = 30620
 TXT_LOGIN_NOW = 30621
+
+TXT_RENT_NOW = 30622
+MSG_RENT_NOW_CONFIRM = 30623
+TXT_PAY = 30624
 
 BTN_TXT_OK = 30790
 BTN_TXT_CANCEL = 30791
@@ -168,7 +172,7 @@ def ask_login_retry(reason):
             yeslabel=Script.localize(BTN_TXT_OK))
 
 
-def show_rental_msg(title=None, price=None):
+def show_low_credit_msg(price, credits):
     """Show a message with info regarding rental films
 
     Note that the NO-button acts as an OK button.
@@ -178,7 +182,7 @@ def show_rental_msg(title=None, price=None):
     dlg = xbmcgui.Dialog()
     result = dlg.yesno(
             dlg_title,
-            Script.localize(MSG_PAY_INFO),
+            Script.localize(MSG_CREDITS_LOW).format(credit=credits, amount=price),
             nolabel=Script.localize(BTN_TXT_OK),
             yeslabel=Script.localize(TXT_MORE_INFO),
             autoclose=15000)
@@ -216,3 +220,25 @@ def ask_log_handler(default):
     except IndexError:
         # default value is not necessarily a valid index.
         return result, ''
+
+
+def confirm_rent_from_credit(title, price, credit):
+    msg_txt = Script.localize(MSG_RENT_NOW_CONFIRM).format(title, price, credit)
+    dlg = xbmcgui.Dialog()
+    result = dlg.yesno(Script.localize(TXT_RENT_NOW),
+                       msg_txt,
+                       Script.localize(BTN_TXT_CANCEL),
+                       Script.localize(TXT_PAY))
+    if not result:
+        ok_dialog(TXT_MORE_INFO)
+    return result
+
+
+def ok_dialog(msg, heading=None):
+    if heading is None:
+        heading  = 'Cinetree'
+    elif isinstance(heading, int):
+        heading = Script.localize(heading)
+    if isinstance(msg, int):
+        msg = Script.localize(msg)
+    xbmcgui.Dialog().ok(heading, msg)

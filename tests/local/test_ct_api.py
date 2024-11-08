@@ -14,7 +14,7 @@ from unittest.mock import patch
 from tests.support import fixtures
 fixtures.global_setup()
 
-from tests.support.testutils import open_jsonp, open_doc, open_json
+from tests.support.testutils import open_jsonp, open_doc, open_json, HttpResponse
 from tests.support.object_checks import check_collection
 
 from resources.lib.ctree import ct_api
@@ -143,3 +143,22 @@ class Gen(TestCase):
         with patch('resources.lib.fetch.fetch_authenticated', side_effect=errors.FetchError):
             # Fails silently on errors
             ct_api.set_resume_time('13456', 128.123456789)
+
+    @patch('resources.lib.fetch.fetch_authenticated', return_value=open_json('payment_info.json'))
+    def test_get_payment_info(self, _):
+        amount, transaction_id = ct_api.get_payment_info('some-film-uuid')
+        self.assertIsInstance(amount, float)
+        self.assertIsInstance(transaction_id, str)
+
+    @patch('resources.lib.fetch.fetch_authenticated', return_value=open_json('me.json'))
+    def test_get_credit_amount(self, _):
+        cur_credits = ct_api.get_ct_credits()
+        self.assertEqual(cur_credits, 6.51)
+
+    def test_pay_film(self):
+        with patch('resources.lib.fetch.fetch_authenticated', return_value=HttpResponse(200)):
+            result = ct_api.pay_film('my-film-uuid', 'film-title', 'ddskfkj6593498u', 3.49)
+            self.assertIs(result, True)
+        with patch('resources.lib.fetch.fetch_authenticated', return_value=HttpResponse(400)):
+            result = ct_api.pay_film('my-film-uuid', 'film-title', 'ddskfkj6593498u', 3.49)
+            self.assertIs(result, False)
