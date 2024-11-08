@@ -49,12 +49,12 @@ class TestKodiUtils(unittest.TestCase):
             self.assertFalse(kodi_utils.ask_login_retry('Invalid password'))
 
     @patch('xbmcgui.Dialog.textviewer')
-    def test_show_rental_msg(self, p_viewer):
+    def test_show_low_credits_msg(self, p_viewer):
         with patch('xbmcgui.Dialog.yesno', return_value=False):
-            self.assertIsNone(kodi_utils.show_rental_msg())
+            self.assertIsNone(kodi_utils.show_low_credit_msg(0.0, 3.25))
             p_viewer.asser_not_called()
         with patch('xbmcgui.Dialog.yesno', return_value=True):
-            self.assertIsNone(kodi_utils.show_rental_msg())
+            self.assertIsNone(kodi_utils.show_low_credit_msg(0, 3.25))
             p_viewer.asser_called_once()
 
     @patch('xbmcgui.Dialog.contextmenu')
@@ -78,3 +78,15 @@ class TestKodiUtils(unittest.TestCase):
             result, name = kodi_utils.ask_log_handler(5)
             self.assertEqual(5, result)
             self.assertEqual('', name)
+
+    @patch('xbmcgui.Dialog.ok')
+    def test_confirm_rent_from_credit(self, p_dlg_ok):
+        with patch('xbmcgui.Dialog.yesno', return_value=True):
+            result = kodi_utils.confirm_rent_from_credit('some film', 2.49, 10.0)
+            self.assertIs(result, True)
+            p_dlg_ok.assert_not_called()
+
+        with patch('xbmcgui.Dialog.yesno', return_value=False):
+            result = kodi_utils.confirm_rent_from_credit('some film', 2.49, 10.0)
+            self.assertIs(result, False)
+            p_dlg_ok.assert_called_once()

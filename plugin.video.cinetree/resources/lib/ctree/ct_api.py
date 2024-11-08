@@ -249,3 +249,60 @@ def set_resume_time(watch_history_id: str, play_time: float):
         logger.warning('Failed to report resume time to Cinetree: %r', e)
         return
     logger.debug("Playtime %s reported to Cinetree", play_time)
+
+
+def get_payment_info(film_uid: str):
+    """Return a tuple of the transaction id and amount to be paid to
+    rent a film.
+
+    """
+    url = 'https://api.cinetree.nl/payments/info/rental/' + film_uid
+    payment_data = fetch.fetch_authenticated(fetch.post_json, url, data=None)
+    return float(payment_data['amount']), payment_data['transaction']
+
+
+def get_ct_credits():
+    """Return the current amount of available cinetree credits
+
+    """
+    my_data = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/me')
+    return float(my_data['credit'])
+
+
+def pay_film(film_uid, film_title, transaction_id, price):
+    payment_data = {
+        'context': {
+            'trackEvents': [
+                {
+                    'event': 'purchase',
+                    'params': {
+                        'ecommerce': {
+                            'currency': 'EUR',
+                            'items': [
+                                {
+                                    'item_category': 'TVOD',
+                                    'item_id': film_uid,
+                                    'item_name': film_title,
+                                    'price': price,
+                                    'quantity': 1
+                                }
+                            ],
+                            'tax': price - price / 1.21,
+                            'transaction_id': transaction_id,
+                            'value': price
+                        }
+                    }
+                }
+            ]
+        },
+        'transaction': transaction_id
+    }
+    resp = fetch.fetch_authenticated(
+        fetch.web_request,
+        'https://api.cinetree.nl/payments/credit',
+        method='get',
+        headers={'Accept': 'application/json, text/plain, */*'},
+        data=payment_data
+    )
+    # On success cinetree returns 200 OK without content.
+    return resp.status_code == 200
