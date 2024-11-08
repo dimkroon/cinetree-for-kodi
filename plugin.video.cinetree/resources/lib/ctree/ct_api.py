@@ -269,40 +269,49 @@ def get_ct_credits():
     return float(my_data['credit'])
 
 
+# noinspection PyBroadException
 def pay_film(film_uid, film_title, transaction_id, price):
-    payment_data = {
-        'context': {
-            'trackEvents': [
-                {
-                    'event': 'purchase',
-                    'params': {
-                        'ecommerce': {
-                            'currency': 'EUR',
-                            'items': [
-                                {
-                                    'item_category': 'TVOD',
-                                    'item_id': film_uid,
-                                    'item_name': film_title,
-                                    'price': price,
-                                    'quantity': 1
-                                }
-                            ],
-                            'tax': price - price / 1.21,
-                            'transaction_id': transaction_id,
-                            'value': price
+    try:
+        payment_data = {
+            'context': {
+                'trackEvents': [
+                    {
+                        'event': 'purchase',
+                        'params': {
+                            'ecommerce': {
+                                'currency': 'EUR',
+                                'items': [
+                                    {
+                                        'item_category': 'TVOD',
+                                        'item_id': film_uid,
+                                        'item_name': film_title,
+                                        'price': price,
+                                        'quantity': 1
+                                    }
+                                ],
+                                'tax': price - price / 1.21,
+                                'transaction_id': transaction_id,
+                                'value': price
+                            }
                         }
                     }
-                }
-            ]
-        },
-        'transaction': transaction_id
-    }
-    resp = fetch.fetch_authenticated(
-        fetch.web_request,
-        'https://api.cinetree.nl/payments/credit',
-        method='get',
-        headers={'Accept': 'application/json, text/plain, */*'},
-        data=payment_data
-    )
-    # On success cinetree returns 200 OK without content.
-    return resp.status_code == 200
+                ]
+            },
+            'transaction': transaction_id
+        }
+        resp = fetch.fetch_authenticated(
+            fetch.web_request,
+            'https://api.cinetree.nl/payments/credit',
+            method='get',
+            headers={'Accept': 'application/json, text/plain, */*'},
+            data=payment_data
+        )
+        content = resp.content.decode('utf8')
+        if content:
+            logger.warning("pay_film - Unexpected response content: '%s'", content)
+        # On success cinetree returns 200 OK without content.
+        return resp.status_code == 200
+    except:
+        logger.error("[ct_api.pay_film] paying failed: film_uid=%s, film_title=%s, trans_id=%s, price=%s\n",
+                     film_uid, film_title, transaction_id, price, exc_info=True)
+        return False
