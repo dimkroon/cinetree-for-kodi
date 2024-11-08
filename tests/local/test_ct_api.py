@@ -1,18 +1,18 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
+
+from tests.support import fixtures
+fixtures.global_setup()
 
 import os.path
 
 from unittest import TestCase
 from unittest.mock import patch
-
-from tests.support import fixtures
-fixtures.global_setup()
 
 from tests.support.testutils import open_jsonp, open_doc, open_json, HttpResponse
 from tests.support.object_checks import check_collection
@@ -156,9 +156,15 @@ class Gen(TestCase):
         self.assertEqual(cur_credits, 6.51)
 
     def test_pay_film(self):
-        with patch('resources.lib.fetch.fetch_authenticated', return_value=HttpResponse(200)):
+        with patch('resources.lib.fetch.fetch_authenticated', return_value=HttpResponse(content=b'')):
             result = ct_api.pay_film('my-film-uuid', 'film-title', 'ddskfkj6593498u', 3.49)
             self.assertIs(result, True)
-        with patch('resources.lib.fetch.fetch_authenticated', return_value=HttpResponse(400)):
+        with patch('resources.lib.fetch.fetch_authenticated', return_value=HttpResponse(content=b'some text')):
+            result = ct_api.pay_film('my-film-uuid', 'film-title', 'ddskfkj6593498u', 3.49)
+            self.assertIs(result, True)
+        with patch('resources.lib.fetch.fetch_authenticated', return_value=HttpResponse(400, content=b'')):
+            result = ct_api.pay_film('my-film-uuid', 'film-title', 'ddskfkj6593498u', 3.49)
+            self.assertIs(result, False)
+        with patch('resources.lib.fetch.fetch_authenticated', side_effect=errors.HttpError):
             result = ct_api.pay_film('my-film-uuid', 'film-title', 'ddskfkj6593498u', 3.49)
             self.assertIs(result, False)
