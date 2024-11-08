@@ -94,20 +94,23 @@ class HttpResponse(Response):
 
 
 def get_sb_film(uuid=None, genre=None, page=None, items_per_page=None):
-    """Return a list of films from a stored dump of storyblok films
+    """Return a list of films from a stored dump of storyblok films and shorts
 
     :param uuid: a single uuid as string or an iterable of uuids
     :param genre: a case-insensitive string of genre
 
     """
     films = open_json('st_blok/films.json')
+    shorts = open_json('st_blok/shorts.json')
+    films.update(shorts)
 
     if uuid:
         if isinstance(uuid, str):
             film = films.get(uuid)
             result = [film] if film else []
         else:
-            result = [v for k,v in films.items() if k in uuid]
+            uuid_list = list(uuid)
+            result = [v for k,v in films.items() if k in uuid_list]
     elif genre:
         genre = genre.lower()
         result = [v for v in films.values() if genre in v['content'].get('genre', '').lower()]

@@ -96,8 +96,7 @@ class StoriesListing(TestCase):
             object_checks.check_film_data(story)
         # Save al stories locally
         # storymap = {story['uuid']: story for story in stories}
-        # with open(testutils.doc_path('st_blok/films.json'), 'w') as f:
-        #     json.dump(storymap, f, indent=4)
+        # testutils.save_json(storymap, 'st_blok/films.json')
 
     def test_get_all_shorts(self):
         data, _ = storyblok.get_url('stories', params={'starts_with': 'shorts/', 'page': 1, 'per_page': 100})
@@ -105,6 +104,9 @@ class StoriesListing(TestCase):
         self.assertGreater(len(stories), 0)
         for story in stories:
             object_checks.check_film_data(story)
+        # Save al shorts locally
+        # storymap = {story['uuid']: story for story in stories}
+        # testutils.save_json(storymap, 'st_blok/shorts.json')
 
     def test_get_all_kids(self):
         data, _ = storyblok.get_url('stories', params={'starts_with': 'kids/', 'page': 1, 'per_page': 100})

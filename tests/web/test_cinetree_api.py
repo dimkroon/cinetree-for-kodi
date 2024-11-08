@@ -94,8 +94,7 @@ class GetStreamsOfFilm(unittest.TestCase):
         resp = fetch.fetch_authenticated(fetch.get_json, url)
         object_checks.check_stream_info(resp)
         # optionally store the content for use in local tests
-        # with open('../test_docs/stream_info.json', 'w') as f:
-        #     json.dump(resp, f)
+        # testutils.save_json(resp, 'stream_info.json')
 
     def test_stream_info_without_subscription(self):
         # Ensure to select a currently available film from the subscription
