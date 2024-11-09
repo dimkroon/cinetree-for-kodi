@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 import logging
@@ -148,21 +148,30 @@ def get_watched_films(finished=False):
 
     """
     # Request the list of 'my films' and use only those that have only partly been played.
-    resp = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/watch-history')
-    history = {film['assetId']: film for film in resp if 'playtime' in film.keys()}
-    my_films, _ = storyblok.stories_by_uuids(history.keys())
+    history = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/watch-history')
+    # history = {film['assetId']: film for film in history if 'playtime' in film.keys()}
+    sb_films, _ = storyblok.stories_by_uuids(film['assetId'] for film in history)
+    sb_films = {film['uuid']: film for film in sb_films}
 
     finished_films = []
     watched_films = []
 
-    for film in my_films:
-        duration = utils.duration_2_seconds(film['content'].get('duration', 0))
-        # Duration seems to be rounded up to whole minutes, so actual playing time could
-        # still differ by 60 seconds when the video has been fully watched.
-        if duration - history[film['uuid']]['playtime'] < max(60, duration * 0.02):
-            finished_films.append(film)
-        else:
-            watched_films.append(film)
+    for item in history:
+        try:
+            film = sb_films[item['assetId']]
+            duration = utils.duration_2_seconds(film['content'].get('duration', 0))
+            playtime = item['playtime']
+            # Duration seems to be rounded up to whole minutes, so actual playing time could
+            # still differ by 60 seconds when the video has been fully watched.
+            if duration - playtime < max(60, duration * 0.02):
+                finished_films.append(film)
+            else:
+                watched_films.append(film)
+        except KeyError:
+            # Field playtime may be absent. These items are also disregarded by a regular web browser.
+            # And defend against the odd occurrence that a watched film is no longer in the storyblok database.
+            logger.debug('Error ct_api.get_watched_films:\n', exc_info=True)
+            continue
     return finished_films if finished else watched_films
 
 
