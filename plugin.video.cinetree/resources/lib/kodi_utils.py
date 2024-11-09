@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 import logging
@@ -76,6 +76,9 @@ class PlayTimeMonitor(Player):
         except:
             logger.warning("PlayTimeMonitor.onAVStarted: failed to get Time.", exc_info=True)
         self.is_playing = True
+
+    def onPlayBackSeek(self, time: int, seekOffset: int) -> None:
+        self._playtime = min(time / 1000, self.total_time)
 
     def wait_until_playing(self, timeout) -> bool:
         """Wait and return `True` when the player has started playing.
