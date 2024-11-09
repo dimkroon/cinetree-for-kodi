@@ -17,6 +17,7 @@ from resources.lib import errors
 from resources.lib import utils
 from resources.lib.ctree.ct_data import create_collection_item
 from resources.lib import storyblok
+from resources.lib.constants import FULLY_WATCHED_PERCENTAGE
 
 
 STRM_INFO_UNAVAILABLE = 30921
@@ -163,7 +164,7 @@ def get_watched_films(finished=False):
             playtime = item['playtime']
             # Duration seems to be rounded up to whole minutes, so actual playing time could
             # still differ by 60 seconds when the video has been fully watched.
-            if duration - playtime < max(60, duration * 0.02):
+            if duration - playtime < max(60, duration * (1-FULLY_WATCHED_PERCENTAGE)):
                 finished_films.append(film)
             else:
                 watched_films.append(film)

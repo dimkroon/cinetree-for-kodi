@@ -1,6 +1,6 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2023 Dimitri Kroon.
+#  Copyright (c) 2022-2024 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -58,6 +58,10 @@ class GetFilmUrls(TestCase):
     def test_get_urls_by_uuid(self):
         # To view films from the selected list, which have uuid
         url = ct_api.create_stream_info_url('c1321650-7394-4106-952d-e38872ab5f47', None)
+        stream_info = ct_api.get_stream_info(url)
+        check_stream_info(stream_info)
+        # Morgen gaat het beter
+        url = ct_api.create_stream_info_url('c1e7f9fd-43fa-41e7-ab54-a8f1bcda1e8f', None)
         stream_info = ct_api.get_stream_info(url)
         check_stream_info(stream_info)
 

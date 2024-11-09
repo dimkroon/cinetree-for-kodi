@@ -28,7 +28,7 @@ def has_keys(dict_obj, *keys, obj_name='dictionary'):
 
 def check_stream_info(strm_inf, additional_keys=None):
     """Check the structure of a dictionary containing urls to playlist and subtitles, etc."""
-    mandatory_keys = {'watchHistoryId', 'url', 'subtitles', 'type'}
+    mandatory_keys = {'watchHistoryId', 'url', 'subtitles', 'type', 'duration'}
     if additional_keys:
         mandatory_keys.update(additional_keys)
     has_keys(strm_inf, *mandatory_keys)
@@ -46,7 +46,8 @@ def check_stream_info(strm_inf, additional_keys=None):
             "Not a valid subtitle url: <{}>".format(strm_inf['url'])
         assert strm_inf['subtitles']['nl'].endswith('.vtt'), \
             "Expected .vtt subtitle format, but found '{}'".format(strm_inf['subtitles']['nl'])
-
+    duration = strm_inf['duration']
+    assert(isinstance(duration, float) and duration > 0)
 
 def check_film_data(film_info, additional_content_keys=None):
     """Check that a film info object retrieved from the web meets expectations"""
