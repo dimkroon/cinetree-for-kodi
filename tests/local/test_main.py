@@ -37,14 +37,21 @@ class MainTest(unittest.TestCase):
     @patch('resources.lib.fetch.fetch_authenticated', return_value=open_json('watch-history.json'))
     @patch('resources.lib.storyblok.stories_by_uuids', new=get_sb_film)
     def test_mijn_films(self, _):
-        items = list(main.list_my_films(MagicMock()))
+        items = list(main.list_my_films.test())
+        self.assertGreater(len(items), 5)
         for item in items:
             self.assertIsInstance(item, Listitem)
+            if items.index(item) > 1:           # the first 2 items are folders
+                self.assertEqual(1, len(item.context))
         self.assertGreater(len(items), 1)
-        items = list(main.list_my_films(MagicMock(), 'finished'))
+
+        items = list(main.list_my_films.test('finished'))
         for item in items:
             self.assertIsInstance(item, (Listitem, type(False)))
-        items = list(main.list_my_films(MagicMock(), 'purchased'))
+            if items.index(item) > 1:  # the first 2 items are folders
+                self.assertEqual(1, len(item.context))
+
+        items = list(main.list_my_films.test('purchased'))
         for item in items:
             self.assertIsInstance(item, (Listitem, type(False)))
 
@@ -112,6 +119,14 @@ class MainTest(unittest.TestCase):
     def test_list_film_by_genre(self, _):
         items = list(main.list_films_by_genre(MagicMock(), genre='drama'))
         self.assertLessEqual(len(items), 51)
+
+    @patch('resources.lib.fetch.web_request')
+    def test_remove_from_list(self, p_web_request):
+        uuid = 'my-film-uuid'
+        main.remove_from_list.test(uuid)
+        call_kwargs = p_web_request.call_args.kwargs
+        self.assertTrue(call_kwargs['url'].endswith(uuid))
+        self.assertEqual(call_kwargs['method'].lower(), 'delete')
 
     @patch('resources.lib.ctree.ct_api.set_resume_time')
     def test_monitor_progress(self, p_set_resume_time):

@@ -176,6 +176,19 @@ def get_watched_films(finished=False):
     return finished_films if finished else watched_films
 
 
+def remove_watched_film(film_uuid):
+    """Remove a film from the watched list.
+
+    It seems that after removing a film will not be added when watched again.
+    At the time of testing every request, either with existing, or non-existing
+    UUID, return without error.
+    """
+    resp = fetch.fetch_authenticated(fetch.web_request,
+                                     method='delete',
+                                     url='https://api.cinetree.nl/watch-history/by-asset/' + film_uuid)
+    return resp.status_code == 200
+
+
 def get_rented_films():
     resp = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/purchased')
     # contrary to watched, this returns a plain list of uuids

@@ -241,6 +241,12 @@ msgctxt "#30809"
 msgid "Rented"
 msgstr ""
 
+# Context Menu
+msgctxt "#30859"
+msgid "Remove from list"
+msgstr ""
+
+
 # Error texts
 msgctxt "#30901"
 msgid "Access not allowed."
