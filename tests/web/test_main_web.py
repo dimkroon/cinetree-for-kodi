@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
@@ -92,5 +92,11 @@ class MainTest(unittest.TestCase):
     def test_list_genre_drama(self):
         """As there are a lot of film in genre drama, only the maximum of 50 per page ar returned."""
         items = list(main.list_films_by_genre(MagicMock(), genre='drama'))
+        self.assertAlmostEqual(51, len(items), delta=10)       # some films can be filtered out on expired endDate
+        self.assertLessEqual(len(items), 51)
+
+    def test_list_genre_documentaries(self):
+        """As there are a lot of film in genre drama, only the maximum of 50 per page ar returned."""
+        items = list(main.list_films_by_genre.test(genre='documentary'))
         self.assertAlmostEqual(51, len(items), delta=10)       # some films can be filtered out on expired endDate
         self.assertLessEqual(len(items), 51)
