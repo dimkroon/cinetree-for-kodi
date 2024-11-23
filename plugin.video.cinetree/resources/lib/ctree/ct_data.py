@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2023 Dimitri Kroon.
+#  Copyright (c) 2022-2024 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -21,12 +21,14 @@ from resources.lib.utils import replace_markdown, remove_markdown
 
 MSG_ONLY_TODAY = 30501
 MSG_DAYS_AVAILABLE = 30502
+TXT_FOR_MEMBERS = Script.localize(30503)
+TXT_SUBCRIPTION_FILM = ''.join(('\n\n[COLOR yellow]', Script.localize(30513), '[/COLOR]'))
 
 logger = logging.getLogger('.'.join((logger_id, __name__)))
 tz_ams = pytz.timezone('Europe/Amsterdam')
 
 
-def create_film_item(film_info):
+def create_film_item(film_info, add_price=True):
     """From data provided in *film_info* create a dict with info of that film in a format suitable
     for use in codequick.ListItem.from_dict().
 
@@ -42,23 +44,31 @@ def create_film_item(film_info):
         prefer_originals = Script.setting.get_boolean('original-trailers')
         trailer_url = _select_trailer_url(data, prefer_originals)
         title = data.get('title')
+        price_info = ''
 
         try:
             subscr_end_date = datetime(*(time.strptime(data['svodEndDate'], "%Y-%m-%d %H:%M")[:6]))
-            subscr_end_date = tz_ams.localize(subscr_end_date).astimezone(pytz.utc).replace(tzinfo=None)
-            days_dif = (subscr_end_date - datetime.utcnow()) / timedelta(days=1)
+            subscr_end_date = tz_ams.localize(subscr_end_date).astimezone(pytz.utc)
+            days_dif = (subscr_end_date - datetime.now(tz=pytz.utc)) / timedelta(days=1)
 
             if days_dif > 0:
+                if add_price:
+                    price_info = TXT_SUBCRIPTION_FILM
                 if days_dif <= 1:
                     title = '{}    [COLOR orange]{}[/COLOR]'.format(title, Script.localize(MSG_ONLY_TODAY))
                 elif days_dif <= 10:
                     title = ''.join(('{}    [COLOR orange]', Script.localize(MSG_DAYS_AVAILABLE), '[/COLOR]')).format(
                         title, int(days_dif) + 1)
             else:
+                # No longer available in the monthly subscription, it's just a rental film now.
                 subscr_end_date = None
+                if add_price:
+                    price_info = _price_info(data)
         except (KeyError, ValueError):
             # Some dates are present that lack the time part, but these are all before 2020 anyway.
             subscr_end_date = None
+            if add_price:
+                price_info = _price_info(data)
 
         fanart_images = get_fanart(data)
         poster_image = img_url(data.get('poster') or (fanart_images.pop(0) if fanart_images else None))
@@ -76,8 +86,8 @@ def create_film_item(film_info):
                 'year': data.get('productionYear'),
                 'director': data.get('director'),
                 'cast': list_from_items_string(data.get('cast')),
-                'plot': replace_markdown(_create_long_plot(data, add_price=subscr_end_date is None)),
-                'plotoutline': replace_markdown(data.get('shortSynopsis')),
+                'plot': replace_markdown(_create_long_plot(data)) + price_info,
+                'plotoutline': _create_plot_outline(data, price_info),
                 'duration': duration,
                 'tagline': remove_markdown(quotes[0]['text']) if quotes else None,
                 'genre': list_from_items_string(data.get('genre')),
@@ -104,6 +114,7 @@ def create_film_item(film_info):
                 idx += 1
                 art['fanart{}'.format(idx)] = img_url(img)
     except (KeyError, TypeError):
+        # It's not uncommon that an item obtain from nuxt is None.
         film_item = None
 
     return film_item
@@ -167,29 +178,35 @@ def _select_trailer_url(film_data: dict, prefer_original: bool) -> str:
     return ''
 
 
-def _create_long_plot(film_data, add_price):
+def _price_info(film_data):
+    price = film_data.get('tvodPrice', None)
+    if price is None:
+        return ''
+    price_txt = '\n\n[B]€ {:0.2f}[/B]'.format(int(price or 0) / 100).replace('.', ',', 1)
+    subscr_price = film_data.get('tvodSubscribersPrice')
+    if subscr_price:
+        subscr_price_txt = '\n[B]€ {:0.2f}[/B] {}'.format(int(subscr_price)/100, TXT_FOR_MEMBERS)
+        subscr_price_txt = subscr_price_txt.replace('.', ',', 1)
+    else:
+        subscr_price_txt = ''
+    return ''.join((price_txt, subscr_price_txt))
+
+
+def _create_long_plot(film_data):
     plot = film_data.get('overviewText', '')
     if not plot:
         plot = '\n\n'.join((film_data.get('shortSynopsis', ''), film_data.get('selectedByQuote', '')))
 
     plot = plot.strip()
+    return plot
 
-    price = film_data.get('tvodPrice', None)
-    if not add_price or price is None:
-        return plot
 
-    # Add rental price to the bottom of the plot.
-    # price may be an empty string
-    price_txt = '\n\n[B]€ {:0.2f}[/B]'.format(int(price or 0) / 100).replace('.', ',', 1)
-    subscr_price = film_data.get('tvodSubscribersPrice')
-    if subscr_price:
-        subscr_price_txt = '\n[B]€ {:0.2f}[/B] {}'.format(int(subscr_price)/100, Script.localize(30503))
-        subscr_price_txt = subscr_price_txt.replace('.', ',', 1)
+def _create_plot_outline(film_data, price_info):
+    short_synopsis = film_data.get('shortSynopsis', '')
+    if not short_synopsis:
+        return None
     else:
-        subscr_price_txt = ''
-
-    full_txt = ''.join((plot, price_txt, subscr_price_txt))
-    return full_txt
+        return replace_markdown(short_synopsis) + price_info
 
 
 def _get_quotes(film_data):
@@ -277,7 +294,7 @@ def create_collection_item(col_data):
     return collection
 
 
-def create_films_list(data, list_type='generic'):
+def create_films_list(data, list_type='generic', add_price=True):
     """Extract the list of films from data_dict.
 
     This function retrieves all relevant info found in that dict and
@@ -305,5 +322,5 @@ def create_films_list(data, list_type='generic'):
     except KeyError:
         raise ValueError("Invalid value of param data")
 
-    film_items = (create_film_item(film) for film in films_list)
+    film_items = (create_film_item(film, add_price) for film in films_list)
     return [item for item in film_items if item is not None]

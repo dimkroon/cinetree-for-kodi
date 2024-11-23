@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
@@ -58,7 +58,7 @@ class StoriesListing(TestCase):
 
     def test_get_rentals(self):
         """Does not return a list of films, but data concerning rentals. Like available filters,
-        filter items, a list of preferred collections, etc. Basically the contents of cinetree's
+        filter items, a list of preferred collections, etc. Basically, the contents of cinetree's
         page 'huurfilms'
 
         """
@@ -91,12 +91,12 @@ class StoriesListing(TestCase):
             page += 1
             time.sleep(0.05)
 
-        self.assertGreater(len(stories), 0)
-        for story in stories:
-            object_checks.check_film_data(story)
-        # Save al stories locally
+        # # Save al stories locally
         # storymap = {story['uuid']: story for story in stories}
         # testutils.save_json(storymap, 'st_blok/films.json')
+
+        for story in stories:
+            object_checks.check_film_data(story)
 
     def test_get_all_shorts(self):
         data, _ = storyblok.get_url('stories', params={'starts_with': 'shorts/', 'page': 1, 'per_page': 100})

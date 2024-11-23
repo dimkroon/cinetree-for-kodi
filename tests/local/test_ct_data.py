@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 import datetime
@@ -13,7 +13,7 @@ from urllib.parse import quote_plus
 from copy import deepcopy
 
 from unittest import TestCase
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 from tests.support import fixtures
 fixtures.global_setup()
@@ -49,11 +49,12 @@ class CreateFilmItem(TestCase):
         self.assertIsNone(ct_data.create_film_item({'content': {'endDate': '2060-04-22'}}))
         self.assertIsNone(ct_data.create_film_item({'content': {'endDate': '22-04-2022 00:00'}}))
 
+    @patch("resources.lib.ctree.ct_data.TXT_SUBCRIPTION_FILM", 'is a subscription film')
     def test_show_subscription_availability(self):
         """If subscription films reach the end date a notification is added to the title"""
         now = datetime.datetime.utcnow()
         item_data = ct_data.create_film_item({'content': {'svodEndDate': '2060-01-01 00:00', 'title': ''}})
-        self.assertEqual('', item_data['info']['plot'])
+        self.assertEqual('is a subscription film', item_data['info']['plot'])
 
         end_date = now + datetime.timedelta(hours=4)
         item_data = ct_data.create_film_item({'content': {'svodEndDate': end_date.strftime("%Y-%m-%d %H:%M"), 'title': ''}})
@@ -72,14 +73,23 @@ class CreateFilmItem(TestCase):
         item_data = ct_data.create_film_item({'content': {'svodEndDate': end_date.strftime("%Y-%m-%d %H:%M"), 'title': ''}})
         self.assertTrue("" in item_data['info']['title'])   # localized strings return '' in tests
 
+    @patch("resources.lib.ctree.ct_data.TXT_SUBCRIPTION_FILM", 'is a subscription film')
     def test_show_price(self):
-        """Price should only be added to plot if the film is curently not within the subscription plan.
+        """Price should only be added to plot if the film is currently not within the subscription plan.
         """
         item_data = ct_data.create_film_item({'content': {'tvodPrice': '499'}})
         self.assertEqual('\n\n[B]€ 4,99[/B]', item_data['info']['plot'])
-        # do not show price on films in monthly subscription (i.e. svodEndDate is in the future)
-        item_data = ct_data.create_film_item({'content': {'tvodPrice': '499', 'svodEndDate': '2060-01-01 00:00', 'title': ''}})
-        self.assertEqual('', item_data['info']['plot'])
+
+        # The film is in the monthly subscription (i.e. svodEndDate is in the future)
+        item_data = ct_data.create_film_item(
+            {'content': {'tvodPrice': '499', 'svodEndDate': '2060-01-01 00:00', 'title': '', 'shortSynopsis': "About the film"}})
+        self.assertTrue(item_data['info']['plot'].endswith('is a subscription film'))
+
+        item_data = ct_data.create_film_item(
+            {'content': {'tvodPrice': '499', 'svodEndDate': '2060-01-01 00:00', 'title': ''}},
+            add_price=False
+        )
+        self.assertFalse(item_data['info']['plot'].endswith('is a subscription film'))
 
 
 class GetFilmsList(TestCase):
@@ -116,6 +126,24 @@ class Collections(TestCase):
         film_list = list(ct_data.create_films_list(coll_data))
         for film in film_list:
             Listitem.from_dict(MagicMock(), **film)
+
+
+@patch('resources.lib.ctree.ct_data.TXT_FOR_MEMBERS', 'for members')
+class PriceInfo(TestCase):
+    def test_full_price_info(self):
+        film_data = {'tvodPrice': 450, 'tvodSubscribersPrice': 350}
+        pricetxt = ct_data._price_info(film_data)
+        self.assertEqual('\n\n[B]€ 4,50[/B]\n[B]€ 3,50[/B] for members', pricetxt)
+
+    def test_free_film(self):
+        film_data = {'tvodPrice': 0}
+        pricetxt = ct_data._price_info(film_data)
+        self.assertEqual('\n\n[B]€ 0,00[/B]', pricetxt)
+
+    def test_missing_prince_info(self):
+        film_data = {}
+        pricetxt = ct_data._price_info(film_data)
+        self.assertEqual('', pricetxt)
 
 
 class SelectTrailerUrl(TestCase):

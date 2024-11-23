@@ -1,6 +1,6 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2023 Dimitri Kroon.
+#  Copyright (c) 2022-2024 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -88,7 +88,7 @@ def list_films_and_docus(_, category):
     else:
         return None
     stories, _ = storyblok.stories_by_uuids(film_ids)
-    films = ct_data.create_films_list(stories, 'storyblok')
+    films = ct_data.create_films_list(stories, 'storyblok', add_price=False)
     items = [Listitem.from_dict(callback=play_film, **film) for film in films]
     return items
 

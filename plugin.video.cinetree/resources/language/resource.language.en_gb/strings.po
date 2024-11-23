@@ -79,6 +79,11 @@ msgctxt "#30512"
 msgid "members price"
 msgstr ""
 
+msgctxt "#30513"
+msgid "Subscription film"
+msgstr ""
+
+
 # Texts in dialogs
 msgctxt "#30601"
 msgid "Rental film"

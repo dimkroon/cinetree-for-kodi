@@ -1,10 +1,9 @@
 
-
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 import time
@@ -48,6 +47,7 @@ def check_stream_info(strm_inf, additional_keys=None):
             "Expected .vtt subtitle format, but found '{}'".format(strm_inf['subtitles']['nl'])
     duration = strm_inf['duration']
     assert(isinstance(duration, float) and duration > 0)
+
 
 def check_film_data(film_info, additional_content_keys=None):
     """Check that a film info object retrieved from the web meets expectations"""
