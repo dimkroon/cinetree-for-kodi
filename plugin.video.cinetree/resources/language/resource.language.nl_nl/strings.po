@@ -84,15 +84,15 @@ msgid "Rental film"
 msgstr "Huurfilm"
 
 msgctxt "#30602"
-msgid "Your credits of € {credit} are not sufficient to pay the rental price of € {amount}.\nPlease top up your credits or paid the rent on the Cinetree website, or the official Cinetree Apple/Android app."
-msgstr "Je tegoed van € {credit} is niet toerijkend om het huurbedrag van € {amount} te voldoen. Vul je toegoed aan of betaal de huur op de Cinetree-website of de officiële Cinetree Apple/Android app."
+msgid "Your balance of € {credit} is not sufficient to pay the rental price of € {amount}.\nPlease top up your credit at Cinetree or pay the rent on the Cinetree website, or the official Cinetree Apple/Android app."
+msgstr "Je tegoed van € {credit} is niet toerijkend om het huurbedrag van € {amount} te voldoen. Vul je tegoed bij Cinetree aan of betaal de huur op de Cinetree-website of de officiële Cinetree Apple/Android app."
 
 msgctxt "#30604"
 msgid "More info"
 msgstr "Meer Informatie"
 
 msgctxt "#30605"
-msgid "The only payment method supported by this Kodi addon is paying from your pre-paid credits.\n\n"
+msgid "The only payment method supported by this Kodi addon is paying from your pre-paid credit at cinetree.\n\n"
 "For additional payment methods use the Cinetree website, or the official Cinetree Android or iOS app. "
 "Usually it is easiest to goto 'Huur' on the website and make a search on the film title. Click on 'Nu kijken' and "
 "make the payment. Once paid you can close the web browser and watch the film from Kodi.\nAll rented films are available "
@@ -180,6 +180,11 @@ msgstr "Nu '{title}' huren?\nHuurbedrag: € {amount}\nHuidig tegoed: € {credi
 msgctxt "#30624"
 msgid "Pay"
 msgstr "Betaal"
+
+msgctxt "#30625"
+msgid "Unfortunately, payment seems to have failed.\nPlease check your balance and invoices on cinetree.nl and report issues at this add-on's support thread on https://forum.kodi.tv/showthread.php?tid=370761"
+msgstr "De betaling lijkt helaas te zijn mislukt.\nControleer je tegoed en facturen op cinetree.nl en rapporteer problemen op de support thread van deze add-on op https://forum.kodi.tv/showthread.php?tid=370761"
+
 
 # Generic button texts
 msgctxt "#30790"

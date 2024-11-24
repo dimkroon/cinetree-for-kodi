@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
@@ -251,11 +251,11 @@ class PlayFilm(unittest.TestCase):
 
 
 @patch('resources.lib.kodi_utils.show_low_credit_msg')
+@patch('resources.lib.ctree.ct_api.get_payment_info', return_value=(4.3, '1982873hfmalk'))
 class PayFromCredit(unittest.TestCase):
     @patch('resources.lib.ctree.ct_api.pay_film', return_value=True)
-    @patch('resources.lib.ctree.ct_api.get_payment_info', return_value=(4.3, '1982873hfmalk'))
     @patch('resources.lib.ctree.ct_api.get_ct_credits', return_value=10)
-    def test_pay_successfully(self, _, __, p_pay_film, p_show_low_credit):
+    def test_pay_successfully(self, _, p_pay_film, __, p_show_low_credit):
         with patch('resources.lib.kodi_utils.confirm_rent_from_credit', return_value=True):
             result = main.pay_from_ct_credit('my_film', 'my-film-uuid')
             self.assertIs(result, True)
@@ -263,21 +263,29 @@ class PayFromCredit(unittest.TestCase):
             p_pay_film.assert_called_once()
 
     @patch('resources.lib.ctree.ct_api.pay_film', return_value=True)
-    @patch('resources.lib.ctree.ct_api.get_payment_info', return_value=(4.3, '1982873hfmalk'))
     @patch('resources.lib.ctree.ct_api.get_ct_credits', return_value=10)
-    def test_pay_canceled(self, _, __, p_pay_film, p_show_low_credit):
+    def test_pay_canceled(self, _, p_pay_film, __, p_show_low_credit):
         with patch('resources.lib.kodi_utils.confirm_rent_from_credit', return_value=False):
             result = main.pay_from_ct_credit('my_film', 'my-film-uuid')
             self.assertIs(result, False)
             p_show_low_credit.assert_not_called()
             p_pay_film.assert_not_called()
 
-
     @patch('resources.lib.ctree.ct_api.pay_film', return_value=True)
-    @patch('resources.lib.ctree.ct_api.get_payment_info', return_value=(4.3, '1982873hfmalk'))
     @patch('resources.lib.ctree.ct_api.get_ct_credits', return_value=2)
-    def test_not_enough_credit(self, _, __, p_pay_film, p_show_low_credit):
+    def test_not_enough_credit(self, _, p_pay_film, __, p_show_low_credit):
         result = main.pay_from_ct_credit('my_film', 'my-film-uuid')
         self.assertIs(result, False)
         p_show_low_credit.assert_called_once()
         p_pay_film.assert_not_called()
+
+    @patch('resources.lib.ctree.ct_api.pay_film', return_value=False)
+    @patch('resources.lib.ctree.ct_api.get_ct_credits', return_value=10)
+    def test_payment_failed(self, _, p_pay_film, __, p_show_low_credit):
+        MSG_ID_PAYMENT_FAILED = 30625
+        with patch('resources.lib.kodi_utils.ok_dialog') as p_ok_dlg:
+            result = main.pay_from_ct_credit('my_film', 'my-film-uuid')
+        self.assertIs(result, False)
+        p_show_low_credit.assert_not_called()
+        p_pay_film.assert_called_once()
+        p_ok_dlg.assert_called_with(MSG_ID_PAYMENT_FAILED)

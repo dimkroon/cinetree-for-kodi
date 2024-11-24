@@ -90,7 +90,7 @@ msgid "Rental film"
 msgstr ""
 
 msgctxt "#30602"
-msgid "Your credits of € {credit:0.2f} are not sufficient to pay the rental price of € {amount:0.2f}.\nPlease top up your credits or paid the rent on the Cinetree website, or the official Cinetree Apple/Android app."
+msgid "Your balance of € {credit} is not sufficient to pay the rental price of € {amount}.\nPlease top up your credit at Cinetree or pay the rent on the Cinetree website, or the official Cinetree Apple/Android app."
 msgstr ""
 
 msgctxt "#30604"
@@ -98,7 +98,7 @@ msgid "More info"
 msgstr ""
 
 msgctxt "#30605"
-msgid "The only payment method supported by this Kodi addon is paying from your pre-paid credits.\n\n"
+msgid "The only payment method supported by this Kodi addon is paying from your pre-paid credit at cinetree.\n\n"
 "For additional payment methods use the Cinetree website, or the official Cinetree Android or iOS app. "
 "Usually it is easiest to goto 'Huur' on the website and make a search on the film title. Click on 'Nu kijken' and "
 "make the payment. Once paid you can close the web browser and watch the film from Kodi.\n\nAll rented films are available "
@@ -180,6 +180,10 @@ msgstr ""
 
 msgctxt "#30624"
 msgid "Pay"
+msgstr ""
+
+msgctxt "#30625"
+msgid "Unfortunately, payment seems to have failed.\nPlease check your balance and invoices on cinetree.nl and report issues at this add-on's support thread on https://forum.kodi.tv/showthread.php?tid=370761"
 msgstr ""
 
 
