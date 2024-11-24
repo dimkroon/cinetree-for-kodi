@@ -37,6 +37,7 @@ TXT_ALREADY_WATCHED = 30808
 TXT_RENTED = 30809
 TXT_NOTHING_FOUND = 30608
 TXT_TOO_MANY_RESULTS = 30609
+MSG_PAYMENT_FAIL = 30625
 
 
 @Route.register
@@ -316,11 +317,12 @@ def pay_from_ct_credit(title, uuid):
     ct_credits = future_objs[1].result()
     if amount > ct_credits:
         kodi_utils.show_low_credit_msg(amount, ct_credits)
-        return False
-    if kodi_utils.confirm_rent_from_credit(title, amount, ct_credits):
-        return ct_api.pay_film(uuid, title, trans_id, amount)
-    else:
-        return False
+    elif kodi_utils.confirm_rent_from_credit(title, amount, ct_credits):
+        if ct_api.pay_film(uuid, title, trans_id, amount):
+            return True
+        else:
+            kodi_utils.ok_dialog(MSG_PAYMENT_FAIL)
+    return False
 
 
 def run():
