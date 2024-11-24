@@ -310,6 +310,7 @@ def pay_film(film_uid, film_title, transaction_id, price):
         if content:
             logger.warning("pay_film - Unexpected response content: '%s'", content)
         # On success cinetree returns 200 OK without content.
+        logger.info("Paid %0.2f from cinetree credit for film '%'")
         return resp.status_code == 200
     except:
         logger.error("[ct_api.pay_film] paying failed: film_uid=%s, film_title=%s, trans_id=%s, price=%s\n",
