@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 import unittest
@@ -79,14 +79,14 @@ class TestKodiUtils(unittest.TestCase):
             self.assertEqual(5, result)
             self.assertEqual('', name)
 
-    @patch('xbmcgui.Dialog.ok')
-    def test_confirm_rent_from_credit(self, p_dlg_ok):
+    @patch('xbmcgui.Dialog.textviewer')
+    def test_confirm_rent_from_credit(self, p_dlg):
         with patch('xbmcgui.Dialog.yesno', return_value=True):
             result = kodi_utils.confirm_rent_from_credit('some film', 2.49, 10.0)
             self.assertIs(result, True)
-            p_dlg_ok.assert_not_called()
+            p_dlg.assert_not_called()
 
         with patch('xbmcgui.Dialog.yesno', return_value=False):
             result = kodi_utils.confirm_rent_from_credit('some film', 2.49, 10.0)
             self.assertIs(result, False)
-            p_dlg_ok.assert_called_once()
+            p_dlg.assert_called_once()

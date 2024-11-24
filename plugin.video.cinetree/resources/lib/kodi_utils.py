@@ -230,7 +230,7 @@ def confirm_rent_from_credit(title, price, credit):
                        Script.localize(BTN_TXT_CANCEL),
                        Script.localize(TXT_PAY))
     if not result:
-        ok_dialog(TXT_MORE_INFO)
+        dlg.textviewer(Script.localize(TXT_RENTAL_FILM), Script.localize(MSG_MORE_PAYMENT_INFO))
     return result
 
 
