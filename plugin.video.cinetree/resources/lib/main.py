@@ -40,6 +40,7 @@ TXT_REMOVE_FROM_LIST = 30859
 TXT_NOTHING_FOUND = 30608
 TXT_TOO_MANY_RESULTS = 30609
 MSG_PAYMENT_FAIL = 30625
+MSG_REMOVE_CONFIRM = 30626
 
 
 @Route.register
@@ -81,7 +82,8 @@ def list_my_films(addon, subcategory=None):
             li = Listitem.from_dict(callback=play_film, **film)
             li.context.script(remove_from_list,
                               addon.localize(TXT_REMOVE_FROM_LIST),
-                              film_uuid=film['params']['uuid'])
+                              film_uuid=film['params']['uuid'],
+                              title=film['info']['title'])
             yield li
 
 
@@ -162,10 +164,13 @@ def list_films_by_genre(_, genre, page=1):
 
 
 @Script.register()
-def remove_from_list(_, film_uuid):
-    ct_api.remove_watched_film(film_uuid)
-    logger.info("Removed film %s from the watched list")
-    executebuiltin('Container.Refresh')
+def remove_from_list(addon, film_uuid, title):
+    if kodi_utils.yes_no_dialog(addon.localize(MSG_REMOVE_CONFIRM).format(title=title)):
+        ct_api.remove_watched_film(film_uuid)
+        logger.info("Removed film '%s' from the watched list", title)
+        executebuiltin('Container.Refresh')
+    else:
+        logger.debug("Remove film '%s' canceled by user.", title)
 
 
 def monitor_progress(watch_id):

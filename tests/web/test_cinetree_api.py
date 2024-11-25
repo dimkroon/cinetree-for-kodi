@@ -251,7 +251,7 @@ class RemoveFromMyFilms(unittest.TestCase):
 
     def put_item_on_list(self, film_uuid):
         """Does NOT seem to work
-        Once an item has been removed, playing it again does not seem to add it to the wathced list. """
+        Once an item has been removed, playing it again does not seem to add it to the watched list. """
         stream_info = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/films/' + film_uuid)
         watchhistoryid = stream_info['watchHistoryId']
         ct_api.set_resume_time(watchhistoryid, 360.0)

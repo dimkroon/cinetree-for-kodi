@@ -123,10 +123,15 @@ class MainTest(unittest.TestCase):
     @patch('resources.lib.fetch.web_request')
     def test_remove_from_list(self, p_web_request):
         uuid = 'my-film-uuid'
-        main.remove_from_list.test(uuid)
+        main.remove_from_list.test(uuid, 'some title')
         call_kwargs = p_web_request.call_args.kwargs
         self.assertTrue(call_kwargs['url'].endswith(uuid))
         self.assertEqual(call_kwargs['method'].lower(), 'delete')
+        # Canceled by user:
+        p_web_request.reset_mock()
+        with patch('xbmcgui.Dialog.yesno', return_value=False):
+            main.remove_from_list.test(uuid, 'some title')
+            p_web_request.assert_not_called()
 
     @patch('resources.lib.ctree.ct_api.set_resume_time')
     def test_monitor_progress(self, p_set_resume_time):

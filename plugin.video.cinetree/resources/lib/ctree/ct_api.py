@@ -180,8 +180,10 @@ def remove_watched_film(film_uuid):
     """Remove a film from the watched list.
 
     It seems that after removing a film will not be added when watched again.
+
     At the time of testing every request, either with existing, or non-existing
-    UUID, return without error.
+    UUID, or existing films not on the list, return without error.
+
     """
     resp = fetch.fetch_authenticated(fetch.web_request,
                                      method='delete',
