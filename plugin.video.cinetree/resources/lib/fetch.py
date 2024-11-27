@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 import logging
@@ -126,7 +126,7 @@ def fetch_authenticated(funct, url, **kwargs):
             else:
                 kwargs['headers'] = {'Authorization': 'Bearer ' + account.access_token}
 
-            return funct(url, **kwargs)
+            return funct(url=url, **kwargs)
         except AuthenticationError:
             # This is quite common, as tokens seem to expire rather quickly on Cinetree
             if tries == 0:

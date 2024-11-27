@@ -9,6 +9,7 @@
 import xbmcplugin
 import sys
 
+from xbmc import executebuiltin
 from xbmcgui import ListItem as XbmcListItem
 
 from codequick import Route, Resolver, Listitem, Script
@@ -35,9 +36,11 @@ TXT_RENTALS_GENRES = 30806
 TXT_SEARCH = 30807
 TXT_ALREADY_WATCHED = 30808
 TXT_RENTED = 30809
+TXT_REMOVE_FROM_LIST = 30859
 TXT_NOTHING_FOUND = 30608
 TXT_TOO_MANY_RESULTS = 30609
 MSG_PAYMENT_FAIL = 30625
+MSG_REMOVE_CONFIRM = 30626
 
 
 @Route.register
@@ -53,7 +56,7 @@ def root(_):
 
 
 @Route.register(content_type='movies')
-def list_my_films(_, subcategory=None):
+def list_my_films(addon, subcategory=None):
     """List the films not finished watching. Newly purchased films appear here, so do not cache"""
 
     if subcategory is None:
@@ -76,7 +79,12 @@ def list_my_films(_, subcategory=None):
     films = (ct_data.create_film_item(film) for film in films_list)
     for film in films:
         if film is not None:
-            yield Listitem.from_dict(callback=play_film, **film)
+            li = Listitem.from_dict(callback=play_film, **film)
+            li.context.script(remove_from_list,
+                              addon.localize(TXT_REMOVE_FROM_LIST),
+                              film_uuid=film['params']['uuid'],
+                              title=film['info']['title'])
+            yield li
 
 
 @Route.register(cache_ttl=-1, content_type='movies')
@@ -153,6 +161,16 @@ def list_films_by_genre(_, genre, page=1):
             yield Listitem.from_dict(play_film, **film_item_data)
     if num_films > page * list_len:
         yield Listitem.next_page(genre=genre, page=page + 1)
+
+
+@Script.register()
+def remove_from_list(addon, film_uuid, title):
+    if kodi_utils.yes_no_dialog(addon.localize(MSG_REMOVE_CONFIRM).format(title=title)):
+        ct_api.remove_watched_film(film_uuid)
+        logger.info("Removed film '%s' from the watched list", title)
+        executebuiltin('Container.Refresh')
+    else:
+        logger.debug("Remove film '%s' canceled by user.", title)
 
 
 def monitor_progress(watch_id):

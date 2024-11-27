@@ -186,6 +186,10 @@ msgctxt "#30625"
 msgid "Unfortunately, payment seems to have failed.\nPlease check your balance and invoices on cinetree.nl and report issues at this add-on's support thread on https://forum.kodi.tv/showthread.php?tid=370761"
 msgstr ""
 
+msgctxt "#30626"
+msgid "Are you sure you want to remove '{title}' from the list?"
+msgstr ""
+
 
 # Generic button texts
 msgctxt "#30790"
@@ -240,6 +244,12 @@ msgstr ""
 msgctxt "#30809"
 msgid "Rented"
 msgstr ""
+
+# Context Menu
+msgctxt "#30859"
+msgid "Remove from list"
+msgstr ""
+
 
 # Error texts
 msgctxt "#30901"
