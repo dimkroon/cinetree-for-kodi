@@ -126,6 +126,11 @@ class Gen(TestCase):
     def get_stream_info(self):
         resp = ct_api.get_stream_info()
 
+    def test_get_payment_info(self):
+        amount, transaction = ct_api.get_payment_info('ef51ee02-0635-4547-a35d-d7844e0c5426')
+        self.assertGreater(amount, 0.0)
+        self.assertIsInstance(transaction, str)
+
 
 class SearchFilm(TestCase):
     """A search on Cinetree returns a list of uuids of films that meet the search criteria.

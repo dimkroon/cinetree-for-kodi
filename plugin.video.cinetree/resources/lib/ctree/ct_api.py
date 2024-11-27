@@ -249,3 +249,77 @@ def set_resume_time(watch_history_id: str, play_time: float):
         logger.warning('Failed to report resume time to Cinetree: %r', e)
         return
     logger.debug("Playtime %s reported to Cinetree", play_time)
+
+
+def get_payment_info(film_uid: str):
+    """Return a tuple of the transaction id and amount to be paid to
+    rent a film.
+
+    """
+    url = 'https://api.cinetree.nl/payments/info/rental/' + film_uid
+    payment_data = fetch.fetch_authenticated(fetch.post_json, url, data=None)
+    return float(payment_data['amount']), payment_data['transaction']
+
+
+def get_ct_credits():
+    """Return the current amount of available cinetree credits
+
+    """
+    my_data = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/me')
+    return float(my_data['credit'])
+
+
+# noinspection PyBroadException
+def pay_film(film_uid: str, film_title: str, transaction_id: str, price: float):
+    """Pay for a film by charging the rental amount to the user's prepaid credit.
+
+    """
+    try:
+        payment_data = {
+            'context': {
+                'trackEvents': [
+                    {
+                        'event': 'purchase',
+                        'params': {
+                            'ecommerce': {
+                                'currency': 'EUR',
+                                'items': [
+                                    {
+                                        'item_category': 'TVOD',
+                                        'item_id': film_uid,
+                                        'item_name': film_title,
+                                        'price': price,
+                                        'quantity': 1
+                                    }
+                                ],
+                                'tax': price - price / 1.21,
+                                'transaction_id': transaction_id,
+                                'value': price
+                            }
+                        }
+                    }
+                ]
+            },
+            'transaction': transaction_id
+        }
+        resp = fetch.fetch_authenticated(
+            fetch.web_request,
+            'https://api.cinetree.nl/payments/credit',
+            method='post',
+            headers={'Accept': 'application/json, text/plain, */*'},
+            data=payment_data
+        )
+        content = resp.content.decode('utf8')
+        if content:
+            logger.warning("[pay_film] - Unexpected response content: '%s'", content)
+        # On success cinetree returns 200 OK without content.
+        if resp.status_code == 200:
+            logger.info("[pay_film] Paid %0.2f from cinetree credit for film '%s'", price, film_title)
+            return True
+        else:
+            logger.error("[pay_film] - Unexpected response status code: '%s'", resp.status_code)
+            return False
+    except:
+        logger.error("[pay_film] paying failed: film_uid=%s, film_title=%s, trans_id=%s, price=%s\n",
+                     film_uid, film_title, transaction_id, price, exc_info=True)
+        return False
