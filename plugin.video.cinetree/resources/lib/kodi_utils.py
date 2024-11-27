@@ -239,6 +239,18 @@ def ok_dialog(msg, heading=None):
         heading  = 'Cinetree'
     elif isinstance(heading, int):
         heading = Script.localize(heading)
+
     if isinstance(msg, int):
         msg = Script.localize(msg)
     xbmcgui.Dialog().ok(heading, msg)
+
+
+def yes_no_dialog(msg, heading=None, autoclose=12000):
+    if heading is None:
+        heading = 'Cinetree'
+    elif isinstance(heading, int):
+        heading = Script.localize(heading)
+
+    if isinstance(msg, int):
+        msg = Script.localize(msg)
+    return xbmcgui.Dialog().yesno(heading, msg, autoclose=autoclose)
