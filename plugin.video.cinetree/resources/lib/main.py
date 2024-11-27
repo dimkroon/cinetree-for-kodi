@@ -1,6 +1,6 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -35,6 +35,8 @@ TXT_RENTALS_GENRES = 30806
 TXT_SEARCH = 30807
 TXT_ALREADY_WATCHED = 30808
 TXT_RENTED = 30809
+TXT_ALL_COLLECTIONS =30810
+TXT_REMOVE_FROM_LIST = 30859
 TXT_NOTHING_FOUND = 30608
 TXT_TOO_MANY_RESULTS = 30609
 MSG_PAYMENT_FAIL = 30625
@@ -95,11 +97,11 @@ def list_films_and_docus(_, category):
 
 
 @Route.register(cache_ttl=480)
-def list_rental_collections(_):
+def list_rental_collections(addon):
     collections = ct_api.get_preferred_collections()
     for coll in collections:
         yield Listitem.from_dict(list_films_by_collection, **coll)
-    yield Listitem.from_dict(list_all_collections, 'Alle Collecties')
+    yield Listitem.from_dict(list_all_collections, addon.localize(TXT_ALL_COLLECTIONS))
 
 
 @Route.register(cache_ttl=480)
