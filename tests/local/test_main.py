@@ -67,7 +67,7 @@ class MainTest(unittest.TestCase):
 
     @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('films-payload.js'))
     def test_list_rental_collections(self, _):
-        items = list(main.list_rental_collections(MagicMock()))
+        items = list(main.list_rental_collections.test())
         self.assertEqual(9, len(items))
         for item in items:
             self.assertIsInstance(item, Listitem)
