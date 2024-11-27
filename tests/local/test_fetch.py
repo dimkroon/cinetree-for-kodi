@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
@@ -185,11 +185,11 @@ class GetAuthenticated(TestCase):
     def test_authenticated_get(self, mocked_get, _):
         resp = fetch.fetch_authenticated(fetch.get_json, URL)
         self.assertEqual({'a': 1}, resp)
-        mocked_get.assert_called_once_with(URL, headers={'Authorization': 'Bearer ' + AccountMock.access_token})
+        mocked_get.assert_called_once_with(url=URL, headers={'Authorization': 'Bearer ' + AccountMock.access_token})
         mocked_get.reset_mock()
         # check authorization is added to headers passed in.
         fetch.fetch_authenticated(fetch.get_json, URL, headers={'MyHeader': 'myval'})
-        mocked_get.assert_called_once_with(URL, headers={'MyHeader': 'myval', 'Authorization': 'Bearer ' + AccountMock.access_token})
+        mocked_get.assert_called_once_with(url=URL, headers={'MyHeader': 'myval', 'Authorization': 'Bearer ' + AccountMock.access_token})
 
     @patch("resources.lib.ctree.ct_account.session", return_value=AccountMock())
     @patch("resources.lib.fetch.get_json", side_effect=[errors.AuthenticationError, {'a': 1}])

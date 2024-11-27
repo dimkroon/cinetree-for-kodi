@@ -10,6 +10,7 @@ fixtures.global_setup()
 
 import requests
 import unittest
+import time
 
 from tests.support import testutils, object_checks
 
@@ -242,3 +243,50 @@ class GetMeData(unittest.TestCase):
         object_checks.has_keys(resp, 'name', 'displayName', 'subscription', 'purchased', 'credit',
                                'currentSubscription', 'renewalSubscription', 'favorites')
         self.assertIsInstance(resp['credit'], float)
+
+
+class RemoveFromMyFilms(unittest.TestCase):
+    test_uid = 'be785e6b-c517-426e-a22c-f5ec1b496d20'  # Free short film 'Morgen gaat het beter' of 11 min
+    rental_uid = 'e824fe57-b3fe-40b1-849a-88049f8849c5' # Rental film 'Maggie's Plan'; very unlikely to be already on the list.
+
+    def put_item_on_list(self, film_uuid):
+        """Does NOT seem to work
+        Once an item has been removed, playing it again does not seem to add it to the watched list. """
+        stream_info = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/films/' + film_uuid)
+        watchhistoryid = stream_info['watchHistoryId']
+        ct_api.set_resume_time(watchhistoryid, 360.0)
+        time.sleep(1)
+        ct_api.set_resume_time(watchhistoryid, 370.0)
+        time.sleep(3)
+        self.assertTrue(self.is_on_list(film_uuid))
+
+    def is_on_list(self, film_uuid):
+        watched = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/watch-history')
+        watched_uuids = [item['assetId'] for item in watched]
+        return film_uuid in watched_uuids
+
+    # def test_remove_exiting_item(self):
+    #     # Ensure the item is on the list
+    #     self.put_item_on_list(self.test_uid)
+    #     resp = fetch.fetch_authenticated(fetch.get_document,
+    #                                      url='https://api.cinetree.nl/watch-history/by-asset/' + self.test_uid,
+    #                                      headers={'accept': 'application/json, text/plain, */*'})
+    #     self.assertEqual(200, resp.status_code)
+    #     self.assertEqual(b'', resp.content)
+
+    def test_remove_item_not_on_list(self):
+        self.assertFalse(self.is_on_list(self.rental_uid))
+        resp = fetch.fetch_authenticated(fetch.web_request,
+                                         method='delete',
+                                         url='https://api.cinetree.nl/watch-history/by-asset/' + self.rental_uid,
+                                         headers={'accept': 'application/json, text/plain, */*'})
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual(b'', resp.content)
+
+    def test_remove_non_existing_item(self):
+        resp = fetch.fetch_authenticated(fetch.web_request,
+                                         method='delete',
+                                         url='https://api.cinetree.nl/watch-history/by-asset/' + 'fbsfhfttrds',
+                                         headers={'accept': 'application/json, text/plain, */*'})
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual(b'', resp.content)
