@@ -1,0 +1,104 @@
+{
+  "applePayProductId": "rental3.49",
+  "transaction": "672cf124ab1c8075b5437d10",
+  "amount": 3.49,
+  "directory": {
+    "paymentMethods": [
+      {
+        "issuers": [
+          {
+            "id": "0721",
+            "name": "ING",
+            "issuerId": "0721"
+          },
+          {
+            "id": "0021",
+            "name": "Rabobank",
+            "issuerId": "0021"
+          },
+          {
+            "id": "0031",
+            "name": "ABN Amro",
+            "issuerId": "0031"
+          },
+          {
+            "id": "0751",
+            "name": "SNS Bank",
+            "issuerId": "0751"
+          },
+          {
+            "id": "0761",
+            "name": "ASN Bank",
+            "issuerId": "0761"
+          },
+          {
+            "id": "0771",
+            "name": "RegioBank",
+            "issuerId": "0771"
+          },
+          {
+            "id": "0801",
+            "name": "Knab",
+            "issuerId": "0801"
+          },
+          {
+            "id": "0802",
+            "name": "bunq",
+            "issuerId": "0802"
+          },
+          {
+            "id": "0511",
+            "name": "Triodos Bank",
+            "issuerId": "0511"
+          },
+          {
+            "id": "0805",
+            "name": "Revolut",
+            "issuerId": "0805"
+          },
+          {
+            "id": "0161",
+            "name": "Van Lanschot Kempen",
+            "issuerId": "0161"
+          },
+          {
+            "id": "0806",
+            "name": "Yoursafe",
+            "issuerId": "0806"
+          },
+          {
+            "id": "0807",
+            "name": "N26",
+            "issuerId": "0807"
+          },
+          {
+            "id": "0808",
+            "name": "Nationale-Nederlanden",
+            "issuerId": "0808"
+          }
+        ],
+        "name": "iDEAL",
+        "type": "ideal",
+        "brandCode": "ideal"
+      },
+      {
+        "brands": [
+          "mc",
+          "visa",
+          "amex"
+        ],
+        "name": "Credit Card",
+        "type": "scheme"
+      },
+      {
+        "brand": "genericgiftcard",
+        "name": "Generic GiftCard",
+        "type": "giftcard"
+      },
+      {
+        "name": "SEPA Direct Debit",
+        "type": "sepadirectdebit"
+      }
+    ]
+  }
+}

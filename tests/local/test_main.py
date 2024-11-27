@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
@@ -159,53 +159,6 @@ class MainTest(unittest.TestCase):
             with patch('resources.lib.ctree.ct_api.get_subtitles', return_value='my_subtitle.srt'):
                 self.assertIs(main.play_ct_video(stream_inf), False)
 
-    def test_play_film_from_uuid(self):
-        with patch('resources.lib.ctree.ct_api.get_stream_info', return_value=open_json('stream_info.json')):
-            with patch("resources.lib.ctree.ct_api.get_subtitles", return_value=None):
-                playitem = main.play_film(MagicMock(), '', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
-                self.assertIsInstance(playitem, xbmcgui.ListItem)
-        with patch('resources.lib.ctree.ct_api.get_stream_info', side_effect=errors.NotPaidError):
-            playitem = main.play_film(MagicMock(), '', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
-            self.assertFalse(playitem)
-        with patch('resources.lib.ctree.ct_api.get_stream_info', side_effect=errors.NoSubscriptionError):
-            playitem = main.play_film(MagicMock(), '', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
-            self.assertFalse(playitem)
-        with patch('resources.lib.ctree.ct_api.get_stream_info', side_effect=errors.HttpError(404, '')):
-            playitem = main.play_film(MagicMock(), '', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
-            self.assertFalse(playitem)
-        with patch('resources.lib.ctree.ct_api.get_stream_info', side_effect=errors.FetchError):
-            playitem = main.play_film(MagicMock(), '', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
-            self.assertFalse(playitem)
-        with patch('resources.lib.ctree.ct_api.get_stream_info', side_effect=ValueError):
-            playitem = main.play_film(MagicMock(), '', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
-            self.assertIsInstance(playitem, type(False))
-
-    @patch("resources.lib.ctree.ct_api.get_subtitles", return_value=None)
-    def test_play_film_resume_time(self, _):
-        strm_info = open_json('stream_info.json')
-        strm_info['playtime'] = 1560.236
-        with patch('resources.lib.ctree.ct_api.get_stream_info', return_value=strm_info):
-            main.play_film(MagicMock(), '', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
-        strm_info['playtime'] = 0
-        with patch('resources.lib.ctree.ct_api.get_stream_info', return_value=strm_info):
-            main.play_film(MagicMock(), '', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
-        del strm_info['playtime']
-        with patch('resources.lib.ctree.ct_api.get_stream_info', return_value=strm_info):
-            main.play_film(MagicMock(), '', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
-
-    @patch("resources.lib.ctree.ct_api.get_subtitles", return_value=None)
-    @patch('resources.lib.ctree.ct_api.get_stream_info', return_value=open_json('stream_info.json'))
-    def test_play_film_resume_dialog_result(self, _, __):
-        with patch('resources.lib.kodi_utils.ask_resume_film', return_value=0):
-            item = main.play_film(MagicMock(), '', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
-            self.assertIsInstance(item, xbmcgui.ListItem)
-        with patch('resources.lib.kodi_utils.ask_resume_film', return_value=1):
-            item = main.play_film(MagicMock(), '', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
-            self.assertIsInstance(item, xbmcgui.ListItem)
-        with patch('resources.lib.kodi_utils.ask_resume_film', return_value=-1):
-            item = main.play_film(MagicMock(), '', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
-            self.assertIsInstance(item, type(False))
-
     def test_play_trailer(self):
         # trailer form YouTube
         plugin = MagicMock()
@@ -230,3 +183,109 @@ class MainTest(unittest.TestCase):
         # trailer from something else
         item = main.play_trailer(plugin, "https://cloud.com/bla/bla")
         self.assertFalse(item)
+
+
+@patch("resources.lib.ctree.ct_api.get_subtitles", return_value=None)
+class PlayFilm(unittest.TestCase):
+    @patch('resources.lib.main.pay_from_ct_credit', return_value=False)
+    def test_play_film_from_uuid(self, p_pay_from_credit, _):
+        with patch('resources.lib.ctree.ct_api.get_stream_info', return_value=open_json('stream_info.json')):
+            playitem = main.play_film.test('', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
+            self.assertIsInstance(playitem, xbmcgui.ListItem)
+            p_pay_from_credit.assert_not_called()
+        with patch('resources.lib.ctree.ct_api.get_stream_info', side_effect=errors.NotPaidError):
+            playitem = main.play_film.test('', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
+            self.assertFalse(playitem)
+            p_pay_from_credit.assert_called_once()
+        p_pay_from_credit.reset_mock()
+        with patch('resources.lib.ctree.ct_api.get_stream_info', side_effect=errors.NoSubscriptionError):
+            playitem = main.play_film.test('', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
+            self.assertFalse(playitem)
+            p_pay_from_credit.assert_not_called()
+        with patch('resources.lib.ctree.ct_api.get_stream_info', side_effect=errors.HttpError(404, '')):
+            playitem = main.play_film.test('', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
+            self.assertFalse(playitem)
+            p_pay_from_credit.assert_not_called()
+        with patch('resources.lib.ctree.ct_api.get_stream_info', side_effect=errors.FetchError):
+            playitem = main.play_film.test('', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
+            self.assertFalse(playitem)
+            p_pay_from_credit.assert_not_called()
+        with patch('resources.lib.ctree.ct_api.get_stream_info', side_effect=ValueError):
+            playitem = main.play_film.test('', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
+            self.assertIsInstance(playitem, type(False))
+            p_pay_from_credit.assert_not_called()
+
+    @patch('resources.lib.ctree.ct_api.get_stream_info', side_effect=(errors.NotPaidError,
+                                                                      open_json('stream_info.json')))
+    @patch('resources.lib.main.pay_from_ct_credit', return_value=True)
+    def test_play_film_after_paying(self, p_pay_from_credit, p_get_stream_info, _):
+        playitem = main.play_film.test('', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
+        self.assertIsInstance(playitem, xbmcgui.ListItem)
+        p_pay_from_credit.assert_called_once()
+        self.assertEqual(2, p_get_stream_info.call_count)
+
+    def test_play_film_resume_time(self, _):
+        strm_info = open_json('stream_info.json')
+        strm_info['playtime'] = 1560.236
+        with patch('resources.lib.ctree.ct_api.get_stream_info', return_value=strm_info):
+            main.play_film.test('', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
+        strm_info['playtime'] = 0
+        with patch('resources.lib.ctree.ct_api.get_stream_info', return_value=strm_info):
+            main.play_film.test('', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
+        del strm_info['playtime']
+        with patch('resources.lib.ctree.ct_api.get_stream_info', return_value=strm_info):
+            main.play_film.test('', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
+
+    @patch('resources.lib.ctree.ct_api.get_stream_info', return_value=open_json('stream_info.json'))
+    def test_play_film_resume_dialog_result(self, _, __):
+        with patch('resources.lib.kodi_utils.ask_resume_film', return_value=0):
+            item = main.play_film.test('', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
+            self.assertIsInstance(item, xbmcgui.ListItem)
+        with patch('resources.lib.kodi_utils.ask_resume_film', return_value=1):
+            item = main.play_film.test('', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
+            self.assertIsInstance(item, xbmcgui.ListItem)
+        with patch('resources.lib.kodi_utils.ask_resume_film', return_value=-1):
+            item = main.play_film.test('', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
+            self.assertIsInstance(item, type(False))
+
+
+
+@patch('resources.lib.kodi_utils.show_low_credit_msg')
+@patch('resources.lib.ctree.ct_api.get_payment_info', return_value=(4.3, '1982873hfmalk'))
+class PayFromCredit(unittest.TestCase):
+    @patch('resources.lib.ctree.ct_api.pay_film', return_value=True)
+    @patch('resources.lib.ctree.ct_api.get_ct_credits', return_value=10)
+    def test_pay_successfully(self, _, p_pay_film, __, p_show_low_credit):
+        with patch('resources.lib.kodi_utils.confirm_rent_from_credit', return_value=True):
+            result = main.pay_from_ct_credit('my_film', 'my-film-uuid')
+            self.assertIs(result, True)
+            p_show_low_credit.assert_not_called()
+            p_pay_film.assert_called_once()
+
+    @patch('resources.lib.ctree.ct_api.pay_film', return_value=True)
+    @patch('resources.lib.ctree.ct_api.get_ct_credits', return_value=10)
+    def test_pay_canceled(self, _, p_pay_film, __, p_show_low_credit):
+        with patch('resources.lib.kodi_utils.confirm_rent_from_credit', return_value=False):
+            result = main.pay_from_ct_credit('my_film', 'my-film-uuid')
+            self.assertIs(result, False)
+            p_show_low_credit.assert_not_called()
+            p_pay_film.assert_not_called()
+
+    @patch('resources.lib.ctree.ct_api.pay_film', return_value=True)
+    @patch('resources.lib.ctree.ct_api.get_ct_credits', return_value=2)
+    def test_not_enough_credit(self, _, p_pay_film, __, p_show_low_credit):
+        result = main.pay_from_ct_credit('my_film', 'my-film-uuid')
+        self.assertIs(result, False)
+        p_show_low_credit.assert_called_once()
+        p_pay_film.assert_not_called()
+
+    @patch('resources.lib.ctree.ct_api.pay_film', return_value=False)
+    @patch('resources.lib.ctree.ct_api.get_ct_credits', return_value=10)
+    def test_payment_failed(self, _, p_pay_film, __, p_show_low_credit):
+        MSG_ID_PAYMENT_FAILED = 30625
+        with patch('resources.lib.kodi_utils.ok_dialog') as p_ok_dlg:
+            result = main.pay_from_ct_credit('my_film', 'my-film-uuid')
+        self.assertIs(result, False)
+        p_show_low_credit.assert_not_called()
+        p_pay_film.assert_called_once()
+        p_ok_dlg.assert_called_with(MSG_ID_PAYMENT_FAILED)

@@ -37,6 +37,7 @@ TXT_ALREADY_WATCHED = 30808
 TXT_RENTED = 30809
 TXT_NOTHING_FOUND = 30608
 TXT_TOO_MANY_RESULTS = 30609
+MSG_PAYMENT_FAIL = 30625
 
 
 @Route.register
@@ -256,8 +257,10 @@ def play_film(plugin, title, uuid, slug, end_date=None):
         stream_info = ct_api.get_stream_info(ct_api.create_stream_info_url(uuid, slug))
         logger.debug("play_info = %s", stream_info)
     except errors.NotPaidError:
-        kodi_utils.show_rental_msg(slug)
-        return False
+        if pay_from_ct_credit(title, uuid):
+            return play_film(plugin, title, uuid, slug, end_date)
+        else:
+            return False
     except errors.NoSubscriptionError:
         Script.notify('Cinetree', Script.localize(MSG_ONLY_WITH_SUBSCRIPTION), Script.NOTIFY_INFO, 6500)
         return False
@@ -301,6 +304,24 @@ def play_trailer(plugin, url):
         return play_ct_video(stream_info, 'trailer')
 
     logger.warning("Cannot play trailer from unknown source: '%s'.", url)
+    return False
+
+
+def pay_from_ct_credit(title, uuid):
+    from concurrent import futures
+    executor = futures.ThreadPoolExecutor()
+    future_objs = [executor.submit(ct_api.get_payment_info, uuid),
+                   executor.submit(ct_api.get_ct_credits)]
+    futures.wait(future_objs)
+    amount, trans_id = future_objs[0].result()
+    ct_credits = future_objs[1].result()
+    if amount > ct_credits:
+        kodi_utils.show_low_credit_msg(amount, ct_credits)
+    elif kodi_utils.confirm_rent_from_credit(title, amount, ct_credits):
+        if ct_api.pay_film(uuid, title, trans_id, amount):
+            return True
+        else:
+            kodi_utils.ok_dialog(MSG_PAYMENT_FAIL)
     return False
 
 

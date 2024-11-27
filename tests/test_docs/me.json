@@ -1,0 +1,40 @@
+{
+  "_id": "62f562e1aa6f5ce58bfe241f",
+  "email": "dimitri@kroonmail.nl",
+  "name": {
+    "first": "Dimitri",
+    "last": "Kroon"
+  },
+  "displayName": "Dimitri Kroon",
+  "campaign": "",
+  "promotionCode": "",
+  "subscription": null,
+  "subscriptionValidTo": null,
+  "purchased": [
+    "ef51ee02-0635-4547-a35d-d7844e0c5426",
+    "7e159079-d2cc-428a-8291-8c8c27c564c1",
+    "bd209a8e-2bd3-4916-b5bc-053c9633ee96",
+    "e6e121fb-b366-4717-a487-374db8c01a63",
+    "b4cde666-d4be-4d94-b19b-e512f74459a2",
+    "149386b3-fdcb-4e68-8d45-08238014c658"
+  ],
+  "emailVerified": true,
+  "emailVerificationSentAt": "2022-08-11T20:13:22.245Z",
+  "settings": {
+    "popups": [
+      "It's a lovestory Olivia",
+      "Gaite Jansen Hollands Glorie",
+      "Giftcard pop up 1",
+      "FFF pop-up"
+    ]
+  },
+  "credit": 6.51,
+  "filmGenres": [],
+  "partition": 0.410939598735547,
+  "currentSubscription": null,
+  "renewalSubscription": null,
+  "subscribedToNewsletter": false,
+  "favorites": [],
+  "showContinueWatching": true,
+  "firebase": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTczMDk5ODU2OSwiZXhwIjoxNzMxMDAyMTY5LCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay1rOHZhbkBjaW5ldHJlZS1hcHBzLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwic3ViIjoiZmlyZWJhc2UtYWRtaW5zZGstazh2YW5AY2luZXRyZWUtYXBwcy5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInVpZCI6IjYyZjU2MmUxYWE2ZjVjZTU4YmZlMjQxZiIsImNsYWltcyI6eyJkaXNwbGF5TmFtZSI6IkRpbWl0cmkgS3Jvb24ifX0.L5ooXFCR2B5U4huTnoMb0LZWWEBCzeXoe90Nq7v1GJfS1cULrF_AofxA4rVI2M5vk3KskLxpP4rQ8AUQ7nbBHiXx_nQsBlZKfk8yopBB1OmUQxtzP65wOEsDxe0XCeblXAQCNLH7DdruLAGr_SDldpFLWmT6SNK9u5_7JWRh9zCgObI91Mdr6a5rv76WchWtyjjyfHeW15fp6zU0tg_XNNtkoCB4VqjKLjSc7Mm4t3UrCCS5-JxIHDd6JQXEmJmHzh61VsMkPcWWgbdASTzWDdW1YqT3SLjZYkZIif9U6Ut-vfMgl4TD8--OJWH6fgd_nm3Kc0hEEdZGHj9dTIQ61A"
+}
