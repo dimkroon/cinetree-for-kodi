@@ -217,3 +217,28 @@ class FetchSubtitles(unittest.TestCase):
         # with open('test_docs/subtitle-film-you_were_never_really_here.vtt', 'w') as f:
         #     f.write(resp.text)
         # pass
+
+
+class GetPaymentInfo(unittest.TestCase):
+    base_url = 'https://api.cinetree.nl/payments/info/rental/'
+
+    def test_payment_info_data(self):
+        film_uuid = 'ef51ee02-0635-4547-a35d-d7844e0c5426'
+        resp = fetch.fetch_authenticated(fetch.post_json, self.base_url + film_uuid, data=None)
+        self.assertIsInstance(resp['amount'], float)
+        transaction_id = resp['transaction']
+        self.assertIsInstance(transaction_id, str)
+        self.assertEqual(len(transaction_id), 24)
+        self.assertTrue(transaction_id.isalnum())
+
+
+class GetMeData(unittest.TestCase):
+    """Data returned by an authenticated request to /me
+
+    Currently only used to obtain the amount of credit, but this checks some other fields as well.
+    """
+    def test_me_data(self):
+        resp = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/me')
+        object_checks.has_keys(resp, 'name', 'displayName', 'subscription', 'purchased', 'credit',
+                               'currentSubscription', 'renewalSubscription', 'favorites')
+        self.assertIsInstance(resp['credit'], float)

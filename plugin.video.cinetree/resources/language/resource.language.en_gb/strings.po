@@ -90,7 +90,7 @@ msgid "Rental film"
 msgstr ""
 
 msgctxt "#30602"
-msgid "You can watch this film after you´ve paid the rent via the Cinetree website, or the official Cinetree Apple/Android app."
+msgid "Your balance of € {credit:0.2f} is not sufficient to pay the rental price of € {amount:0.2f}.\nPlease top up your credit at Cinetree or pay the rent on the Cinetree website, or the official Cinetree Apple/Android app."
 msgstr ""
 
 msgctxt "#30604"
@@ -98,10 +98,10 @@ msgid "More info"
 msgstr ""
 
 msgctxt "#30605"
-msgid "Unfortunately, it is not possible to pay for a film directly from kodi.\n\n"
-"You must first rent the film on the Cinetree website, or by using the official Cinetree Android or iOS app. "
+msgid "Charging the rent to your pre-paid credit with Cinetree is only payment method supported by this Kodi add-on.\n\n"
+"For additional payment methods use the Cinetree website, or the official Cinetree Android or iOS app. "
 "Usually it is easiest to goto 'Huur' on the website and make a search on the film title. Click on 'Nu kijken' and "
-"make the payment. Now you can close the web browser and watch the film from kodi.\n\nAll rented films are available "
+"make the payment. Once paid you can close the web browser and watch the film from Kodi.\n\nAll rented films are available "
 "in the menu 'My Films > Rented' for the duration of the rental period."
 msgstr ""
 
@@ -169,6 +169,19 @@ msgstr ""
 msgctxt "#30621"
 msgid "Login now"
 msgstr ""
+
+msgctxt "#30622"
+msgid "Rent Film"
+msgstr ""
+
+msgctxt "#30623"
+msgid "Rent '{title}' now?\nPrice: € {amount:0.2f}\nCurrent credit: € {credit:0.2f}."
+msgstr ""
+
+msgctxt "#30624"
+msgid "Pay"
+msgstr ""
+
 
 # Generic button texts
 msgctxt "#30790"
