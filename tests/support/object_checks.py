@@ -1,6 +1,6 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -24,6 +24,15 @@ def has_keys(dict_obj, *keys, obj_name='dictionary'):
             'is' if len(absent) == 1 else 'are',
             obj_name)
         )
+
+
+def expect_keys(dict_obj: dict, *keys: str, obj_name: str ='dictionary'):
+    """Print a warning if a key is not present, but do not fail a test.
+    """
+    try:
+        has_keys(dict_obj, *keys, obj_name=obj_name)
+    except AssertionError as err:
+        print('Expected', err)
 
 
 def check_stream_info(strm_inf, additional_keys=None):

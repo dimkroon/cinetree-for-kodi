@@ -202,12 +202,8 @@ def list_genres(_):
 
 @Route.register()
 def do_search(addon, search_query):
-    uuids = ct_api.search_films(search_term=search_query)
-
-    if len(uuids) > 100:
-        Script.notify('Cinetree - ' + Script.localize(TXT_SEARCH),
-                      Script.localize(TXT_TOO_MANY_RESULTS),
-                      Script.NOTIFY_INFO, 12000)
+    from resources.lib import algolia
+    uuids = algolia.search(search_term=search_query)
 
     stories, _ = storyblok.stories_by_uuids(uuids[:100])
 

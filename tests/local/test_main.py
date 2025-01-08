@@ -111,13 +111,14 @@ class MainTest(unittest.TestCase):
         self.assertFalse(main.do_search.test(''))
 
         # test search return a few items
-        with patch('resources.lib.ctree.ct_api.search_films', return_value=["18ae971a-1ba5-4e2c-987f-5ba06c42fca8", "93d595ed-fcaf-4250-8ee3-87b006b92b87"]) as p_search:
+        with patch('resources.lib.algolia.search',
+                   return_value=["18ae971a-1ba5-4e2c-987f-5ba06c42fca8", "93d595ed-fcaf-4250-8ee3-87b006b92b87"]):
             items = main.do_search.test('some_term')
             self.assertEqual(2, len(items))
 
         # Test returned list is limited to a max of 100 items
         all_uuids = list(open_json('st_blok/films.json').keys())
-        with patch('resources.lib.ctree.ct_api.search_films', return_value=all_uuids):
+        with patch('resources.lib.algolia.search', return_value=all_uuids):
             items = main.do_search(MagicMock(), 'some_term')
             self.assertLessEqual(len(items), 100)       # some items could (will) be filtered out on endDate
 
