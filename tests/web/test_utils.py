@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2025 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
@@ -20,7 +20,7 @@ setUpModule = fixtures.setup_web_test
 
 class VttToSrt(unittest.TestCase):
     def test_convert_subtitles_from_web(self):
-        """Test various subtitels obtained directly from the web.
+        """Test various subtitles obtained directly from the web.
 
         Woman at war has a BOM and Windows style new lines
         """

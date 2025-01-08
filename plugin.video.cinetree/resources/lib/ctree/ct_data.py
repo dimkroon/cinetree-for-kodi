@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -140,11 +140,11 @@ def _select_trailer_url(film_data: dict, prefer_original: bool) -> str:
           YouTube as well.
 
 
-    There is no guarantee that fields ar present. Also string type of fields can be empty, or have
+    There is no guarantee that fields ar present. Also strings type of fields can be empty, or have
     leading or trailing whitespace.
 
         If originalTrailer is present it will be a dict with fields 'plugin' and 'selected'.
-    Field 'selected' is a unique string, but may be None to indicate that no  trailer is present.
+    Field 'selected' is a unique string, but may be None to indicate that no trailer is present.
     Field 'plugin' should always be 'cinetree-autocomplete' and determines how the url to the video
     is constructed from the value of field 'selected'. This url points to a json document with stream
     urls, the same as a normal film.
@@ -302,10 +302,15 @@ def create_films_list(data, list_type='generic', add_price=True):
     film in a format suitable for kodi
 
     :param data: A dictionary of film data, like obtained from get_jsonp()
+    :type data: dict
     :param list_type: The type of list to search for.
         Can be 'recommended' for the list of recommendations in subscription, 'subscription'  for
         the list of all films available in the monthly subscription, 'storyblok' for list from
         Storyblok, or 'generic' for any other list from cinetree api.
+    :type list_type: str
+    :param add_price: Whether price info is to be added to the descriptions.
+    :type add_price: bool
+    :rtype: list[dict]
 
     """
     try:

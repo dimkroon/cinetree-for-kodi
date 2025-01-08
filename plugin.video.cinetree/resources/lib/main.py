@@ -1,6 +1,6 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -73,7 +73,7 @@ def list_my_films(addon, subcategory=None):
         films_list = ct_api.get_watched_films(subcategory == 'finished')
 
     if not films_list:
-        yield False
+        # yield False
         return
 
     films = (ct_data.create_film_item(film) for film in films_list)

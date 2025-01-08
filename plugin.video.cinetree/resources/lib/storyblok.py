@@ -1,6 +1,6 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2023 Dimitri Kroon.
+#  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -68,7 +68,7 @@ def get_url(path, **kwargs):
 
 def _get_url_page(path, page=None, items_per_page=None, **kwargs):
     """Make a webrequest to url `path`. Optionally return only a subset of the available
-    items by passing in 'page` and 'items_per_page`.
+    items by passing in `page` and `items_per_page`.
 
     Returns a tuple of 2 elements. The first is the list of items, second is the
     total number of available items.
