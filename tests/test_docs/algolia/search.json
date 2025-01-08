@@ -1,0 +1,2135 @@
+{
+  "hits": [
+    {
+      "title": "War Pony",
+      "genre": [
+        "drama"
+      ],
+      "cast": "Jojo Bapteise Whiting, LaDainian Crazy, Robert Stover",
+      "director": "Riley Keough, Gilan Gammel",
+      "svodEndDate": "",
+      "startDate": "2024-09-18 00:00",
+      "endDate": "",
+      "asset": {
+        "_uid": "de6062db-3b3e-4e3e-a9b5-9e4cd0547608",
+        "plugin": "autocomplete",
+        "selected": "667d0f8348838c786ddbae9f"
+      },
+      "duration": 114,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "US",
+      "full_slug": "films/war-pony",
+      "poster": "//a.storyblok.com/f/53852/2000x3000/06c164377f/uvzttsixfdcszyevzmn2pmz3cnl.jpg",
+      "location": "films",
+      "startDateMs": 1726610400000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "499",
+      "tvodSubscribersPrice": "399",
+      "objectID": "1369ebc9-df99-4f68-bee9-2d3e6d2f1975",
+      "_highlightResult": {
+        "title": {
+          "value": "<em>War</em> Pony",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        },
+        "genre": [
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Jojo Bapteise Whiting, LaDainian Crazy, Robert Stover",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "Riley Keough, Gilan Gammel",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "Cold War",
+      "genre": [
+        "drama",
+        "music",
+        "romance"
+      ],
+      "cast": "Joanna Kulig, Tomasz Kot, Borys Szyc ",
+      "director": "Pawel Pawlikowski",
+      "svodEndDate": "2024-04-30 00:00",
+      "startDate": "2024-02-19 00:00",
+      "endDate": "",
+      "asset": {
+        "plugin": "autocomplete",
+        "selected": "5c5419e4e59419000dbe3558"
+      },
+      "duration": 89,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "PL",
+      "full_slug": "films/cold-war",
+      "poster": "https://a.storyblok.com/f/53852/1280x1920/0d8ca96985/wsv6vwhjyrhwzmdn4kjs3acv97q.jpg",
+      "location": "films",
+      "startDateMs": 1708297200000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "0ae38877-6fa8-4835-8f89-3189e5a50a2d",
+      "_highlightResult": {
+        "title": {
+          "value": "Cold <em>War</em>",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        },
+        "genre": [
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "music",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "romance",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Joanna Kulig, Tomasz Kot, Borys Szyc ",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "Pawel Pawlikowski",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "Woman at War",
+      "genre": [
+        "adventure",
+        "comedy",
+        "drama"
+      ],
+      "cast": "Halld\u00f3ra Geirhar\u00f0sd\u00f3ttir, J\u00f3hann Sigur\u00f0arsonJuan, Camilo Rom\u00e1n Estrada",
+      "director": "Benedikt Erlingsson",
+      "svodEndDate": "2022-01-18 00:00",
+      "startDate": "2021-11-08 00:00",
+      "endDate": "",
+      "asset": {
+        "_uid": "feaf8ec9-97e5-4339-8249-d0db1971b501",
+        "plugin": "autocomplete",
+        "selected": "610ab4e64246d5001c7caccb"
+      },
+      "duration": 101,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "IS",
+      "selectedBy": "Hanna Verboom",
+      "full_slug": "films/woman-at-war",
+      "poster": "//a.storyblok.com/f/53852/1067x1600/4228f9bdc2/woman-at-war-poster.jpeg",
+      "location": "films",
+      "startDateMs": 1636326000000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "aa97748e-1981-4f34-80fe-5846756908fa",
+      "_highlightResult": {
+        "title": {
+          "value": "Woman at <em>War</em>",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        },
+        "genre": [
+          {
+            "value": "adventure",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "comedy",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Halld\u00f3ra Geirhar\u00f0sd\u00f3ttir, J\u00f3hann Sigur\u00f0arsonJuan, Camilo Rom\u00e1n Estrada",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "Benedikt Erlingsson",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "selectedBy": {
+          "value": "Hanna Verboom",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "Incendies",
+      "genre": [
+        "war",
+        "drama",
+        "mystery"
+      ],
+      "cast": "Lubna Azabal, M\u00e9lissa D\u00e9sormeaux-Poulin, Maxim Gaudette",
+      "director": "Denis Villeneuve",
+      "svodEndDate": "2023-12-26 00:00",
+      "startDate": "2023-10-16 00:00",
+      "endDate": "",
+      "asset": {
+        "_uid": "d40f4342-d9a4-4d7b-91b2-5d2e6b640d05",
+        "plugin": "autocomplete",
+        "selected": "63da0bd86de129974e9205d7"
+      },
+      "duration": 131,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "CA",
+      "selectedBy": "Zainab Goelaman",
+      "full_slug": "films/incendies",
+      "poster": "//a.storyblok.com/f/53852/1000x1500/5be0d9cdd9/incendiesposter.jpg",
+      "location": "films",
+      "startDateMs": 1697407200000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "e45bf854-4c37-4c12-b3ce-21fdfdb02ab3",
+      "_highlightResult": {
+        "title": {
+          "value": "Incendies",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "<em>war</em>",
+            "matchLevel": "full",
+            "fullyHighlighted": true,
+            "matchedWords": [
+              "war"
+            ]
+          },
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "mystery",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Lubna Azabal, M\u00e9lissa D\u00e9sormeaux-Poulin, Maxim Gaudette",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "Denis Villeneuve",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "selectedBy": {
+          "value": "Zainab Goelaman",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "Onoda: 10.000 Nights in the Jungle",
+      "genre": [
+        "war",
+        "adventure",
+        "history",
+        "drama"
+      ],
+      "cast": "Yuya Endo, Kanji Tsuda, Yuya Matsuura",
+      "director": "Arthur Harari",
+      "svodEndDate": "",
+      "startDate": "2024-10-14 00:00",
+      "endDate": "",
+      "asset": {
+        "_uid": "6b75dfd5-5de6-4be5-9da0-680b033a1551",
+        "plugin": "autocomplete",
+        "selected": "661647c815d1493420b3f64c"
+      },
+      "duration": 167,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "JP",
+      "full_slug": "films/onoda",
+      "poster": "//a.storyblok.com/f/53852/1500x2250/e95e70fe9b/onoda-poster.jpg",
+      "location": "films",
+      "startDateMs": 1728856800000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "dfaa0bb4-b707-4b61-a462-57dfe856355d",
+      "_highlightResult": {
+        "title": {
+          "value": "Onoda: 10.000 Nights in the Jungle",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "<em>war</em>",
+            "matchLevel": "full",
+            "fullyHighlighted": true,
+            "matchedWords": [
+              "war"
+            ]
+          },
+          {
+            "value": "adventure",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "history",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Yuya Endo, Kanji Tsuda, Yuya Matsuura",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "Arthur Harari",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "Atonement",
+      "genre": [
+        "war",
+        "drama",
+        "romance"
+      ],
+      "cast": "Keira Knightley, James McAvoy, Saoirse Ronan, Benedict Cumberbatch",
+      "director": "Joe Wright",
+      "svodEndDate": "2024-02-20 00:00",
+      "startDate": "2023-12-11 00:00",
+      "endDate": "",
+      "asset": {
+        "_uid": "7807911d-a04e-4824-9c50-3bae74103bfa",
+        "plugin": "autocomplete",
+        "selected": "65570fd605e58666d1624820"
+      },
+      "duration": 123,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "GB",
+      "selectedBy": "Jikkie",
+      "full_slug": "films/atonement",
+      "poster": "//a.storyblok.com/f/53852/1000x1500/8133ebfd86/atonementposter.jpg",
+      "location": "films",
+      "startDateMs": 1702249200000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "3ed3a3af-75f0-4785-8eec-07c3192a90de",
+      "_highlightResult": {
+        "title": {
+          "value": "Atonement",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "<em>war</em>",
+            "matchLevel": "full",
+            "fullyHighlighted": true,
+            "matchedWords": [
+              "war"
+            ]
+          },
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "romance",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Keira Knightley, James McAvoy, Saoirse Ronan, Benedict Cumberbatch",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "Joe Wright",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "selectedBy": {
+          "value": "Jikkie",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "Beanpole",
+      "genre": [
+        "drama",
+        "war"
+      ],
+      "cast": "Viktoria Miroshnichenko, Vasilisa Perelygina, Andrey Bykov",
+      "director": "Kantemir Balagov",
+      "svodEndDate": "",
+      "startDate": "2020-10-14 00:00",
+      "endDate": "",
+      "asset": {
+        "plugin": "autocomplete",
+        "selected": "5f65ff11f104d7001ba66e20"
+      },
+      "duration": 130,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "RU",
+      "full_slug": "films/beanpole",
+      "poster": "//a.storyblok.com/f/53852/2000x3000/1fa698535b/beanpole-filmpater.jpg",
+      "location": "films",
+      "startDateMs": 1602626400000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": 349,
+      "tvodSubscribersPrice": 249,
+      "objectID": "de57210e-4fd2-485a-8f1a-26c7caff2a7b",
+      "_highlightResult": {
+        "title": {
+          "value": "Beanpole",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "<em>war</em>",
+            "matchLevel": "full",
+            "fullyHighlighted": true,
+            "matchedWords": [
+              "war"
+            ]
+          }
+        ],
+        "cast": {
+          "value": "Viktoria Miroshnichenko, Vasilisa Perelygina, Andrey Bykov",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "Kantemir Balagov",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "Son of Saul",
+      "genre": [
+        "drama",
+        "war"
+      ],
+      "cast": "G\u00e9za R\u00f6hrig, Levente Moln\u00e1r, Urs Rechn",
+      "director": "L\u00e1szl\u00f3 Nemes",
+      "svodEndDate": "2017-12-12 00:00",
+      "startDate": "2017-10-03 00:00",
+      "endDate": "",
+      "asset": {
+        "plugin": "autocomplete",
+        "selected": "59ccb7dcd0947ba72659a652"
+      },
+      "duration": 107,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "",
+      "selectedBy": "Dirk van der Straaten",
+      "full_slug": "films/son-of-saul",
+      "poster": "https://a.storyblok.com/f/53852/1280x1920/3c0f61c7b8/son-of-saul-post.jpg",
+      "location": "films",
+      "startDateMs": 1506981600000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "9802f6eb-427f-4031-8d9c-641b92d62fcb",
+      "_highlightResult": {
+        "title": {
+          "value": "Son of Saul",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "<em>war</em>",
+            "matchLevel": "full",
+            "fullyHighlighted": true,
+            "matchedWords": [
+              "war"
+            ]
+          }
+        ],
+        "cast": {
+          "value": "G\u00e9za R\u00f6hrig, Levente Moln\u00e1r, Urs Rechn",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "L\u00e1szl\u00f3 Nemes",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "selectedBy": {
+          "value": "Dirk van der Straaten",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "Lebanon",
+      "genre": [
+        "drama",
+        "war"
+      ],
+      "cast": "Yoav Donat, Itay Tiran, Oshri Cohen",
+      "director": "Samuel Maoz",
+      "svodEndDate": "2017-06-02",
+      "startDate": "2017-05-02",
+      "endDate": "",
+      "asset": {
+        "plugin": "autocomplete",
+        "selected": "58f75b6ff384aa272644d566"
+      },
+      "duration": 93,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "",
+      "selectedBy": "Dirk van der Straaten",
+      "full_slug": "films/lebanon",
+      "poster": "https://a.storyblok.com/f/53852/1280x1920/932e0cb184/lebanon-post.jpg",
+      "location": "films",
+      "startDateMs": 1493683200000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "315b84a5-cf42-42c6-a311-2c68808310d0",
+      "_highlightResult": {
+        "title": {
+          "value": "Lebanon",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "<em>war</em>",
+            "matchLevel": "full",
+            "fullyHighlighted": true,
+            "matchedWords": [
+              "war"
+            ]
+          }
+        ],
+        "cast": {
+          "value": "Yoav Donat, Itay Tiran, Oshri Cohen",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "Samuel Maoz",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "selectedBy": {
+          "value": "Dirk van der Straaten",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "The Painted Bird",
+      "genre": [
+        "drama",
+        "war"
+      ],
+      "cast": "Petr Kotl\u00e1r, Nina Sunevic, Alla Sokolova ",
+      "director": "V\u00e1clav Marhoul",
+      "svodEndDate": "",
+      "startDate": "2021-01-07 00:00",
+      "endDate": "",
+      "asset": {
+        "_uid": "dab9cc21-ced7-46e1-81d9-07e89ddd7893",
+        "plugin": "autocomplete",
+        "selected": "5fe0bbbbcf6acd001c9f4663"
+      },
+      "duration": 169,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "CZ",
+      "full_slug": "films/the-painted-bird",
+      "poster": "//a.storyblok.com/f/53852/1280x1920/b80967d5fc/thepaintedbirdposter.jpg",
+      "location": "films",
+      "startDateMs": 1609974000000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": 349,
+      "tvodSubscribersPrice": 249,
+      "objectID": "05ebb05c-f444-4a5d-8441-86e8679058c5",
+      "_highlightResult": {
+        "title": {
+          "value": "The Painted Bird",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "<em>war</em>",
+            "matchLevel": "full",
+            "fullyHighlighted": true,
+            "matchedWords": [
+              "war"
+            ]
+          }
+        ],
+        "cast": {
+          "value": "Petr Kotl\u00e1r, Nina Sunevic, Alla Sokolova ",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "V\u00e1clav Marhoul",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "The Zone of Interest",
+      "genre": [
+        "drama",
+        "history",
+        "war"
+      ],
+      "cast": "Christian Friedel, Sandra H\u00fcller",
+      "director": "Jonathan Glazer",
+      "svodEndDate": "",
+      "startDate": "2024-05-01 12:00",
+      "endDate": "",
+      "asset": {
+        "_uid": "069cab61-6ae0-4165-8539-b64b0780b5ac",
+        "plugin": "autocomplete",
+        "selected": "660e5e4cff4492784c9de2cb"
+      },
+      "duration": 105,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "GB",
+      "full_slug": "films/the-zone-of-interest",
+      "poster": "//a.storyblok.com/f/53852/2000x3000/9b9fb0dc5b/interestposter.jpeg",
+      "location": "films",
+      "startDateMs": 1714557600000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "499",
+      "tvodSubscribersPrice": "399",
+      "objectID": "fb2a4a74-a9a2-43b2-a803-31090407b382",
+      "_highlightResult": {
+        "title": {
+          "value": "The Zone of Interest",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "history",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "<em>war</em>",
+            "matchLevel": "full",
+            "fullyHighlighted": true,
+            "matchedWords": [
+              "war"
+            ]
+          }
+        ],
+        "cast": {
+          "value": "Christian Friedel, Sandra H\u00fcller",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "Jonathan Glazer",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "Quo Vadis, Aida?",
+      "genre": [
+        "drama",
+        "history",
+        "war"
+      ],
+      "cast": "Jasna Djuricic, Izudin Bajrovic, Boris Ler",
+      "director": "Jasmila Zbanic",
+      "svodEndDate": "2024-05-09 00:00",
+      "startDate": "2024-02-28 00:00",
+      "endDate": "",
+      "asset": {
+        "_uid": "603d4a55-7841-4b7c-86cb-be12eb37fb5c",
+        "plugin": "autocomplete",
+        "selected": "618570b5616bd6001c33ed11"
+      },
+      "duration": 101,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "BA",
+      "full_slug": "films/quo-vadis-aida",
+      "poster": "//a.storyblok.com/f/53852/2000x3000/3f616ca9bd/qdi0jkg1mftsfounwhh7ox1om1l.jpg",
+      "location": "films",
+      "startDateMs": 1709074800000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "f718da4f-046c-4685-8268-6c443efbd53b",
+      "_highlightResult": {
+        "title": {
+          "value": "Quo Vadis, Aida?",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "history",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "<em>war</em>",
+            "matchLevel": "full",
+            "fullyHighlighted": true,
+            "matchedWords": [
+              "war"
+            ]
+          }
+        ],
+        "cast": {
+          "value": "Jasna Djuricic, Izudin Bajrovic, Boris Ler",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "Jasmila Zbanic",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "Het Verloren Transport",
+      "genre": [
+        "drama",
+        "history",
+        "war"
+      ],
+      "cast": "Hanna van Vliet, Eug\u00e9nie Anselin, Anna Bachmann",
+      "director": "Saskia Diesing",
+      "svodEndDate": "",
+      "startDate": "2023-09-11 00:00",
+      "endDate": "",
+      "asset": {
+        "_uid": "0e86b06f-68e8-480c-9c9d-49b355c51d6a",
+        "plugin": "autocomplete",
+        "selected": "6492a12d48589a1312f39127"
+      },
+      "duration": 100,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "NL",
+      "selectedBy": "Cinetree",
+      "full_slug": "films/het-verloren-transport",
+      "poster": "//a.storyblok.com/f/53852/2000x3000/eae886d8c5/verlorentransportposter.jpg",
+      "location": "films",
+      "startDateMs": 1694383200000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "499",
+      "tvodSubscribersPrice": "399",
+      "objectID": "e11631ba-9dfb-49e7-8056-daed202d3f3e",
+      "_highlightResult": {
+        "title": {
+          "value": "Het Verloren Transport",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "history",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "<em>war</em>",
+            "matchLevel": "full",
+            "fullyHighlighted": true,
+            "matchedWords": [
+              "war"
+            ]
+          }
+        ],
+        "cast": {
+          "value": "Hanna van Vliet, Eug\u00e9nie Anselin, Anna Bachmann",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "Saskia Diesing",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "selectedBy": {
+          "value": "Cinetree",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "Die F\u00e4lscher",
+      "genre": [
+        "crime",
+        "drama",
+        "war"
+      ],
+      "cast": "Karl Markovics, August Diehl, Devid Striesow ",
+      "director": "Stefan Ruzowitzky",
+      "svodEndDate": "",
+      "startDate": "2019-01-22 00:00",
+      "endDate": "",
+      "asset": {
+        "plugin": "autocomplete",
+        "selected": "5c0a09746b27ae000d402dc7"
+      },
+      "duration": 99,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "AT",
+      "full_slug": "films/die-faelscher",
+      "poster": "https://a.storyblok.com/f/53852/1280x1920/dadd93adb8/poster.jpg",
+      "location": "films",
+      "startDateMs": 1548111600000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "860f3f64-bd23-41bb-b6e5-5d52c19f90af",
+      "_highlightResult": {
+        "title": {
+          "value": "Die F\u00e4lscher",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "crime",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "<em>war</em>",
+            "matchLevel": "full",
+            "fullyHighlighted": true,
+            "matchedWords": [
+              "war"
+            ]
+          }
+        ],
+        "cast": {
+          "value": "Karl Markovics, August Diehl, Devid Striesow ",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "Stefan Ruzowitzky",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "Pan's Labyrinth",
+      "genre": [
+        "fantasy",
+        "drama",
+        "war"
+      ],
+      "cast": " Ivana Baquero, Ariadna Gil, Sergi L\u00f3pez",
+      "director": "Guillermo del Toro",
+      "svodEndDate": "2022-05-17 00:00",
+      "startDate": "2022-03-07 00:00",
+      "endDate": "",
+      "asset": {
+        "_uid": "041470a2-86a5-4322-a67b-0ff51c01829d",
+        "plugin": "autocomplete",
+        "selected": "61c09fcfe0209b001c859c76"
+      },
+      "duration": 118,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "MX",
+      "selectedBy": "Eva van der Gucht",
+      "full_slug": "films/pan-s-labyrinth",
+      "poster": "https://a.storyblok.com/f/53852/1280x1920/b14722f840/pan-s-labyrinth-post.jpg",
+      "location": "films",
+      "startDateMs": 1646607600000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "45cac273-ec6d-48b9-a410-5765f851d94d",
+      "_highlightResult": {
+        "title": {
+          "value": "Pan's Labyrinth",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "fantasy",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "<em>war</em>",
+            "matchLevel": "full",
+            "fullyHighlighted": true,
+            "matchedWords": [
+              "war"
+            ]
+          }
+        ],
+        "cast": {
+          "value": " Ivana Baquero, Ariadna Gil, Sergi L\u00f3pez",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "Guillermo del Toro",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "selectedBy": {
+          "value": "Eva van der Gucht",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "Ober",
+      "genre": [
+        "comedy"
+      ],
+      "cast": "Alex van Warmerdam, Ariane Schluter, Jaap Spijkers, Pierre Bokma, Joop Admiraal",
+      "director": "Alex van Warmerdam",
+      "svodEndDate": null,
+      "startDate": "2018-06-08",
+      "endDate": null,
+      "asset": {
+        "plugin": "autocomplete",
+        "selected": "5b192e8aa95411000c8f1b0c"
+      },
+      "duration": 97,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": null,
+      "selectedBy": null,
+      "full_slug": "films/ober",
+      "poster": "https://a.storyblok.com/f/53852/1280x1745/1271e316c5/ober-poster.jpg",
+      "location": "films",
+      "startDateMs": 1528416000000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "fbb07681-44f2-4820-a8f1-3cc4b60b6d2e",
+      "_highlightResult": {
+        "title": {
+          "value": "Ober",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "comedy",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Alex van <em>War</em>merdam, Ariane Schluter, Jaap Spijkers, Pierre Bokma, Joop Admiraal",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        },
+        "director": {
+          "value": "Alex van <em>War</em>merdam",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        }
+      }
+    },
+    {
+      "title": "Kleine Teun",
+      "genre": [
+        "comedy",
+        "drama",
+        "romance"
+      ],
+      "cast": "Alex van Warmerdam, Annet Malherbe, Ariane Schluter",
+      "director": "Alex van Warmerdam",
+      "svodEndDate": null,
+      "startDate": null,
+      "endDate": null,
+      "asset": {
+        "plugin": "autocomplete",
+        "selected": "5b1a17230e35e5000ca8f66d"
+      },
+      "duration": 95,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": null,
+      "selectedBy": "Eye Filmmuseum",
+      "full_slug": "films/kleine-teun",
+      "poster": "https://a.storyblok.com/f/53852/1280x1920/63db56d30e/kleine-teun-poster.jpg",
+      "location": "films",
+      "startDateMs": 0,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "4a531797-a4a5-4ced-a3a2-dd8c7096e2cd",
+      "_highlightResult": {
+        "title": {
+          "value": "Kleine Teun",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "comedy",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "romance",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Alex van <em>War</em>merdam, Annet Malherbe, Ariane Schluter",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        },
+        "director": {
+          "value": "Alex van <em>War</em>merdam",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        },
+        "selectedBy": {
+          "value": "Eye Filmmuseum",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "Fish Tank",
+      "genre": [
+        "drama",
+        "coming-of-age"
+      ],
+      "cast": "Katie Jarvis, Kierston Wareing, Michael Fassbender",
+      "director": "Andrea Arnold",
+      "svodEndDate": "2022-06-27 00:00",
+      "startDate": "2022-04-18 00:00",
+      "endDate": "",
+      "asset": {
+        "plugin": "autocomplete",
+        "selected": "5bf4fd1390202b000d7f307a"
+      },
+      "duration": 118,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "GB",
+      "selectedBy": "Halina Reijn",
+      "full_slug": "films/fish-tank",
+      "poster": "https://a.storyblok.com/f/53852/1280x1920/281da107dc/fishhhhh.jpg",
+      "location": "films",
+      "startDateMs": 1650232800000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "4b967860-4e39-4cb6-b4ec-31fa7b279cd2",
+      "_highlightResult": {
+        "title": {
+          "value": "Fish Tank",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "coming-of-age",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Katie Jarvis, Kierston <em>War</em>eing, Michael Fassbender",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        },
+        "director": {
+          "value": "Andrea Arnold",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "selectedBy": {
+          "value": "Halina Reijn",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "Schneider vs. Bax",
+      "genre": [
+        "comedy",
+        "thriller"
+      ],
+      "cast": "Tom Dewispelaere, Alex van Warmerdam, Maria Kraakman, Annet Malherbe, Eva van de Wijdeven",
+      "director": "Alex van Warmerdam",
+      "svodEndDate": "2018-04-03",
+      "startDate": "2018-01-23",
+      "endDate": "",
+      "asset": {
+        "plugin": "autocomplete",
+        "selected": "5a62019dab2eff4b8ccfbe8c"
+      },
+      "duration": 106,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": null,
+      "selectedBy": "Ko Zandvliet",
+      "full_slug": "films/schneider-vs-bax",
+      "poster": "https://a.storyblok.com/f/53852/1280x1920/63c61fb8eb/schneider-vs-bax-poster-alex-van-warmerdam.jpg",
+      "location": "films",
+      "startDateMs": 1516665600000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "f0377a29-93c1-4b0c-b47c-6a0902d60b18",
+      "_highlightResult": {
+        "title": {
+          "value": "Schneider vs. Bax",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "comedy",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "thriller",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Tom Dewispelaere, Alex van <em>War</em>merdam, Maria Kraakman, Annet Malherbe, Eva van de Wijdeven",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        },
+        "director": {
+          "value": "Alex van <em>War</em>merdam",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        },
+        "selectedBy": {
+          "value": "Ko Zandvliet",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "20.000 Days on Earth",
+      "genre": [
+        "documentary",
+        "drama",
+        "music"
+      ],
+      "cast": "Nick Cave, Susie Bick, Warren Ellis",
+      "director": "Iain Forsyth, Jane Pollard",
+      "svodEndDate": "2018-03-20 00:00",
+      "startDate": "2018-01-09 00:00",
+      "endDate": "",
+      "asset": {
+        "plugin": "autocomplete",
+        "selected": "61e517efe0209b001c859ca8"
+      },
+      "duration": 97,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "",
+      "selectedBy": "Wende",
+      "full_slug": "films/20-000-days-on-earth",
+      "poster": "https://a.storyblok.com/f/53852/1280x1831/3a0547bf22/20-post-2.jpg",
+      "location": "films",
+      "startDateMs": 1515452400000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "d1296755-347f-43e9-958c-7c7ddf87ba2f",
+      "_highlightResult": {
+        "title": {
+          "value": "20.000 Days on Earth",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "documentary",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "music",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Nick Cave, Susie Bick, <em>War</em>ren Ellis",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        },
+        "director": {
+          "value": "Iain Forsyth, Jane Pollard",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "selectedBy": {
+          "value": "Wende",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "The Future",
+      "genre": [
+        "comedy",
+        "drama",
+        "romance"
+      ],
+      "cast": "Miranda July, Hamish Linklater, David Warshofsky ",
+      "director": "Miranda July",
+      "svodEndDate": "2022-03-29 00:00",
+      "startDate": "2022-01-17 00:00",
+      "endDate": "",
+      "asset": {
+        "plugin": "autocomplete",
+        "selected": "61d468ebe0209b001c859c86"
+      },
+      "duration": 91,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "US",
+      "selectedBy": "Jesse Laport",
+      "full_slug": "films/the-future",
+      "poster": "https://a.storyblok.com/f/53852/1280x1920/e9e6f37b8e/the-future-post.jpg",
+      "location": "films",
+      "startDateMs": 1642374000000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "2788f3ac-7ae1-4a91-885c-25d193ba59f4",
+      "_highlightResult": {
+        "title": {
+          "value": "The Future",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "comedy",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "romance",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Miranda July, Hamish Linklater, David <em>War</em>shofsky ",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        },
+        "director": {
+          "value": "Miranda July",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "selectedBy": {
+          "value": "Jesse Laport",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "De Laatste Dagen van Emma Blank",
+      "genre": [
+        "comedy",
+        "drama"
+      ],
+      "cast": "Marlies Heuer, Gene Bervoets, Annet Malherbe, Alex van Warmerdam, Marwan Kenzari",
+      "director": "Alex van Warmerdam",
+      "svodEndDate": "",
+      "startDate": "2018-10-16",
+      "endDate": "",
+      "asset": {
+        "plugin": "autocomplete",
+        "selected": "5b1a15360e35e5000ca8f66c"
+      },
+      "duration": 89,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": null,
+      "selectedBy": "Anne Lammers",
+      "full_slug": "films/de-laatste-dagen-van-emma-blank",
+      "poster": "https://a.storyblok.com/f/53852/1280x1920/0b2b345ce8/laatste-dagen-poster.jpg",
+      "location": "films",
+      "startDateMs": 1539648000000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "ee913ca3-d7da-4964-8ee0-d0cd1ded33ad",
+      "_highlightResult": {
+        "title": {
+          "value": "De Laatste Dagen van Emma Blank",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "comedy",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Marlies Heuer, Gene Bervoets, Annet Malherbe, Alex van <em>War</em>merdam, Marwan Kenzari",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        },
+        "director": {
+          "value": "Alex van <em>War</em>merdam",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        },
+        "selectedBy": {
+          "value": "Anne Lammers",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "Abel",
+      "genre": [
+        "comedy"
+      ],
+      "cast": "Olga Zuiderhoek, Loes Luca, Annet Malherbe, Alex van Warmerdam",
+      "director": "Alex van Warmerdam",
+      "svodEndDate": null,
+      "startDate": "2018-07-17",
+      "endDate": null,
+      "asset": {
+        "plugin": "autocomplete",
+        "selected": "5b4c8fa9d0dac4000c1cb5b8"
+      },
+      "duration": 100,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": null,
+      "selectedBy": "Eye Filmmuseum",
+      "full_slug": "films/abel",
+      "poster": "https://a.storyblok.com/f/53852/600x900/5ecf6a9cca/abel-filmposter.jpg",
+      "location": "films",
+      "startDateMs": 1531785600000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "92c61baa-563f-45e2-9b51-1b7abb2d59e7",
+      "_highlightResult": {
+        "title": {
+          "value": "Abel",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "comedy",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Olga Zuiderhoek, Loes Luca, Annet Malherbe, Alex van <em>War</em>merdam",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        },
+        "director": {
+          "value": "Alex van <em>War</em>merdam",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        },
+        "selectedBy": {
+          "value": "Eye Filmmuseum",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "De Jurk",
+      "genre": [
+        "comedy",
+        "drama"
+      ],
+      "cast": "Ariane Schluter, Olga Zuiderhoek, Ricky Koole, Alex van Warmerdam, Rijk de Gooyer, Henri Garcin, Annet Malherbe, Jacob Derwig, Peter Blok",
+      "director": "Alex van Warmerdam",
+      "svodEndDate": null,
+      "startDate": null,
+      "endDate": null,
+      "asset": {
+        "plugin": "autocomplete",
+        "selected": "5b125f27e587bf000dc971fb"
+      },
+      "duration": 103,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": null,
+      "selectedBy": "Eye Filmmuseum",
+      "full_slug": "films/de-jurk",
+      "poster": "https://a.storyblok.com/f/53852/1280x1920/0900f042f2/de-jurk-poster.jpg",
+      "location": "films",
+      "startDateMs": 0,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "73da1da5-4991-4cb7-a623-de0b3c00f4df",
+      "_highlightResult": {
+        "title": {
+          "value": "De Jurk",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "comedy",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Ariane Schluter, Olga Zuiderhoek, Ricky Koole, Alex van <em>War</em>merdam, Rijk de Gooyer, Henri Garcin, Annet Malherbe, Jacob Derwig, Peter Blok",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        },
+        "director": {
+          "value": "Alex van <em>War</em>merdam",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        },
+        "selectedBy": {
+          "value": "Eye Filmmuseum",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "Sweet Country",
+      "genre": [
+        "thriller",
+        "drama",
+        "western"
+      ],
+      "cast": "Hamilton Morris, Natassia Gorey Furbur, Bryan Brown & Sam Neill",
+      "director": "Warwick Thornton",
+      "svodEndDate": "",
+      "startDate": "2024-09-02 00:00",
+      "endDate": "",
+      "asset": {
+        "_uid": "f57df8ae-9ecf-4f63-90eb-18b9f4ec4189",
+        "plugin": "autocomplete",
+        "selected": "667a829248838c786dd772ce"
+      },
+      "duration": 112,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "AU",
+      "full_slug": "films/sweet-country",
+      "poster": "//a.storyblok.com/f/53852/2000x3000/bb180e54b6/sweet-country-poster.jpg",
+      "location": "films",
+      "startDateMs": 1725228000000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "c2f3078b-9d3b-4bbd-a445-70dcf2c1ce78",
+      "_highlightResult": {
+        "title": {
+          "value": "Sweet Country",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "thriller",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "western",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Hamilton Morris, Natassia Gorey Furbur, Bryan Brown & Sam Neill",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "<em>War</em>wick Thornton",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        }
+      }
+    },
+    {
+      "title": "The New Boy",
+      "genre": [
+        "drama",
+        "fantasy",
+        "history"
+      ],
+      "cast": "Cate Blanchett, Aswan Reid, Deborah Mailman",
+      "director": "Warwick Thornton",
+      "svodEndDate": "",
+      "startDate": "2024-12-29 00:00",
+      "endDate": "",
+      "asset": {
+        "_uid": "5c13e504-54eb-490c-8508-61585f988192",
+        "plugin": "autocomplete",
+        "selected": "67444bd5369e5bc4f7cd5948"
+      },
+      "duration": 90,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "AU",
+      "full_slug": "films/the-new-boy",
+      "poster": "//a.storyblok.com/f/53852/2000x3000/2dbee09402/newboyposter.jpg",
+      "location": "films",
+      "startDateMs": 1735426800000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "499",
+      "tvodSubscribersPrice": "399",
+      "objectID": "58c8fa6a-4573-4d08-a5c7-f92602ed4921",
+      "_highlightResult": {
+        "title": {
+          "value": "The New Boy",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "fantasy",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "history",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Cate Blanchett, Aswan Reid, Deborah Mailman",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "<em>War</em>wick Thornton",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        }
+      }
+    },
+    {
+      "title": "Pride",
+      "genre": [
+        "biography",
+        "comedy",
+        "drama"
+      ],
+      "cast": "Bill Nighy, Imelda Staunton, Dominic West ",
+      "director": "Matthew Warchus",
+      "svodEndDate": "2020-09-01 00:00",
+      "startDate": "2019-07-30 00:00",
+      "endDate": "",
+      "asset": {
+        "plugin": "autocomplete",
+        "selected": "5ade308a33698d000ca578bb"
+      },
+      "duration": 119,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "",
+      "selectedBy": "Heisa Jynx",
+      "full_slug": "films/pride",
+      "poster": "https://a.storyblok.com/f/53852/600x900/967d36a382/pride-poster.jpg",
+      "location": "films",
+      "startDateMs": 1564437600000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "c0f5ca6d-a046-4de5-a1cc-a628f1a83942",
+      "_highlightResult": {
+        "title": {
+          "value": "Pride",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "biography",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "comedy",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Bill Nighy, Imelda Staunton, Dominic West ",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "Matthew <em>War</em>chus",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        },
+        "selectedBy": {
+          "value": "Heisa Jynx",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "Grimm",
+      "genre": [
+        "drama"
+      ],
+      "cast": "Halina Reijn, Jacob Derwig, Carmelo G\u00f3mez",
+      "director": "Alex van Warmerdam",
+      "svodEndDate": "2022-02-15 00:00",
+      "startDate": "2021-12-06 00:00",
+      "endDate": "",
+      "asset": {
+        "_uid": "607499a6-2b30-4c32-9e28-87ec605422e7",
+        "plugin": "autocomplete",
+        "selected": "5de7d18e3cd5d1001c9fde90"
+      },
+      "duration": 88,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "NL",
+      "full_slug": "films/grimm",
+      "poster": "//a.storyblok.com/f/53852/750x1072/9e43900c30/grimm-re-edit_ps_1_jpg_sd-low.jpg",
+      "location": "films",
+      "startDateMs": 1638745200000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": 349,
+      "tvodSubscribersPrice": 249,
+      "objectID": "88b081f7-1b9b-4bd9-b5e4-e6b3ce53dfa9",
+      "_highlightResult": {
+        "title": {
+          "value": "Grimm",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Halina Reijn, Jacob Derwig, Carmelo G\u00f3mez",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "Alex van <em>War</em>merdam",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        }
+      }
+    },
+    {
+      "title": "Nr. 10",
+      "genre": [
+        "drama",
+        "comedy",
+        "thriller"
+      ],
+      "cast": "Tom Dewispelaere, Anniek Pheifer, Hans Kesting, Gene Bervoets, Frieda Barnhard",
+      "director": "Alex van Warmerdam",
+      "svodEndDate": "2024-02-06 00:00",
+      "startDate": "2023-11-27 00:00",
+      "endDate": "",
+      "asset": {
+        "_uid": "dfb6afec-977f-4c14-98c1-e9a45c801c63",
+        "plugin": "autocomplete",
+        "selected": "61b78d6503c1f9001c032b5a"
+      },
+      "duration": 100,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "NL",
+      "full_slug": "films/nr-10",
+      "poster": "//a.storyblok.com/f/53852/440x660/24a3ea5dd4/zbekrqtiw8kx0nkdxhmqtssldby.jpg",
+      "location": "films",
+      "startDateMs": 1701039600000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": 349,
+      "tvodSubscribersPrice": 249,
+      "objectID": "82b1f9cd-4b04-4939-a8fb-520ed3b09c85",
+      "_highlightResult": {
+        "title": {
+          "value": "Nr. 10",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "comedy",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "thriller",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Tom Dewispelaere, Anniek Pheifer, Hans Kesting, Gene Bervoets, Frieda Barnhard",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "Alex van <em>War</em>merdam",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        }
+      }
+    },
+    {
+      "title": "De Noorderlingen",
+      "genre": [
+        "comedy",
+        "drama"
+      ],
+      "cast": "Jack Wouterse, Annet Malherbe, Rudolf Lucieer",
+      "director": "Alex van Warmerdam",
+      "svodEndDate": "2023-10-18 00:00",
+      "startDate": "2023-08-07 00:00",
+      "endDate": "",
+      "asset": {
+        "plugin": "autocomplete",
+        "selected": "5b472290d0dac4000c1cb5aa"
+      },
+      "duration": 108,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "NL",
+      "selectedBy": "Zo\u00eb Love Smith",
+      "full_slug": "films/de-noorderlingen",
+      "poster": "https://a.storyblok.com/f/53852/1280x1920/88f5313f9e/noorderlingen-post.jpg",
+      "location": "films",
+      "startDateMs": 1691359200000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "81d5d757-892e-4251-b2f1-5679911653ed",
+      "_highlightResult": {
+        "title": {
+          "value": "De Noorderlingen",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "comedy",
+            "matchLevel": "none",
+            "matchedWords": []
+          },
+          {
+            "value": "drama",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Jack Wouterse, Annet Malherbe, Rudolf Lucieer",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "Alex van <em>War</em>merdam",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        },
+        "selectedBy": {
+          "value": "Zo\u00eb Love Smith",
+          "matchLevel": "none",
+          "matchedWords": []
+        }
+      }
+    },
+    {
+      "title": "Borgman",
+      "genre": [
+        "thriller"
+      ],
+      "cast": "Jan Bijvoet, Hadewych Minis, Jeroen Perceval",
+      "director": "Alex van Warmerdam",
+      "svodEndDate": "2024-11-28 00:00",
+      "startDate": "2024-09-18 00:00",
+      "endDate": "",
+      "asset": {
+        "plugin": "autocomplete",
+        "selected": "5b8ed3084c084e000d7abaae"
+      },
+      "duration": 173,
+      "shops": [
+        "cinetree.nl"
+      ],
+      "country": "NL",
+      "full_slug": "films/borgman",
+      "poster": "https://a.storyblok.com/f/53852/1280x1920/804c56d942/borgman-post.jpg",
+      "location": "films",
+      "startDateMs": 1726610400000,
+      "endDateMs": 7258118400000,
+      "tvodPrice": "349",
+      "tvodSubscribersPrice": "249",
+      "objectID": "6fd53c8b-c875-4a40-847e-77a420b34b95",
+      "_highlightResult": {
+        "title": {
+          "value": "Borgman",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "genre": [
+          {
+            "value": "thriller",
+            "matchLevel": "none",
+            "matchedWords": []
+          }
+        ],
+        "cast": {
+          "value": "Jan Bijvoet, Hadewych Minis, Jeroen Perceval",
+          "matchLevel": "none",
+          "matchedWords": []
+        },
+        "director": {
+          "value": "Alex van <em>War</em>merdam",
+          "matchLevel": "full",
+          "fullyHighlighted": false,
+          "matchedWords": [
+            "war"
+          ]
+        }
+      }
+    }
+  ],
+  "nbHits": 31,
+  "page": 0,
+  "nbPages": 1,
+  "hitsPerPage": 50,
+  "exhaustiveNbHits": true,
+  "exhaustiveTypo": true,
+  "exhaustive": {
+    "nbHits": true,
+    "typo": true
+  },
+  "query": "war",
+  "params": "query=war&filters=%28location%3A%22films%22+OR+location%3A%22shorts%22%29+AND+startDateMs%3C%3D1736300246978+AND+endDateMs%3E%3D1736300246978+AND+shops%3Acinetree.nl&disableExactOnAttributes=%5B%22genre%22%5D&hitsPerPage=50",
+  "renderingContent": {},
+  "processingTimeMS": 1,
+  "processingTimingsMS": {
+    "_request": {
+      "roundTrip": 10
+    },
+    "getIdx": {
+      "load": {
+        "total": 1
+      },
+      "total": 1
+    },
+    "total": 1
+  },
+  "serverTimeMS": 3
+}
