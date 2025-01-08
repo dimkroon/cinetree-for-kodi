@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2025 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 import logging
@@ -176,7 +176,7 @@ def replace_markdown(markdown_text):
     from Cinetree presentable.
 
     Bold an italic markdown will be converted to their respective Kodi equivalent.
-    Markdown hyperlinks will collaps to the link text only. Escaped markdown is unescaped.
+    Markdown hyperlinks will collapse to the link text only. Escaped markdown is unescaped.
 
     """
     if not markdown_text:

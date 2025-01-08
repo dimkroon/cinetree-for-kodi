@@ -1,6 +1,6 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -98,17 +98,11 @@ def create_stream_info_url(film_uuid, slug=None):
     uuid from the film's details page.
 
     """
-    import re
-
     if not film_uuid:
         try:
             data = storyblok.story_by_name(slug)
             film_uuid = data['uuid']
-            # url = get_jsonp_url(slug + '/payload.js')
-            # js_doc = fetch.get_document(url)
-            # match = re.search(r'.uuid="([\w-]{36})";', js_doc)
-            # film_uuid = match[1]
-        except(errors.FetchError, TypeError, KeyError):
+        except (errors.FetchError, TypeError, KeyError):
             logger.error("Unable to obtain uuid from film details of '%s'.", slug, exc_info=True)
             raise errors.FetchError(Script.localize(STRM_INFO_UNAVAILABLE))
 

@@ -74,7 +74,7 @@ def list_my_films(addon, subcategory=None):
         films_list = ct_api.get_watched_films(subcategory == 'finished')
 
     if not films_list:
-        yield False
+        # yield False
         return
 
     films = (ct_data.create_film_item(film) for film in films_list)
@@ -257,7 +257,7 @@ def play_ct_video(stream_info: dict, title: str = ''):
             logger.debug("User canceled resume play dialog")
             return False
         elif result == 0:
-            play_item.setInfo('video', {'playcount': 1})
+            play_item.setInfo('video', {'playcount': '1'})
             play_item.setProperties({
                 'ResumeTime': str(resume_time),
                 'TotalTime': str(duration)

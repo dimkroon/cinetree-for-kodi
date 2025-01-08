@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -57,7 +57,7 @@ class SubscriptionFilms(unittest.TestCase):
     def test_get_list_of_subscription_film_ids(self):
         """This endpoint returns just a list of ID's of the current subscription films"""
         resp = ct_api.get_subscription_films()
-        testutils.save_json(resp, 'films-svod.json')
+        # testutils.save_json(resp, 'films-svod.json')
         self.assertIsInstance(resp, list)
         self.assertAlmostEqual(20, len(resp), delta=3)
         for item in resp:
@@ -141,7 +141,7 @@ class Genres(unittest.TestCase):
             fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/genre')
 
     def test_get_genres_from_films_payload(self):
-        """films/paylaod has a field 'filterGenreItems' with contains a comma separated list of all
+        """films/payload has a field 'filterGenreItems' with contains a comma separated list of all
         available genres.
         """
         resp = ct_api.get_jsonp('films/payload.js')
