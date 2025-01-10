@@ -57,12 +57,6 @@ class TestKodiUtils(unittest.TestCase):
             self.assertIsNone(kodi_utils.show_low_credit_msg(0, 3.25))
             p_viewer.asser_called_once()
 
-    @patch('xbmcgui.Dialog.contextmenu')
-    def test_ask_resume_film(self, _):
-        kodi_utils.ask_resume_film(10.1235)
-        kodi_utils.ask_resume_film(300.1235)
-        kodi_utils.ask_resume_film(3732.1235)
-
     def test_ask_log_handler(self):
         with patch('xbmcgui.Dialog.contextmenu', return_value=1):
             # return user selection

@@ -1,6 +1,6 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -8,6 +8,7 @@
 
 import logging
 import time
+import sys
 
 import xbmcgui
 from xbmc import Player, Monitor
@@ -192,23 +193,6 @@ def show_low_credit_msg(price, credit):
         dlg.textviewer(dlg_title, Script.localize(MSG_MORE_PAYMENT_INFO))
 
 
-def ask_resume_film(resume_time):
-    """Show a dialog asking the user if the film is to be started from the resume
-    point, or from the start.
-
-    """
-    minutes, seconds = divmod(int(resume_time), 60)
-    hours, minutes = divmod(minutes, 60)
-    if hours:
-        resume_text = '{} {:d}:{:02d}:{:02d}'.format(Script.localize(TXT_RESUME_FROM), hours, minutes, seconds)
-    else:
-        resume_text = '{} {:d}:{:02d}'.format(Script.localize(TXT_RESUME_FROM), minutes, seconds)
-
-    dlg = xbmcgui.Dialog()
-    result = dlg.contextmenu([resume_text, Script.localize(TXT_PLAY_FROM_START)])
-    return result
-
-
 def ask_log_handler(default):
     options = Script.localize(TXT_LOG_TARGETS).split(',')
     dlg = xbmcgui.Dialog()
@@ -254,3 +238,11 @@ def yes_no_dialog(msg, heading=None, autoclose=12000):
     if isinstance(msg, int):
         msg = Script.localize(msg)
     return xbmcgui.Dialog().yesno(heading, msg, autoclose=autoclose)
+
+
+def kodi_resumes():
+    """Return True when Kodi intents to resume a video,"""
+    try:
+        return sys.argv[3] == 'resume:true'
+    except IndexError:
+        return False

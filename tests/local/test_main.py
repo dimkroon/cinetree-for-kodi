@@ -316,18 +316,6 @@ class PlayFilm(unittest.TestCase):
         with patch('resources.lib.ctree.ct_api.get_stream_info', return_value=strm_info):
             main.play_film.test('', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
 
-    @patch('resources.lib.ctree.ct_api.get_stream_info', return_value=open_json('stream_info.json'))
-    def test_play_film_resume_dialog_result(self, _, __):
-        with patch('resources.lib.kodi_utils.ask_resume_film', return_value=0):
-            item = main.play_film.test('', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
-            self.assertIsInstance(item, xbmcgui.ListItem)
-        with patch('resources.lib.kodi_utils.ask_resume_film', return_value=1):
-            item = main.play_film.test('', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
-            self.assertIsInstance(item, xbmcgui.ListItem)
-        with patch('resources.lib.kodi_utils.ask_resume_film', return_value=-1):
-            item = main.play_film.test('', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
-            self.assertIsInstance(item, type(False))
-
 
 @patch('resources.lib.kodi_utils.show_low_credit_msg')
 @patch('resources.lib.ctree.ct_api.get_payment_info', return_value=(4.3, '1982873hfmalk'))

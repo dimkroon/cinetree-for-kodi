@@ -335,26 +335,6 @@ def play_ct_video(stream_info: dict, title: str = ''):
 
     if subtitles:
         play_item.setSubtitles(subtitles)
-
-    # Resume from 10 sec before the actual play time, so it's easier to pick up from where we've left off.
-    resume_time = max(0, int(stream_info.get('playtime', 0)) - 10)
-    duration = int(stream_info.get('duration', 0))
-    if 0 < resume_time < duration * constants.FULLY_WATCHED_PERCENTAGE:
-        result = kodi_utils.ask_resume_film(resume_time)
-        logger.debug("Resume from %s result = %s", resume_time, result)
-        if result == -1:
-            logger.debug("User canceled resume play dialog")
-            return False
-        elif result == 0:
-            play_item.setInfo('video', {'playcount': '1'})
-            play_item.setProperties({
-                'ResumeTime': str(resume_time),
-                'TotalTime': str(duration)
-            })
-            logger.debug("Play from %s", resume_time)
-        else:
-            logger.debug("Play from start")
-
     return play_item
 
 
