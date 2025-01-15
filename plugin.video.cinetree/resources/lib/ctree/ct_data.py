@@ -16,7 +16,7 @@ from urllib.parse import quote_plus
 
 from codequick import Script
 from codequick.support import logger_id
-from resources.lib.utils import replace_markdown, remove_markdown
+from resources.lib.utils import replace_markdown, remove_markdown, strptime
 
 
 MSG_ONLY_TODAY = 30501
@@ -47,7 +47,7 @@ def create_film_item(film_info, add_price=True):
         price_info = ''
 
         try:
-            subscr_end_date = datetime(*(time.strptime(data['svodEndDate'], "%Y-%m-%d %H:%M")[:6]))
+            subscr_end_date = strptime(data['svodEndDate'], "%Y-%m-%d %H:%M")
             subscr_end_date = tz_ams.localize(subscr_end_date).astimezone(pytz.utc)
             days_dif = (subscr_end_date - datetime.now(tz=pytz.utc)) / timedelta(days=1)
 

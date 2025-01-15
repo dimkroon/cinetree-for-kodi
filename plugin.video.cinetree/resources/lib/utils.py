@@ -100,6 +100,11 @@ def duration_2_seconds(duration: str):
     return None
 
 
+def strptime(dt_str: str, format: str):
+    """A bug free alternative to `datetime.datetime.strptime(...)`"""
+    return datetime(*(time.strptime(dt_str, format)[0:6]))
+
+
 def reformat_date(date_string: str, old_format: str, new_format: str) -> str:
     """Take a string containing a datetime and in a particular format and
     convert it into another format.
@@ -107,10 +112,7 @@ def reformat_date(date_string: str, old_format: str, new_format: str) -> str:
     Usually used to convert timestamps obtained from a website into a nice readable format.
 
     """
-    try:
-        dt = datetime.strptime(date_string, old_format)
-    except TypeError:
-        dt = datetime(*(time.strptime(date_string, old_format)[:6]))
+    dt = strptime(date_string, old_format)
     return dt.strftime(new_format)
 
 
