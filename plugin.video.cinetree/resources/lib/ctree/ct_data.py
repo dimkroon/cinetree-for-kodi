@@ -7,23 +7,28 @@
 
 from __future__ import absolute_import, unicode_literals
 
+import itertools
 import logging
 import time
 import pytz
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from urllib.parse import quote_plus
 
 from codequick import Script
 from codequick.support import logger_id
-from resources.lib.utils import replace_markdown, remove_markdown, strptime
+from resources.lib.utils import replace_markdown, remove_markdown, strptime, addon_info
 
 
 MSG_ONLY_TODAY = 30501
 MSG_DAYS_AVAILABLE = 30502
 TXT_FOR_MEMBERS = Script.localize(30503)
-TXT_SUBCRIPTION_FILM = ''.join(('\n\n[COLOR yellow]', Script.localize(30513), '[/COLOR]'))
 TXT_SUBCRIPTION_FILM = ''.join(('[COLOR yellow]', Script.localize(30513), '[/COLOR]'))
+TXT_AVAILABLE_OVER_A_YEAR = 30514
+TXT_AVAILABLE_MONTHS = 30515
+TXT_AVAILABLE_WEEKS = 30516
+TXT_AVAILABLE_DAYS = 30317
+TXT_AVAILABLE_HOURS = 30318
 
 logger = logging.getLogger('.'.join((logger_id, __name__)))
 tz_ams = pytz.timezone('Europe/Amsterdam')
@@ -184,19 +189,6 @@ class FilmItem:
             logger.warning('Error parsing trailer in film %s', film_data.get('title'), exc_info=True)
         return ''
 
-
-def _price_info(film_data):
-    price = film_data.get('tvodPrice', None)
-    if price is None:
-        return ''
-    price_txt = '\n\n[B]€ {:0.2f}[/B]'.format(int(price or 0) / 100).replace('.', ',', 1)
-    subscr_price = film_data.get('tvodSubscribersPrice')
-    if subscr_price:
-        subscr_price_txt = '\n[B]€ {:0.2f}[/B] {}'.format(int(subscr_price)/100, TXT_FOR_MEMBERS)
-        subscr_price_txt = subscr_price_txt.replace('.', ',', 1)
-    else:
-        subscr_price_txt = ''
-    return ''.join((price_txt, subscr_price_txt))
     @property
     def price_info(self):
         if getattr(self, '_price_info_txt', None) is None:
@@ -217,15 +209,42 @@ def _price_info(film_data):
                 self._price_info_txt = ''
         return self._price_info_txt
 
+    @property
+    def availability(self):
+        """A human-readable representation of the time a film is still
+        availability, like "Available for 3 months".
 
+        Returns an empty string if `end_time` is empty, None, or in any other
+        way invalid.
 
-def _create_long_plot(film_data):
-    plot = film_data.get('overviewText', '')
-    if not plot:
-        plot = '\n\n'.join((film_data.get('shortSynopsis', ''), film_data.get('selectedByQuote', '')))
+        """
+        if getattr(self, '_availability', None) is None:
+            if not self._end_time or not self.show_price_info:
+                # The vast majority of items do not have an end time.
+                return ''
 
-    plot = plot.strip()
-    return plot
+            localise = addon_info['addon'].getLocalizedString
+            dt_available = self._end_time - datetime.now(timezone.utc)
+            days_available = int(dt_available.days + 0.99)
+
+            if days_available > 365:
+                self._availability = localise(TXT_AVAILABLE_OVER_A_YEAR)
+            elif days_available > 60:
+                self._availability = localise(TXT_AVAILABLE_MONTHS).format(int(days_available // 30))
+            elif days_available > 14:
+                self._availability = localise(TXT_AVAILABLE_WEEKS).format(int(days_available // 7))
+            elif days_available >= 2:
+                self._availability = ''.join((
+                    '[COLOR orange]',
+                    localise(TXT_AVAILABLE_DAYS).format(days_available),
+                    '[/COLOR]'))
+            else:
+                self._availability = ''.join((
+                    '[COLOR orange]',
+                    localise(TXT_AVAILABLE_HOURS).format(int(dt_available.total_seconds() / 3600)),
+                    '[/COLOR]'))
+        return self._availability
+
     def _create_long_plot(self):
         film_data = self.content
         overview = (film_data.get('overviewText', ''), )
