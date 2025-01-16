@@ -42,12 +42,16 @@ class FilmItem:
         self._subscription_days = -1  # Number of days this film is still available with a subscription account.
         try:
             self.content = film_info['content']
-            self._end_time, self.is_expired = parse_end_date(self.content.get('endDate'))
-            self._data = self._parse()
         except (KeyError, TypeError):
-            logger.error("Failed to parse film_info:\n", exc_info=True)
             # It's not uncommon that an item obtained from nuxt is None.
             self._data = None
+            return
+        # noinspection PyBroadException
+        try:
+            self._end_time, self.is_expired = parse_end_date(self.content.get('endDate'))
+            self._data = self._parse()
+        except:
+            logger.error("Failed to create FilmItem\n", exc_info=True)
 
     @property
     def data(self):
