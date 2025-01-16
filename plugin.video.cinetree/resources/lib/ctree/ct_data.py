@@ -68,8 +68,6 @@ class FilmItem:
             return None
 
         quotes = self._get_quotes()
-        prefer_originals = Script.setting.get_boolean('original-trailers')
-        trailer_url = self._select_trailer_url(prefer_originals)
         title = data.get('title')
 
         try:
@@ -110,7 +108,7 @@ class FilmItem:
                 'duration': duration,
                 'tagline': remove_markdown(quotes[0]['text']) if quotes else None,
                 'genre': list_from_items_string(data.get('genre')),
-                'trailer': trailer_url,
+                'trailer': self._select_trailer_url(),
             },
             'params': {
                 'title': title,
@@ -137,17 +135,13 @@ class FilmItem:
         return film_item
 
     # noinspection PyUnresolvedReferences
-    def _select_trailer_url(self, prefer_original: bool) -> str:
-        """Retrieve trailer from the *film_data*.
+    def _select_trailer_url(self) -> str:
+        """Retrieve trailer from the film content.
 
         Returns either Cinetree's trailer, or the original trailer depending on the presence of
         various trailer info and parameter *prefer_original*.
 
-        :param film_data: A dict of film info, as in content field of a json object returned by Cinetree.
-        :param prefer_original: If both the original trailer and Cinetree's trailer are present, return
-            the original.
-
-        The dict *film_data* is scanned for the fields with trailer information.
+        The dict `self.content` is scanned for the fields with trailer information.
 
         Possible trailer fields are:
             - 'originalTrailer':    of type dict
@@ -166,6 +160,7 @@ class FilmItem:
         urls, the same as a normal film.
 
         """
+        prefer_original = Script.setting.get_boolean('original-trailers')
         film_data = self.content
         vimeo_url = film_data.get('trailerVimeoURL', '').strip()
         orig_url = film_data.get('originalTrailerURL', '').strip()
