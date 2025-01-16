@@ -83,6 +83,26 @@ msgctxt "#30513"
 msgid "Subscription film"
 msgstr "Alleen met abonnement"
 
+msgctxt "#30514"
+msgid "Available for over a year."
+msgstr "Meer dan een jaar beschikbaar"
+
+msgctxt "#30515"
+msgid "Available for {} months."
+msgstr "Nog {} maanden beschikbaar"
+
+msgctxt "#30516"
+msgid "Available for {} weeks."
+msgstr "Nog {} weken beschikbaar"
+
+msgctxt "#30517"
+msgid "Only {} days available."
+msgstr "Nog {} dagen beschikbaar"
+
+msgctxt "#30518"
+msgid "Only {} hours available."
+msgstr "Slechts nog {} uur beschikbaar"
+
 
 # Texts in dialogs
 msgctxt "#30601"
@@ -254,6 +274,7 @@ msgstr "Gehuurd"
 msgctxt "#30859"
 msgid "Remove from list"
 msgstr "Uit lijst verwijderen"
+
 
 # Error texts
 msgctxt "#30901"

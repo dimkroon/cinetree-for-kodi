@@ -23,56 +23,66 @@ MSG_ONLY_TODAY = 30501
 MSG_DAYS_AVAILABLE = 30502
 TXT_FOR_MEMBERS = Script.localize(30503)
 TXT_SUBCRIPTION_FILM = ''.join(('\n\n[COLOR yellow]', Script.localize(30513), '[/COLOR]'))
+TXT_SUBCRIPTION_FILM = ''.join(('[COLOR yellow]', Script.localize(30513), '[/COLOR]'))
 
 logger = logging.getLogger('.'.join((logger_id, __name__)))
 tz_ams = pytz.timezone('Europe/Amsterdam')
 
 
-def create_film_item(film_info, add_price=True):
-    """From data provided in *film_info* create a dict with info of that film in a format suitable
-    for use in codequick.ListItem.from_dict().
+class FilmItem:
+    def __init__(self, film_info, show_price=True):
+        self.film_info = film_info
+        self.show_price_info = show_price
+        self._price_info_txt = None
+        self._subscription_days = -1  # Number of days this film is still available with a subscription account.
+        try:
+            self.content = film_info['content']
+            self._end_time, self.is_expired = parse_end_date(self.content.get('endDate'))
+            self._data = self._parse()
+        except (KeyError, TypeError):
+            logger.error("Failed to parse film_info:\n", exc_info=True)
+            # It's not uncommon that an item obtained from nuxt is None.
+            self._data = None
 
-    """
-    try:
-        data = film_info['content']
+    @property
+    def data(self):
+        return self._data
 
+    def _parse(self):
+        """From data provided in *film_info* create a dict with info of that film in a format suitable
+        for use in codequick.ListItem.from_dict().
+
+        """
+        data = self.content
         # Some films have an end date in the past and are not available anymore
-        if _is_expired(data.get('endDate')):
+        if self.is_expired:
             return None
 
-        quotes = _get_quotes(data)
+        quotes = self._get_quotes()
         prefer_originals = Script.setting.get_boolean('original-trailers')
-        trailer_url = _select_trailer_url(data, prefer_originals)
+        trailer_url = self._select_trailer_url(prefer_originals)
         title = data.get('title')
-        price_info = ''
 
         try:
             subscr_end_date = strptime(data['svodEndDate'], "%Y-%m-%d %H:%M")
             subscr_end_date = tz_ams.localize(subscr_end_date).astimezone(pytz.utc)
-            days_dif = (subscr_end_date - datetime.now(tz=pytz.utc)) / timedelta(days=1)
+            self._subscription_days = subscr_days = (subscr_end_date - datetime.now(tz=pytz.utc)) / timedelta(days=1)
 
-            if days_dif > 0:
-                if add_price:
-                    price_info = TXT_SUBCRIPTION_FILM
-                if days_dif <= 1:
+            if subscr_days > 0:
+                if self.show_price_info:
+                    self._price_info_txt = TXT_SUBCRIPTION_FILM
+                if subscr_days <= 1:
                     title = '{}    [COLOR orange]{}[/COLOR]'.format(title, Script.localize(MSG_ONLY_TODAY))
-                elif days_dif <= 10:
+                elif subscr_days <= 10:
                     title = ''.join(('{}    [COLOR orange]', Script.localize(MSG_DAYS_AVAILABLE), '[/COLOR]')).format(
-                        title, int(days_dif) + 1)
-            else:
-                # No longer available in the monthly subscription, it's just a rental film now.
-                subscr_end_date = None
-                if add_price:
-                    price_info = _price_info(data)
+                        title, int(subscr_days) + 1)
         except (KeyError, ValueError):
             # Some dates are present that lack the time part, but these are all before 2020 anyway.
             subscr_end_date = None
-            if add_price:
-                price_info = _price_info(data)
 
-        fanart_images = get_fanart(data)
+        fanart_images = self.get_fanart()
         poster_image = img_url(data.get('poster') or (fanart_images.pop(0) if fanart_images else None))
-        duration = get_duration(data)
+        duration = self.get_duration()
 
         film_item = {
             'label': title,
@@ -86,8 +96,8 @@ def create_film_item(film_info, add_price=True):
                 'year': data.get('productionYear'),
                 'director': data.get('director'),
                 'cast': list_from_items_string(data.get('cast')),
-                'plot': replace_markdown(_create_long_plot(data)) + price_info,
-                'plotoutline': _create_plot_outline(data, price_info),
+                'plot': replace_markdown(self._create_long_plot()),
+                'plotoutline': self._create_plot_outline(),
                 'duration': duration,
                 'tagline': remove_markdown(quotes[0]['text']) if quotes else None,
                 'genre': list_from_items_string(data.get('genre')),
@@ -95,8 +105,9 @@ def create_film_item(film_info, add_price=True):
             },
             'params': {
                 'title': title,
-                'uuid': film_info.get('uuid'),
-                'slug': film_info.get('full_slug'),
+                'uuid': self.film_info.get('uuid'),
+                'slug': self.film_info.get('full_slug'),
+                # TODO: Do we need this?
                 'end_date': subscr_end_date},
             'properties': {
                 # This causes Kodi not to offer the standard resume dialog, so we can show a dialog with
@@ -113,69 +124,65 @@ def create_film_item(film_info, add_price=True):
             for img in fanart_images:
                 idx += 1
                 art['fanart{}'.format(idx)] = img_url(img)
-    except (KeyError, TypeError):
-        # It's not uncommon that an item obtain from nuxt is None.
-        film_item = None
 
-    return film_item
+        return film_item
 
+    # noinspection PyUnresolvedReferences
+    def _select_trailer_url(self, prefer_original: bool) -> str:
+        """Retrieve trailer from the *film_data*.
 
-# noinspection PyUnresolvedReferences
-def _select_trailer_url(film_data: dict, prefer_original: bool) -> str:
-    """Retrieve trailer from the *film_data*.
+        Returns either Cinetree's trailer, or the original trailer depending on the presence of
+        various trailer info and parameter *prefer_original*.
 
-    Returns either Cinetree's trailer, or the original trailer depending on the presence of
-    various trailer info and parameter *prefer_original*.
+        :param film_data: A dict of film info, as in content field of a json object returned by Cinetree.
+        :param prefer_original: If both the original trailer and Cinetree's trailer are present, return
+            the original.
 
-    :param film_data: A dict of film info, as in content field of a json object returned by Cinetree.
-    :param prefer_original: If both the original trailer and Cinetree's trailer are present, return
-        the original.
+        The dict *film_data* is scanned for the fields with trailer information.
 
-    The dict *film_data* is scanned for the fields with trailer information.
-
-    Possible trailer fields are:
-        - 'originalTrailer':    of type dict
-        - 'originalTrailerUrl': of type string which is often empty, and usually refers to YouTube.
-        - 'trailerVimeoURL':    of type string. Most often referring to vimeo, but can be an url to
-          YouTube as well.
+        Possible trailer fields are:
+            - 'originalTrailer':    of type dict
+            - 'originalTrailerUrl': of type string which is often empty, and usually refers to YouTube.
+            - 'trailerVimeoURL':    of type string. Most often referring to vimeo, but can be an url to
+              YouTube as well.
 
 
-    There is no guarantee that fields ar present. Also strings type of fields can be empty, or have
-    leading or trailing whitespace.
+        There is no guarantee that fields ar present. Also strings type of fields can be empty, or have
+        leading or trailing whitespace.
 
-        If originalTrailer is present it will be a dict with fields 'plugin' and 'selected'.
-    Field 'selected' is a unique string, but may be None to indicate that no trailer is present.
-    Field 'plugin' should always be 'cinetree-autocomplete' and determines how the url to the video
-    is constructed from the value of field 'selected'. This url points to a json document with stream
-    urls, the same as a normal film.
+            If originalTrailer is present it will be a dict with fields 'plugin' and 'selected'.
+        Field 'selected' is a unique string, but may be None to indicate that no trailer is present.
+        Field 'plugin' should always be 'cinetree-autocomplete' and determines how the url to the video
+        is constructed from the value of field 'selected'. This url points to a json document with stream
+        urls, the same as a normal film.
 
-    """
+        """
+        film_data = self.content
+        vimeo_url = film_data.get('trailerVimeoURL', '').strip()
+        orig_url = film_data.get('originalTrailerURL', '').strip()
+        orig_trailer = film_data.get('originalTrailer')
 
-    vimeo_url = film_data.get('trailerVimeoURL', '').strip()
-    orig_url = film_data.get('originalTrailerURL', '').strip()
-    orig_trailer = film_data.get('originalTrailer')
-
-    try:
-        if prefer_original:
-            trailer = (orig_trailer if orig_trailer and orig_trailer.get('selected') else orig_url) or vimeo_url
-        else:
-            trailer = vimeo_url or (orig_trailer if orig_trailer and orig_trailer.get('selected') else orig_url)
-
-        if not trailer:
-            return ''
-
-        if isinstance(trailer, str):
-            return 'plugin://plugin.video.cinetree/resources/lib/main/play_trailer?url=' + quote_plus(trailer)
-        else:
-            if trailer['plugin'] == "cinetree-autocomplete":
-                return 'plugin://plugin.video.cinetree/resources/lib/main/play_trailer?url=' \
-                       + quote_plus('https://api.cinetree.nl/videos/vaem/' + trailer['selected'])
+        try:
+            if prefer_original:
+                trailer = (orig_trailer if orig_trailer and orig_trailer.get('selected') else orig_url) or vimeo_url
             else:
-                logger.warning("Film %s has original trailer, but unexpected plugin '%s'.",
-                               film_data.get('title'), trailer['plugin'])
-    except (KeyError, ValueError, AttributeError):
-        logger.warning('Error parsing trailer in film %s', film_data.get('title'), exc_info=True)
-    return ''
+                trailer = vimeo_url or (orig_trailer if orig_trailer and orig_trailer.get('selected') else orig_url)
+
+            if not trailer:
+                return ''
+
+            if isinstance(trailer, str):
+                return 'plugin://plugin.video.cinetree/resources/lib/main/play_trailer?url=' + quote_plus(trailer)
+            else:
+                if trailer['plugin'] == "cinetree-autocomplete":
+                    return 'plugin://plugin.video.cinetree/resources/lib/main/play_trailer?url=' \
+                           + quote_plus('https://api.cinetree.nl/videos/vaem/' + trailer['selected'])
+                else:
+                    logger.warning("Film %s has original trailer, but unexpected plugin '%s'.",
+                                   film_data.get('title'), trailer['plugin'])
+        except (KeyError, ValueError, AttributeError):
+            logger.warning('Error parsing trailer in film %s', film_data.get('title'), exc_info=True)
+        return ''
 
 
 def _price_info(film_data):
@@ -190,6 +197,26 @@ def _price_info(film_data):
     else:
         subscr_price_txt = ''
     return ''.join((price_txt, subscr_price_txt))
+    @property
+    def price_info(self):
+        if getattr(self, '_price_info_txt', None) is None:
+            if self.show_price_info:
+                film_data = self.content
+                price = film_data.get('tvodPrice', None)
+                if price is None:
+                    return ''
+                price_txt = '[B]€ {:0.2f}[/B]'.format(int(price or 0) / 100).replace('.', ',', 1)
+                subscr_price = film_data.get('tvodSubscribersPrice')
+                if subscr_price:
+                    subscr_price_txt = '\n[B]€ {:0.2f}[/B] {}'.format(int(subscr_price)/100, TXT_FOR_MEMBERS)
+                    subscr_price_txt = subscr_price_txt.replace('.', ',', 1)
+                else:
+                    subscr_price_txt = ''
+                self._price_info_txt = ''.join((price_txt, subscr_price_txt))
+            else:
+                self._price_info_txt = ''
+        return self._price_info_txt
+
 
 
 def _create_long_plot(film_data):
@@ -199,38 +226,70 @@ def _create_long_plot(film_data):
 
     plot = plot.strip()
     return plot
+    def _create_long_plot(self):
+        film_data = self.content
+        overview = (film_data.get('overviewText', ''), )
+        if not overview[0]:
+            # overview = '\n\n'.join(t for t in (film_data.get('shortSynopsis', ''),
+            #                                    film_data.get('selectedByQuote', '')) if t)
+            overview = (film_data.get('shortSynopsis'), film_data.get('selectedByQuote'))
+        plot = '\n\n'.join(t for t in itertools.chain(overview, (self.price_info, self.availability)) if t)
+        return plot
+
+    def _create_plot_outline(self):
+        short_synopsis = self.content.get('shortSynopsis', '')
+        if not short_synopsis:
+            return None
+        else:
+            return replace_markdown(short_synopsis) + self.price_info
+
+    def _get_quotes(self):
+        """return a list of all quotes found in film data
+        """
+        result = []
+        blocks = self.content.get('blocks', [])
+        for block in blocks:
+            if block.get('component') == 'quote':
+                result.append({'from': block.get("from", ''), 'text': block.get('text', '')})
+        return result
+
+    def get_duration(self):
+        """Return the duration in seconds, or None if duration is empty or not present in
+        `data`.
+
+        The duration field can be absent, empty, None, a sting in the format '104 min', or
+        a string with just a number, that even may be a float or int. However, if there is a value,
+        it always represents the duration in minutes.
+
+        """
+        try:
+            minutes = self.content['duration'].split()[0]
+            return int(float(minutes) * 60)
+        except (KeyError, IndexError, ValueError):
+            return None
+
+    def get_fanart(self):
+        """Get all available images that can serve as fanart
+
+        """
+        return [block.get('image') for block in self.content.get('blocks', []) if block.get('component') == 'image']
+
+    def __bool__(self):
+        return self._data is not None
 
 
-def _create_plot_outline(film_data, price_info):
-    short_synopsis = film_data.get('shortSynopsis', '')
-    if not short_synopsis:
-        return None
-    else:
-        return replace_markdown(short_synopsis) + price_info
-
-
-def _get_quotes(film_data):
-    """return a list of all quotes found in film data
-    """
-    result = []
-    blocks = film_data.get('blocks', [])
-    for block in blocks:
-        if block.get('component') == 'quote':
-            result.append({'from': block.get("from", ''), 'text': block.get('text', '')})
-    return result
-
-
-def _is_expired(end_date):
+def parse_end_date(end_date):
     if not end_date:
         # most endDates are empty strings
-        return False
+        return None, False
 
     try:
         end_time = time.strptime(end_date, "%Y-%m-%d %H:%M")
-        return end_time < time.gmtime()
+        d = datetime(*end_time[:6], tzinfo=timezone.utc)
+        return d, end_time < time.gmtime()
     except ValueError:
         # some end dates are in a short format, but they are all long expired
-        return True
+        return None, True
 
 
 def img_url(url):
@@ -244,29 +303,6 @@ def img_url(url):
         return 'https:' + url
     else:
         return url
-
-
-def get_duration(data):
-    """Return the duration in seconds, or None if duration is empty or not present in
-    `data`.
-
-    The duration field can be absent, empty, None, a sting in the format '104 min', or
-    a string with just a number, that even may be a float or int. However, if there is a value,
-    it always represents the duration in minutes.
-
-    """
-    try:
-        minutes = data['duration'].split()[0]
-        return int(float(minutes) * 60)
-    except (KeyError, IndexError, ValueError):
-        return None
-
-
-def get_fanart(film_content):
-    """Get all available images that can serve as fanart
-
-    """
-    return [block.get('image') for block in film_content.get('blocks', []) if block.get('component') == 'image']
 
 
 def list_from_items_string(items: str):
@@ -327,5 +363,5 @@ def create_films_list(data, list_type='generic', add_price=True):
     except KeyError:
         raise ValueError("Invalid value of param data")
 
-    film_items = (create_film_item(film, add_price) for film in films_list)
-    return [item for item in film_items if item is not None]
+    film_items = (FilmItem(film, add_price) for film in films_list)
+    return [item.data for item in film_items if item]

@@ -83,6 +83,26 @@ msgctxt "#30513"
 msgid "Subscription film"
 msgstr ""
 
+msgctxt "#30514"
+msgid "Available for over a year."
+msgstr ""
+
+msgctxt "#30515"
+msgid "Available for {} months."
+msgstr ""
+
+msgctxt "#30516"
+msgid "Available for {} weeks."
+msgstr ""
+
+msgctxt "#30517"
+msgid "Only {} days available."
+msgstr ""
+
+msgctxt "#30518"
+msgid "Only {} hours available."
+msgstr ""
+
 
 # Texts in dialogs
 msgctxt "#30601"

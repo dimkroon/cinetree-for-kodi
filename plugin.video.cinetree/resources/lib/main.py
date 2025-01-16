@@ -76,7 +76,7 @@ def list_my_films(addon, subcategory=None):
         # yield False
         return
 
-    films = (ct_data.create_film_item(film) for film in films_list)
+    films = (ct_data.FilmItem(film).data for film in films_list)
     for film in films:
         if film is not None:
             li = Listitem.from_dict(callback=play_film, **film)
@@ -156,9 +156,9 @@ def list_films_by_genre(_, genre, page=1):
     films, num_films = storyblok.search(genre=genre, page=page, items_per_page=list_len)
 
     for film in films:
-        film_item_data = ct_data.create_film_item(film)
-        if film_item_data is not None:
-            yield Listitem.from_dict(play_film, **film_item_data)
+        film_item = ct_data.FilmItem(film)
+        if film_item:
+            yield Listitem.from_dict(play_film, **film_item.data)
     if num_films > page * list_len:
         yield Listitem.next_page(genre=genre, page=page + 1)
 
