@@ -111,13 +111,11 @@ class GetCollections(TestCase):
 
 # noinspection PyMethodMayBeStatic
 class Gen(TestCase):
-    def test_get_continue_watching(self):
-        resp = ct_api.get_watched_films()
-        check_films_data_list(resp, allow_none_values=False)
-
-    def test_get_finished_watching(self):
-        resp = ct_api.get_watched_films('finished')
-        check_films_data_list(resp, allow_none_values=False)
+    def test_get_watched(self):
+        result = ct_api.get_watched_films()
+        for film in result:
+            self.assertIsInstance(film, ct_data.FilmItem)
+            self.assertTrue(film)
 
     def test_get_purchased(self):
         resp = ct_api.get_rented_films()

@@ -15,9 +15,8 @@ from codequick.support import logger_id
 from resources.lib import fetch
 from resources.lib import errors
 from resources.lib import utils
-from resources.lib.ctree.ct_data import create_collection_item
+from resources.lib.ctree.ct_data import create_collection_item, FilmItem
 from resources.lib import storyblok
-from resources.lib.constants import FULLY_WATCHED_PERCENTAGE
 
 
 STRM_INFO_UNAVAILABLE = 30921
@@ -138,36 +137,26 @@ def get_subtitles(url: str, lang: str) -> str:
     return subt_file
 
 
-def get_watched_films(finished=False):
-    """Get the list of 'Mijn Films' to continue watching
+def get_watched_films():
+    """Get the list of 'Mijn Films'.
 
     """
-    # Request the list of 'my films' and use only those that have only partly been played.
     history = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/watch-history')
-    # history = {film['assetId']: film for film in history if 'playtime' in film.keys()}
     sb_films, _ = storyblok.stories_by_uuids(film['assetId'] for film in history)
     sb_films = {film['uuid']: film for film in sb_films}
-
-    finished_films = []
-    watched_films = []
 
     for item in history:
         try:
             film = sb_films[item['assetId']]
-            duration = utils.duration_2_seconds(film['content'].get('duration', 0))
-            playtime = item['playtime']
-            # Duration seems to be rounded up to whole minutes, so actual playing time could
-            # still differ by 60 seconds when the video has been fully watched.
-            if duration - playtime < max(60, duration * (1-FULLY_WATCHED_PERCENTAGE)):
-                finished_films.append(film)
-            else:
-                watched_films.append(film)
+            film['playtime'] = item['playtime']
+            fi = FilmItem(film)
+            if fi:
+                yield fi
         except KeyError:
             # Field playtime may be absent. These items are also disregarded by a regular web browser.
-            # And defend against the odd occurrence that a watched film is no longer in the storyblok database.
+            # And protect against the odd occurrence that a watched film is no longer in the storyblok database.
             logger.debug('Error ct_api.get_watched_films:\n', exc_info=True)
             continue
-    return finished_films if finished else watched_films
 
 
 def remove_watched_film(film_uuid):

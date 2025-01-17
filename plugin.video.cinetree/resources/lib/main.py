@@ -69,23 +69,25 @@ def list_my_films(addon, subcategory=None):
                                  params={'subcategory': 'purchased', '_cache_to_disc_': False})
 
     if subcategory == 'purchased':
-        films_list = ct_api.get_rented_films()
+        films = ct_data.create_films_list(ct_api.get_rented_films(), 'storyblok')
     else:
-        films_list = ct_api.get_watched_films(subcategory == 'finished')
+        watched_films = ct_api.get_watched_films()
+        if subcategory == 'finished':
+            films = (film.data for film in watched_films if film.playtime >= film.duration)
+        else:
+            films = (film.data for film in watched_films if film.playtime < film.duration)
 
-    if not films_list:
+    if not films:
         # yield False
         return
 
-    films = (ct_data.create_film_item(film) for film in films_list)
     for film in films:
-        if film is not None:
-            li = Listitem.from_dict(callback=play_film, **film)
-            li.context.script(remove_from_list,
-                              addon.localize(TXT_REMOVE_FROM_LIST),
-                              film_uuid=film['params']['uuid'],
-                              title=film['info']['title'])
-            yield li
+        li = Listitem.from_dict(callback=play_film, **film)
+        li.context.script(remove_from_list,
+                          addon.localize(TXT_REMOVE_FROM_LIST),
+                          film_uuid=film['params']['uuid'],
+                          title=film['info']['title'])
+        yield li
 
 
 @Route.register(cache_ttl=-1, content_type='movies')
@@ -157,9 +159,9 @@ def list_films_by_genre(_, genre, page=1):
     films, num_films = storyblok.search(genre=genre, page=page, items_per_page=list_len)
 
     for film in films:
-        film_item_data = ct_data.create_film_item(film)
-        if film_item_data is not None:
-            yield Listitem.from_dict(play_film, **film_item_data)
+        film_item = ct_data.FilmItem(film)
+        if film_item:
+            yield Listitem.from_dict(play_film, **film_item.data)
     if num_films > page * list_len:
         yield Listitem.next_page(genre=genre, page=page + 1)
 
