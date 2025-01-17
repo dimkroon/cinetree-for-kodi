@@ -8,6 +8,7 @@
 
 import xbmcplugin
 import sys
+import json
 
 from xbmc import executebuiltin
 from xbmcgui import ListItem as XbmcListItem
@@ -233,7 +234,7 @@ def play_ct_video(stream_info: dict, title: str = ''):
 
     """
     try:
-        subtitles = {lang: ct_api.get_subtitles(url, lang) for lang, url in stream_info['subtitles'].items() if url}
+        subtitles = [ct_api.get_subtitles(url, lang) for lang, url in stream_info['subtitles'].items()]
         logger.debug("using subtitles '%s'", subtitles)
     except KeyError:
         logger.debug("No subtitels available for video '%s'", title)
@@ -247,16 +248,8 @@ def play_ct_video(stream_info: dict, title: str = ''):
         return False
 
     if subtitles:
-        play_item.setSubtitles(list(subtitles.values()))
-        subs_file = subtitles.get('en')
-        if subs_file:
-            orig_lang = 'en'
-        else:
-            orig_lang, subs_file = list(subtitles.items())[0]
-        play_item.setProperties({
-            'subtitles.translate.file': subs_file,
-            'subtitles.translate.orig_lang': orig_lang,
-            'subtitles.translate.type': 'srt'})
+        play_item.setSubtitles(subtitles)
+        play_item.setProperty('subtitles.translate.files', json.dumps(subtitles))
 
     # Resume from 10 sec before the actual play time, so it's easier to pick up from where we've left off.
     resume_time = max(0, int(stream_info.get('playtime', 0)) - 10)
