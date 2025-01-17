@@ -350,3 +350,16 @@ class Generic(TestCase):
         self.assertEqual(None, ct_data.list_from_items_string(''))
         self.assertEqual(["bla"], ct_data.list_from_items_string('bla'))
         self.assertEqual(['bli', ' bla', ' blob'], ct_data.list_from_items_string('bli, bla, blob'))
+
+    def test_parse_end_date(self):
+        tz_utc = datetime.timezone.utc
+        # expired
+        self.assertEqual((datetime.datetime(year=2020, month=1, day=2, hour=10, minute=22, tzinfo=tz_utc), True),
+                         ct_data.parse_end_date("2020-01-02 10:22"))
+        # not expired
+        self.assertEqual((datetime.datetime(year=3020, month=1, day=2, hour=10, minute=22, tzinfo=tz_utc), False),
+                         ct_data.parse_end_date("3020-01-02 10:22"))
+        # Invalid
+        self.assertEqual((None, False), ct_data.parse_end_date(None))
+        self.assertEqual((None, False), ct_data.parse_end_date(''))
+        self.assertEqual((None, True), ct_data.parse_end_date('1-12-42'))
