@@ -51,6 +51,7 @@ class FilmItem:
             self._end_time, self.is_expired = parse_end_date(self.content.get('endDate'))
             self._data = self._parse()
         except:
+            self._data = None
             logger.error("Failed to create FilmItem\n", exc_info=True)
 
     @property
@@ -67,7 +68,6 @@ class FilmItem:
         if self.is_expired:
             return None
 
-        quotes = self._get_quotes()
         title = data.get('title')
 
         try:
@@ -304,9 +304,8 @@ def parse_end_date(end_date):
         return None, False
 
     try:
-        end_time = time.strptime(end_date, "%Y-%m-%d %H:%M")
-        d = datetime(*end_time[:6], tzinfo=timezone.utc)
-        return d, end_time < time.gmtime()
+        end_dt = strptime(end_date, "%Y-%m-%d %H:%M").replace(tzinfo=timezone.utc)
+        return end_dt, end_dt < datetime.now(timezone.utc)  # time.gmtime()
     except ValueError:
         # some end dates are in a short format, but they are all long expired
         return None, True
