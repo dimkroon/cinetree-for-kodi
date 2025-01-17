@@ -130,7 +130,7 @@ def get_subtitles(url: str, lang: str) -> str:
     #     f.write(vtt_titles)
     srt_titles = utils.vtt_to_srt(vtt_titles)
     logger.debug("VTT subtitles of length %s converted to SRT of length=%s.", len(vtt_titles), len(srt_titles))
-    subt_file = utils.get_subtitles_temp_file(lang)
+    subt_file = utils.create_subtitles_temp_file(lang)
     with open(subt_file, 'w', encoding='utf8') as f:
         f.write(srt_titles)
     return subt_file

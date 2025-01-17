@@ -119,7 +119,7 @@ class Gen(TestCase):
 
         # check if the file is actually written
         try:
-            os.remove(utils.get_subtitles_temp_file())
+            os.remove(utils.create_subtitles_temp_file())
         except FileNotFoundError:
             pass
         with patch('resources.lib.fetch.get_document', open_doc('vtt/subtitles-woman_at_war.vtt')):
