@@ -87,6 +87,7 @@ class FilmItem:
             # Some dates are present that lack the time part, but these are all before 2020 anyway.
             subscr_end_date = None
 
+        original_trailers = Script.setting.get_boolean('original-trailers')
         fanart_images = self.get_fanart()
         poster_image = img_url(data.get('poster') or (fanart_images.pop(0) if fanart_images else None))
         duration = self.get_duration()
@@ -103,12 +104,12 @@ class FilmItem:
                 'year': data.get('productionYear'),
                 'director': data.get('director'),
                 'cast': list_from_items_string(data.get('cast')),
-                'plot': replace_markdown(self._create_long_plot()),
+                'plot': self._create_long_plot(),
                 'plotoutline': self._create_plot_outline(),
                 'duration': duration,
-                'tagline': remove_markdown(quotes[0]['text']) if quotes else None,
+                'tagline': self._quote(),
                 'genre': list_from_items_string(data.get('genre')),
-                'trailer': self._select_trailer_url(),
+                'trailer': self._select_trailer_url(original_trailers),
             },
             'params': {
                 'title': title,
@@ -135,7 +136,7 @@ class FilmItem:
         return film_item
 
     # noinspection PyUnresolvedReferences
-    def _select_trailer_url(self) -> str:
+    def _select_trailer_url(self, prefer_original) -> str:
         """Retrieve trailer from the film content.
 
         Returns either Cinetree's trailer, or the original trailer depending on the presence of
@@ -160,7 +161,6 @@ class FilmItem:
         urls, the same as a normal film.
 
         """
-        prefer_original = Script.setting.get_boolean('original-trailers')
         film_data = self.content
         vimeo_url = film_data.get('trailerVimeoURL', '').strip()
         orig_url = film_data.get('originalTrailerURL', '').strip()
@@ -218,8 +218,9 @@ class FilmItem:
 
         """
         if getattr(self, '_availability', None) is None:
-            if not self._end_time or not self.show_price_info:
-                # The vast majority of items do not have an end time.
+            # The vast majority of items do not have an end time, and never create
+            # rental availability for subscription films.
+            if not self._end_time or self._subscription_days > 0:
                 return ''
 
             localise = addon_info['addon'].getLocalizedString
@@ -248,28 +249,29 @@ class FilmItem:
         film_data = self.content
         overview = (film_data.get('overviewText', ''), )
         if not overview[0]:
-            # overview = '\n\n'.join(t for t in (film_data.get('shortSynopsis', ''),
-            #                                    film_data.get('selectedByQuote', '')) if t)
             overview = (film_data.get('shortSynopsis'), film_data.get('selectedByQuote'))
         plot = '\n\n'.join(t for t in itertools.chain(overview, (self.price_info, self.availability)) if t)
-        return plot
+        return replace_markdown(plot)
 
     def _create_plot_outline(self):
         short_synopsis = self.content.get('shortSynopsis', '')
         if not short_synopsis:
             return None
         else:
-            return replace_markdown(short_synopsis) + self.price_info
+            return '\n\n'.join(t for t in(replace_markdown(short_synopsis),
+                                          self.price_info,
+                                          self.availability) if t)
 
-    def _get_quotes(self):
-        """return a list of all quotes found in film data
+    def _quote(self):
+        """Return the first found quote in film data.
         """
-        result = []
         blocks = self.content.get('blocks', [])
         for block in blocks:
             if block.get('component') == 'quote':
-                result.append({'from': block.get("from", ''), 'text': block.get('text', '')})
-        return result
+                quote = block.get('text')
+                if quote:
+                    return replace_markdown(quote)
+        return None
 
     def get_duration(self):
         """Return the duration in seconds, or None if duration is empty or not present in
