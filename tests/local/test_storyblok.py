@@ -147,3 +147,10 @@ class TestStoryContent(unittest.TestCase):
             end_date = film['content'].get('endDate')
             if end_date:
                 print("Film {} has end date {}".format(film['content']['title'], end_date))
+
+    def test_films_without_shops(self):
+        films = open_json('st_blok/films.json')
+        for film in films.values():
+            shops = film['content'].get('shops')
+            if not shops:
+                print("Film {} has no shops: '{}'".format(film['content']['title'], shops))

@@ -1,6 +1,6 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -196,7 +196,7 @@ class Search(TestCase):
         film_list, num_films = storyblok.search(duration_min=60, duration_max=80)
         self.assertEqual(num_films, len(film_list))
         for film in film_list:
-            duration = ct_data.get_duration(film['content']) / 60
+            duration = ct_data.FilmItem(film).get_duration() / 60
             self.assertGreater(duration, 60)
             self.assertLess(duration, 80)
 
@@ -204,7 +204,7 @@ class Search(TestCase):
         film_list, num_films = storyblok.search(duration_min=75.3, duration_max=80)
         self.assertEqual(num_films, len(film_list))
         for film in film_list:
-            duration = ct_data.get_duration(film['content']) / 60
+            duration = ct_data.FilmItem(film).get_duration() / 60
             self.assertGreater(duration, 75.3)
             self.assertLess(duration, 80)
 
