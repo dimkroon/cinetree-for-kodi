@@ -27,6 +27,7 @@ from resources.lib.ctree import ct_data
 from resources.lib import storyblok, kodi_utils
 from resources.lib import errors
 from resources.lib import constants
+from resources.lib import watchlist
 from resources.lib import utils
 
 
@@ -60,6 +61,7 @@ TXT_NOTHING_FOUND = 30608
 TXT_TOO_MANY_RESULTS = 30609
 MSG_PAYMENT_FAIL = 30625
 MSG_REMOVE_CONFIRM = 30626
+MSG_REMOVED_TITLES = 30627
 
 TXT_ADD_TO_WATCHLIST = Script.localize(30860)
 TXT_REMOVE_FROM_WATCHLIST = Script.localize(30861)
@@ -113,6 +115,7 @@ def list_my_films(addon, subcategory=None):
     if not films:
         # yield False
         return
+    wl = watchlist.WatchList()
 
     for film in films:
         uuid = film.uuid
@@ -121,6 +124,7 @@ def list_my_films(addon, subcategory=None):
                           addon.localize(TXT_REMOVE_FROM_LIST),
                           film_uuid=uuid,
                           title=film.data['info']['title'])
+        watchlist.create_ctx_mnu(li, film, wl)
         yield li
 
 
@@ -129,24 +133,12 @@ def _create_playables(addon, films: Iterable[ct_data.FilmItem]):
     context menu items to add or remove from Watch List.
 
     """
-    if addon:
-        addon.add_sort_methods(xbmcplugin.SORT_METHOD_UNSORTED,
-                               xbmcplugin.SORT_METHOD_DATEADDED)
-    try:
-        favourites = ct_api.get_favourites(ask_login=False)
-    except errors.AuthenticationError:
-        favourites = {}
-
+    wl = watchlist.WatchList()
+    creat_ctx = watchlist.create_ctx_mnu
     for film_item in films:
         if film_item:
-            uuid = film_item.uuid
-            is_on_watchlist = uuid in favourites
             li = Listitem.from_dict(callback=play_film, **film_item.data)
-            li.context.script(
-                edit_watchlist,
-                TXT_REMOVE_FROM_WATCHLIST if is_on_watchlist else TXT_ADD_TO_WATCHLIST,
-                film_uuid=uuid,
-                action='remove' if is_on_watchlist else 'add')
+            creat_ctx(li, film_item, wl)
             yield li
         else:
             logger.debug("film item is Empty")
@@ -154,25 +146,26 @@ def _create_playables(addon, films: Iterable[ct_data.FilmItem]):
 
 @Route.register(content_type='movies')
 def list_watchlist(addon):
-    favourites = ct_api.get_favourites(refresh=True)
-    films_list, _ = storyblok.stories_by_uuids(favourites.keys())
-    films = []
-    for film in films_list:
-        film_item = ct_data.FilmItem(film)
-        if not film_item:
-            continue
-        time_added = utils.reformat_date(favourites[film_item.uuid], '%Y-%m-%dT%H:%M:%S.%fZ', '%Y-%m-%d %H:%M:%S')
-        film_item.data['info']['dateadded'] = time_added
-        films.append(film_item)
-    if not films:
-        return False
-    return _create_playables(addon, films)
-
-
-@Script.register()
-def edit_watchlist(_, film_uuid, action):
-    ct_api.edit_favourites(film_uuid, action)
-    xbmc.executebuiltin('Container.Refresh')
+    addon.add_sort_methods(xbmcplugin.SORT_METHOD_DATEADDED)
+    with watchlist.WatchList() as wl:
+        films_list, _ = storyblok.stories_by_uuids(wl.keys())
+        films = {}
+        for film in films_list:
+            film_item = ct_data.FilmItem(film)
+            if not film_item:
+                continue
+            film_item.data['info']['dateadded'] = wl[film_item.uuid]['added']
+            films[film_item.uuid] = film_item
+        # Check which films are no longer available
+        removed_titles = ['']
+        for uuid, wl_data in tuple(wl.items()):
+            if uuid not in films:
+                del wl[uuid]
+                removed_titles.append(wl_data['title'])
+    if len(removed_titles) > 1:
+        titles_list = '\n- '.join(removed_titles)
+        kodi_utils.ok_dialog(addon.localize(MSG_REMOVED_TITLES).format(titles=titles_list))
+    return _create_playables(addon, films.values())
 
 
 @Route.register(content_type='movies')

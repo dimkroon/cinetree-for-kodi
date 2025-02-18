@@ -222,6 +222,10 @@ msgctxt "#30626"
 msgid "Are you sure you want to remove '{title}' from the list?"
 msgstr ""
 
+msgctxt "#30627"
+msgid "Some films are no longer available and have been removed from 'Watch List':'{titles}'"
+msgstr ""
+
 
 # Generic button texts
 msgctxt "#30790"

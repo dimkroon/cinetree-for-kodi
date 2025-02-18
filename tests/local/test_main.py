@@ -78,6 +78,21 @@ class MainTest(unittest.TestCase):
                 self.assertIsInstance(item, Listitem)
                 self.assertEqual(1, len(item.context))
 
+    @patch("resources.lib.watchlist.WatchList._read", return_value=open_json('watchlist.json'))
+    def test_list_watch_list(self, _):
+        items = main.list_watchlist.test()
+        self.assertEqual(2, len(items))
+        for item in items:
+            self.assertIsInstance(item, Listitem)
+            self.assertEqual(1, len(item.context))
+
+        # Films no longer available on Cinetree are removed from WatchList.
+        with patch('resources.lib.storyblok.stories_by_uuids', return_value=([], True)), \
+            patch('resources.lib.watchlist.WatchList.__delitem__') as p_del:
+            items = main.list_watchlist.test()
+            self.assertEqual(0, len(items))
+            self.assertEqual(2, p_del.call_count)
+
     def test_list_films_and_docus_deze_maand(self):
         # all subscription films
         with patch('resources.lib.fetch.get_json', return_value=open_json('films-svod.json')):
