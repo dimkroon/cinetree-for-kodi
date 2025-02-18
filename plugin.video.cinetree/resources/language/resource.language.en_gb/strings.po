@@ -210,6 +210,10 @@ msgctxt "#30626"
 msgid "Are you sure you want to remove '{title}' from the list?"
 msgstr ""
 
+msgctxt "#30627"
+msgid "Some films are no longer available and have been removed from 'Watch List':'{titles}'"
+msgstr ""
+
 
 # Generic button texts
 msgctxt "#30790"
@@ -269,9 +273,26 @@ msgctxt "#30810"
 msgid "All Collections"
 msgstr ""
 
+msgctxt "#30811"
+msgid "Continue watching"
+msgstr ""
+
+msgctxt "#30812"
+msgid "Watch list"
+msgstr ""
+
+
 # Context Menu
 msgctxt "#30859"
 msgid "Remove from list"
+msgstr ""
+
+msgctxt "#30860"
+msgid "Add to Watch list"
+msgstr ""
+
+msgctxt "#30861"
+msgid "Remove from Watch list"
 msgstr ""
 
 

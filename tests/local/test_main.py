@@ -27,6 +27,7 @@ setUpModule = fixtures.setup_local_tests
 tearDownModule = fixtures.tear_down_local_tests
 
 
+@patch('resources.lib.storyblok.stories_by_uuids', new=get_sb_film)
 class MainTest(unittest.TestCase):
     def test_root(self):
         items = list(main.root(MagicMock()))
@@ -35,27 +36,48 @@ class MainTest(unittest.TestCase):
             self.assertIsInstance(item, Listitem)
 
     @patch('resources.lib.fetch.fetch_authenticated', return_value=open_json('watch-history.json'))
-    @patch('resources.lib.storyblok.stories_by_uuids', new=get_sb_film)
+    @patch('xbmcaddon.Addon.getLocalizedString', lambda s, x: 'my list')
     def test_mijn_films(self, _):
         items = main.list_my_films.test()
-        self.assertGreater(len(items), 5)
+        self.assertEqual(len(items), 4)     # submenu of 4 items
         for item in items:
             self.assertIsInstance(item, Listitem)
-            if items.index(item) > 1:           # the first 2 items are folders
-                self.assertEqual(1, len(item.context))
-        self.assertGreater(len(items), 1)
 
         items = main.list_my_films.test('finished')
+        self.assertEqual(len(items), 2)
         for item in items:
-            self.assertIsInstance(item, (Listitem, type(False)))
-            if items.index(item) > 1:  # the first 2 items are folders
+            self.assertIsInstance(item, Listitem)
+            self.assertEqual(2, len(item.context))
+
+        items = main.list_my_films.test('continue')
+        self.assertEqual(len(items), 3)
+        for item in items:
+            self.assertIsInstance(item, Listitem)
+            self.assertEqual(2, len(item.context))
+
+        with patch('resources.lib.fetch.fetch_authenticated',
+                   return_value=["3d3e2bb8-31ff-444f-909e-2a16a0fc4375", "070f9abd-9df9-47d1-bfbc-e83fdfea2e43"]):
+            items = main.list_my_films.test('purchased')
+            self.assertEqual(len(items), 2)
+            for item in items:
+                self.assertIsInstance(item, Listitem)
                 self.assertEqual(1, len(item.context))
 
-        items = main.list_my_films.test('purchased')
+    @patch("resources.lib.watchlist.WatchList._read", return_value=open_json('watchlist.json'))
+    def test_list_watch_list(self, _):
+        items = main.list_watchlist.test()
+        self.assertEqual(2, len(items))
         for item in items:
-            self.assertIsInstance(item, (Listitem, type(False)))
+            self.assertIsInstance(item, Listitem)
+            self.assertEqual(1, len(item.context))
 
-    @patch('resources.lib.storyblok.stories_by_uuids', new=get_sb_film)
+        # Films no longer available on Cinetree are removed from WatchList.
+        with patch('resources.lib.storyblok.stories_by_uuids', return_value=([], True)), \
+            patch('resources.lib.watchlist.WatchList.__delitem__') as p_del:
+            items = main.list_watchlist.test()
+            self.assertEqual(0, len(items))
+            self.assertEqual(2, p_del.call_count)
+
     def test_list_films_and_docus_deze_maand(self):
         # all subscription films
         with patch('resources.lib.fetch.get_json', return_value=open_json('films-svod.json')):
@@ -92,7 +114,6 @@ class MainTest(unittest.TestCase):
         for item in items:
             self.assertIsInstance(item, Listitem)
 
-    @patch('resources.lib.storyblok.stories_by_uuids', new=get_sb_film)
     def test_do_search(self):
         # no search_query
         self.assertFalse(main.do_search.test(''))

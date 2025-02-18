@@ -215,6 +215,10 @@ msgctxt "#30626"
 msgid "Are you sure you want to remove '{title}' from the list?"
 msgstr "Weet je zeker dat je '{title}' uit de lijst wilt verwijderen?"
 
+msgctxt "#30627"
+msgid "Some films are no longer available and have been removed from 'Watch List':'{titles}'"
+msgstr "Sommige films zijn niet meer beschikbaar en zijn verwijderd van 'Mijn Lijst':{titles}"
+
 
 # Generic button texts
 msgctxt "#30790"
@@ -274,10 +278,27 @@ msgctxt "#30810"
 msgid "All Collections"
 msgstr "Alle Collecties"
 
+msgctxt "#30811"
+msgid "Continue watching"
+msgstr "Verder kijken"
+
+msgctxt "#30812"
+msgid "Watch list"
+msgstr "Mijn lijst"
+
+
 # Context Menu
 msgctxt "#30859"
 msgid "Remove from list"
 msgstr "Uit lijst verwijderen"
+
+msgctxt "#30860"
+msgid "Add to Watch list"
+msgstr "Aan 'Mijn lijst' toevoegen"
+
+msgctxt "#30861"
+msgid "Remove from Watch list"
+msgstr "Van 'Mijn lijst' verwijderen"
 
 
 # Error texts

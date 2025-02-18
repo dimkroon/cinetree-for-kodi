@@ -372,7 +372,7 @@ def create_films_list(data, list_type='generic', add_price=True):
     :type list_type: str
     :param add_price: Whether price info is to be added to the descriptions.
     :type add_price: bool
-    :rtype: list[dict]
+    :rtype: Generator[FilmItem]
 
     """
     try:
@@ -390,4 +390,4 @@ def create_films_list(data, list_type='generic', add_price=True):
         raise ValueError("Invalid value of param data")
 
     film_items = (FilmItem(film, add_price) for film in films_list)
-    return [item.data for item in film_items if item]
+    return (item for item in film_items if item)

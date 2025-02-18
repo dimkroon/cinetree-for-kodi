@@ -1,6 +1,6 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -51,7 +51,7 @@ def check_stream_info(strm_inf, additional_keys=None):
 
 def check_film_data(film_info, additional_content_keys=None):
     """Check that a film info object retrieved from the web meets expectations"""
-    mandatory_content_keys = {'poster', 'background', 'blocks', 'title'}
+    mandatory_content_keys = {'poster', 'background', 'blocks', 'title', 'shops'}
     if additional_content_keys:
         mandatory_content_keys.update(additional_content_keys)
 

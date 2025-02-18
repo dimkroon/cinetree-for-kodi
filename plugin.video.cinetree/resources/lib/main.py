@@ -5,9 +5,11 @@
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
 # ------------------------------------------------------------------------------
+from __future__ import annotations
 
 import xbmcplugin
 import sys
+from collections.abc import Iterable
 
 from xbmc import executebuiltin
 from xbmcgui import ListItem as XbmcListItem
@@ -21,6 +23,7 @@ from resources.lib.ctree import ct_data
 from resources.lib import storyblok, kodi_utils
 from resources.lib import errors
 from resources.lib import constants
+from resources.lib import watchlist
 
 
 logger.critical('-------------------------------------')
@@ -37,11 +40,14 @@ TXT_SEARCH = 30807
 TXT_ALREADY_WATCHED = 30808
 TXT_RENTED = 30809
 TXT_ALL_COLLECTIONS = 30810
+TXT_CONTINUE_WATCHING = 30811
+TXT_MY_LIST = 30812
 TXT_REMOVE_FROM_LIST = 30859
 TXT_NOTHING_FOUND = 30608
 TXT_TOO_MANY_RESULTS = 30609
 MSG_PAYMENT_FAIL = 30625
 MSG_REMOVE_CONFIRM = 30626
+MSG_REMOVED_TITLES = 30627
 
 
 @Route.register
@@ -61,33 +67,87 @@ def list_my_films(addon, subcategory=None):
     """List the films not finished watching. Newly purchased films appear here, so do not cache"""
 
     if subcategory is None:
+        yield Listitem.from_dict(list_watchlist,
+                                 Script.localize(TXT_MY_LIST),
+                                 params={'_cache_to_disc_': False})
         yield Listitem.from_dict(list_my_films,
-                                 Script.localize(TXT_ALREADY_WATCHED),
-                                 params={'subcategory': 'finished', '_cache_to_disc_': False})
+                                 Script.localize(TXT_CONTINUE_WATCHING),
+                                 params={'subcategory': 'continue', '_cache_to_disc_': False})
         yield Listitem.from_dict(list_my_films,
                                  Script.localize(TXT_RENTED),
                                  params={'subcategory': 'purchased', '_cache_to_disc_': False})
+        yield Listitem.from_dict(list_my_films,
+                                 Script.localize(TXT_ALREADY_WATCHED),
+                                 params={'subcategory': 'finished', '_cache_to_disc_': False})
+        return
 
     if subcategory == 'purchased':
+        list_name = None
         films = ct_data.create_films_list(ct_api.get_rented_films(), 'storyblok')
     else:
         watched_films = ct_api.get_watched_films()
         if subcategory == 'finished':
-            films = (film.data for film in watched_films if film.playtime >= film.duration)
+            list_name = TXT_ALREADY_WATCHED
+            films = (film for film in watched_films if film.playtime >= film.duration)
         else:
-            films = (film.data for film in watched_films if film.playtime < film.duration)
+            list_name = TXT_CONTINUE_WATCHING
+            films = (film for film in watched_films if film.playtime < film.duration)
 
     if not films:
         # yield False
         return
+    wl = watchlist.WatchList()
 
     for film in films:
-        li = Listitem.from_dict(callback=play_film, **film)
-        li.context.script(remove_from_list,
-                          addon.localize(TXT_REMOVE_FROM_LIST),
-                          film_uuid=film['params']['uuid'],
-                          title=film['info']['title'])
+        uuid = film.uuid
+        li = Listitem.from_dict(callback=play_film, **film.data)
+        if list_name:
+            li.context.script(remove_from_list,
+                              addon.localize(TXT_REMOVE_FROM_LIST).format(listname=list_name),
+                              film_uuid=uuid,
+                              title=film.data['info']['title'])
+        watchlist.create_ctx_mnu(li, film, wl)
         yield li
+
+
+def _create_playables(films: Iterable[ct_data.FilmItem]):
+    """Create playable Codequick.Listitems from FilmItems with a
+    context menu items to add or remove from Watch List.
+
+    """
+    wl = watchlist.WatchList()
+    creat_ctx = watchlist.create_ctx_mnu
+    for film_item in films:
+        if film_item:
+            li = Listitem.from_dict(callback=play_film, **film_item.data)
+            creat_ctx(li, film_item, wl)
+            yield li
+        else:
+            logger.debug("film item is Empty")
+
+
+@Route.register(content_type='movies')
+def list_watchlist(addon):
+    addon.add_sort_methods(xbmcplugin.SORT_METHOD_DATEADDED)
+    with watchlist.WatchList() as wl:
+        films_list, _ = storyblok.stories_by_uuids(wl.keys())
+        films = {}
+        for film in films_list:
+            film_item = ct_data.FilmItem(film)
+            if not film_item:
+                continue
+            film_item.data['info']['dateadded'] = wl[film_item.uuid]['added']
+            films[film_item.uuid] = film_item
+        # Check which films are no longer available
+        removed_titles = ['']
+        for uuid, wl_data in tuple(wl.items()):
+            if uuid not in films:
+                del wl[uuid]
+                removed_titles.append(wl_data['title'])
+    if len(removed_titles) > 1:
+        titles_list = '\n- '.join(removed_titles)
+        kodi_utils.ok_dialog(addon.localize(MSG_REMOVED_TITLES).format(titles=titles_list))
+    return _create_playables(films.values())
 
 
 @Route.register(content_type='movies')
@@ -101,8 +161,7 @@ def list_films_and_docus(_, category):
         return None
     stories, _ = storyblok.stories_by_uuids(film_ids)
     films = ct_data.create_films_list(stories, 'storyblok', add_price=False)
-    items = [Listitem.from_dict(callback=play_film, **film) for film in films]
-    return items
+    return list(_create_playables(films))
 
 
 @Route.register()
@@ -136,9 +195,10 @@ def do_search(_, search_query):
                       Script.NOTIFY_INFO, 12000)
 
     stories, _ = storyblok.stories_by_uuids(uuids[:100])
-    films = ct_data.create_films_list(stories, 'storyblok')
-    if films:
-        return [Listitem.from_dict(play_film, **film) for film in films]
+
+    if stories:
+        films = ct_data.create_films_list(stories, 'storyblok')
+        return list(_create_playables(films))
     else:
         Script.notify('Cinetree - ' + Script.localize(TXT_SEARCH),
                       Script.localize(TXT_NOTHING_FOUND),
@@ -149,25 +209,21 @@ def do_search(_, search_query):
 @Route.register(content_type='movies')
 def list_films_by_collection(_, slug):
     data = ct_api.get_jsonp(slug + '/payload.js')
-    films = ct_data.create_films_list(data)
-    return [Listitem.from_dict(play_film, **film) for film in films]
+    yield from _create_playables(ct_data.create_films_list(data))
 
 
 @Route.register(content_type='movies')
 def list_films_by_genre(_, genre, page=1):
     list_len = 50
     films, num_films = storyblok.search(genre=genre, page=page, items_per_page=list_len)
-
-    for film in films:
-        film_item = ct_data.FilmItem(film)
-        if film_item:
-            yield Listitem.from_dict(play_film, **film_item.data)
+    yield from _create_playables(ct_data.FilmItem(film) for film in films)
     if num_films > page * list_len:
         yield Listitem.next_page(genre=genre, page=page + 1)
 
 
 @Script.register()
 def remove_from_list(addon, film_uuid, title):
+    """Remove a film from the 'Continue Watching' or 'Already Watched' list."""
     if kodi_utils.yes_no_dialog(addon.localize(MSG_REMOVE_CONFIRM).format(title=title)):
         ct_api.remove_watched_film(film_uuid)
         logger.info("Removed film '%s' from the watched list", title)
