@@ -357,22 +357,20 @@ def create_collection_item(col_data):
 
 
 def create_films_list(data, list_type='generic', add_price=True):
-    """Extract the list of films from data_dict.
+    """Extract FilmItems from data_dict.
 
     This function retrieves all relevant info found in that dict and
-    creates a list of dicts, where each dict contains info about a
-    film in a format suitable for kodi
+    generates FilmItem objects for each film.
 
     :param data: A dictionary of film data, like obtained from get_jsonp()
     :type data: dict
     :param list_type: The type of list to search for.
-        Can be 'recommended' for the list of recommendations in subscription, 'subscription'  for
-        the list of all films available in the monthly subscription, 'storyblok' for list from
-        Storyblok, or 'generic' for any other list from cinetree api.
+        Can be 'storyblok' for list from Storyblok, or 'generic' for any
+        other list from cinetree api.
     :type list_type: str
     :param add_price: Whether price info is to be added to the descriptions.
     :type add_price: bool
-    :rtype: list[dict]
+    :rtype: Generator[FilmItem]
 
     """
     try:
@@ -390,4 +388,4 @@ def create_films_list(data, list_type='generic', add_price=True):
         raise ValueError("Invalid value of param data")
 
     film_items = (FilmItem(film, add_price) for film in films_list)
-    return [item.data for item in film_items if item]
+    return (item for item in film_items if item)

@@ -1,4 +1,3 @@
-
 # ------------------------------------------------------------------------------
 #  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
@@ -106,6 +105,62 @@ class Collections(TestCase):
         self.assertGreater(len(col_list), 1)
         for col in col_list:
             check_collection(self, col)
+
+
+@patch('resources.lib.fetch.fetch_authenticated',
+       return_value= [
+           {'uuid': 'f621c2d2-4206-4824-a2d6-6e41427db6c1', 'createdAt': '2024-11-11T20:19:18.007Z'},
+           {'uuid': '0577ba31-ff91-45a5-aa0a-4a81baaa4b6a', 'createdAt': '2025-02-02T21:22:23.004Z'}
+    ])
+class GetFavourites(TestCase):
+    def test_get_favourites_new(self, p_fetch):
+        ct_api.favourites = None
+        favs = ct_api.get_favourites()
+        self.assertDictEqual(favs,
+                             {'f621c2d2-4206-4824-a2d6-6e41427db6c1': '2024-11-11T20:19:18.007Z',
+                              '0577ba31-ff91-45a5-aa0a-4a81baaa4b6a': '2025-02-02T21:22:23.004Z'})
+        self.assertEqual(favs, ct_api.favourites)
+        p_fetch.assert_called_once()
+
+    def test_get_favourites_existing(self, p_fetch):
+        ct_api.favourites = {'f621c2d2-4206-4824-a2d6-6e41427db6c1': '2024-11-11T20:19:18.007Z'}
+        favs = ct_api.get_favourites()
+        self.assertDictEqual(favs, {'f621c2d2-4206-4824-a2d6-6e41427db6c1': '2024-11-11T20:19:18.007Z'})
+        p_fetch.assert_not_called()
+
+    def test_get_favourites_force_refresh(self, p_fetch):
+        ct_api.favourites = {'f621c2d2-4206-4824-a2d6-6e41427db6c1': '2024-11-11T20:19:18.007Z'}
+        favs = ct_api.get_favourites(refresh=True)
+        self.assertDictEqual(favs,
+                             {'f621c2d2-4206-4824-a2d6-6e41427db6c1': '2024-11-11T20:19:18.007Z',
+                              '0577ba31-ff91-45a5-aa0a-4a81baaa4b6a': '2025-02-02T21:22:23.004Z'})
+        p_fetch.assert_called_once()
+
+
+class EditFavourites(TestCase):
+    def setUp(self):
+        ct_api.favourites = {'first-uuid': '2025-04-04T01:02:03.004Z'}
+
+    def test_add_favourite(self):
+        with patch('resources.lib.fetch.fetch_authenticated', return_value=HttpResponse(status_code=200)) as p_fetch:
+            self.assertTrue(ct_api.edit_favourites('my-film-uuid', 'add'))
+            self.assertTrue(p_fetch.call_args.kwargs['url'].endswith('my-film-uuid'))
+            self.assertEqual(p_fetch.call_args.kwargs['method'], 'put')
+            self.assertEqual(len(ct_api.favourites), 2)
+            self.assertTrue('my-film-uuid' in ct_api.favourites)
+        with patch('resources.lib.fetch.fetch_authenticated', return_value=HttpResponse(status_code=404)):
+            self.assertFalse(ct_api.edit_favourites('other-film-uuid', 'add'))
+            self.assertEqual(len(ct_api.favourites), 2)
+
+    @patch('resources.lib.fetch.fetch_authenticated', return_value=HttpResponse(status_code=200))
+    def test_remove_favourite(self, p_fetch):
+        self.assertTrue(ct_api.edit_favourites('first-uuid', 'remove'))
+        self.assertTrue(p_fetch.call_args.kwargs['url'].endswith('first-uuid'))
+        self.assertEqual(p_fetch.call_args.kwargs['method'], 'delete')
+        self.assertDictEqual(ct_api.favourites, {})
+
+    def test_invalid_action(self):
+        self.assertRaises(KeyError, ct_api.edit_favourites, 'my-uuid', action='delete')
 
 
 class Gen(TestCase):

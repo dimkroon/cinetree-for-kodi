@@ -122,7 +122,7 @@ def stories_by_uuids(uuids, page=None, items_per_page=None):
             'stories',
             page,
             items_per_page,
-            params={'by_uuids': ','.join(uuids)})
+            params={'by_uuids_ordered': ','.join(uuids)})
     if len(uuids) != len(stories):
         logger.warning("%s stories requested by uuid, only %s returned.", len(uuids), len(stories))
     return stories, total
