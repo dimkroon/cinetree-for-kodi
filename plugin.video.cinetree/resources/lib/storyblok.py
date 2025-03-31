@@ -8,8 +8,8 @@
 
 import time
 import logging
-import requests
 
+import urlquick
 from codequick.support import logger_id
 
 
@@ -43,20 +43,16 @@ def get_url(path, **kwargs):
         headers.update(kwargs.pop('headers'))
 
     p = kwargs.pop('params', None)
-
-    if isinstance(p, dict):
+    if p:
         params.update(p)
-    elif isinstance(p, str):
-        params = '{}&token={}&version=published&cv={}'.format(p, token, cache_version)
-    elif p is not None:
-        raise TypeError("Keyword argument 'params' must be of type dict or string")
 
-    resp = requests.get(base_url + path, headers=headers, params=params, **kwargs)
+    kwargs['raise_for_status'] = False
+    resp = urlquick.get(base_url + path, headers=headers, params=params, **kwargs)
     if resp.status_code == 429:
         # too many requests, wait a second and try once again
         logger.warning("Too many requests per second to storyblok")
         time.sleep(1)
-        resp = requests.get(base_url + path, headers=headers, params=params, **kwargs)
+        resp = urlquick.get(base_url + path, headers=headers, params=params, **kwargs)
 
     resp.raise_for_status()
     data = resp.json()
@@ -117,11 +113,11 @@ def stories_by_uuids(uuids, page=None, items_per_page=None):
     if isinstance(uuids, str):
         uuids = (uuids, )
 
-    query_str = {'token': token,
-                 'by_uuids': ','.join(uuids),
-                 }
-
-    stories = _get_url_page('stories', page, items_per_page, params=query_str)
+    stories = _get_url_page(
+            'stories',
+            page,
+            items_per_page,
+            params={'by_uuids': ','.join(uuids)})
     # print(" {} stories retrieved".format(len(stories[0])))
     return stories
 

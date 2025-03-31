@@ -1,15 +1,15 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 import logging
-import requests
 import json
 
+import urlquick
 from codequick.support import logger_id
 
 from resources.lib import kodi_utils
@@ -37,13 +37,13 @@ def web_request(method, url, headers=None, data=None, **kwargs):
     kwargs.setdefault('timeout', WEB_TIMEOUT)
     logger.debug("Making %s request to %s", method, url)
     try:
-        resp = requests.request(method, url, json=data, headers=std_headers, **kwargs)
-        resp.raise_for_status()
+        resp = urlquick.request(method, url, json=data, headers=std_headers, **kwargs)
         return resp
-    except requests.HTTPError as e:
+    except urlquick.HTTPError as e:
         # noinspection PyUnboundLocalVariable
-        logger.info("HTTP error %s for url %s: '%s'", e.response.status_code, url, resp.content)
-        if e.response.status_code == 401:
+        resp = e.response
+        logger.info("HTTP error %s for url %s: '%s'", resp.status_code, url, resp.content)
+        if resp.status_code == 401:
             try:
                 msg = resp.json().get('message')
             except json.JSONDecodeError:
@@ -54,12 +54,11 @@ def web_request(method, url, headers=None, data=None, **kwargs):
                 raise NoSubscriptionError(msg)
             else:
                 raise AuthenticationError(msg if msg else None)
-        if e.response.status_code == 403:
+        if resp.status_code == 403:
             raise GeoRestrictedError
         else:
-            resp = e.response
             raise HttpError(resp.status_code, resp.reason)
-    except requests.RequestException as e:
+    except urlquick.RequestException as e:
         logger.error('Error connecting to %s: %r', url, e)
         raise FetchError(str(e))
 

@@ -41,7 +41,7 @@ def get_jsonp_url(slug, force_refresh=False):
     if not base_url or force_refresh:
         import re
 
-        resp = fetch.get_document('https://cinetree.nl')
+        resp = fetch.get_document('https://cinetree.nl', max_age=5)
         match = re.search(r'href="([\w_/]*?)manifest\.js" as="script">', resp, re.DOTALL)
         base_url = 'https://cinetree.nl' + match.group(1)
         logger.debug("New jsonp base url: %s", base_url)
@@ -115,7 +115,7 @@ def get_stream_info(url):
     film or trailer.
 
     """
-    data = fetch.fetch_authenticated(fetch.get_json, url)
+    data = fetch.fetch_authenticated(fetch.get_json, url, max_age=0)
     return data
 
 
@@ -143,7 +143,7 @@ def get_watched_films(finished=False):
 
     """
     # Request the list of 'my films' and use only those that have only partly been played.
-    history = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/watch-history')
+    history = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/watch-history', max_age=3)
     # history = {film['assetId']: film for film in history if 'playtime' in film.keys()}
     sb_films, _ = storyblok.stories_by_uuids(film['assetId'] for film in history)
     sb_films = {film['uuid']: film for film in sb_films}
@@ -186,7 +186,7 @@ def remove_watched_film(film_uuid):
 
 
 def get_rented_films():
-    resp = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/purchased')
+    resp = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/purchased', max_age=3)
     # contrary to watched, this returns a plain list of uuids
     if resp:
         rented_films, _ = storyblok.stories_by_uuids(resp)
@@ -266,7 +266,7 @@ def get_payment_info(film_uid: str):
 
     """
     url = 'https://api.cinetree.nl/payments/info/rental/' + film_uid
-    payment_data = fetch.fetch_authenticated(fetch.post_json, url, data=None)
+    payment_data = fetch.fetch_authenticated(fetch.post_json, url, data=None, max_age=0)
     return float(payment_data['amount']), payment_data['transaction']
 
 
@@ -274,7 +274,7 @@ def get_ct_credits():
     """Return the current amount of available cinetree credits
 
     """
-    my_data = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/me')
+    my_data = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/me', max_age=0)
     return float(my_data['credit'])
 
 
@@ -313,7 +313,8 @@ def pay_film(film_uid, film_title, transaction_id, price):
             'https://api.cinetree.nl/payments/credit',
             method='post',
             headers={'Accept': 'application/json, text/plain, */*'},
-            data=payment_data
+            data=payment_data,
+            max_age=0
         )
         content = resp.content.decode('utf8')
         if content:
