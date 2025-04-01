@@ -9,6 +9,7 @@
 import logging
 from enum import Enum
 
+import urlquick
 from codequick import Script
 from codequick.support import logger_id
 
@@ -22,7 +23,7 @@ from resources.lib import storyblok
 STRM_INFO_UNAVAILABLE = 30921
 
 logger = logging.getLogger(logger_id + '.ct_api')
-base_url = ''
+cache_mgr = utils.CacheMgr(fetch.cache_location)
 
 GENRES = ('Action', 'Adventure', 'Biography', 'Comedy', 'Coming-of-age', 'Crime', 'Drama', 'Documentary',
           'Family', 'Fantasy', 'History', 'Horror', 'Mystery', 'Sci-Fi', 'Romance', 'Thriller')
@@ -31,21 +32,20 @@ GENRES = ('Action', 'Adventure', 'Biography', 'Comedy', 'Coming-of-age', 'Crime'
 def get_jsonp_url(slug, force_refresh=False):
     """Append *slug* to the base path for .js requests and return the full url.
 
-    Part of the base url is a unique number (timestamp) that changes every so often. We obtain
+    Part of the base url is a timestamp that changes every so often. We obtain
     that number from Cinetree's main page and cache it for future requests.
 
     """
-    global base_url
-
-    if not base_url or force_refresh:
+    nuxt_revision = cache_mgr.version
+    if nuxt_revision is None:
         import re
 
-        resp = fetch.get_document('https://cinetree.nl')
-        match = re.search(r'href="([\w_/]*?)manifest\.js" as="script">', resp, re.DOTALL)
-        base_url = 'https://cinetree.nl' + match.group(1)
-        logger.debug("New jsonp base url: %s", base_url)
-
-    url = base_url + slug
+        resp = fetch.web_request('get', 'https://cinetree.nl', max_age=-1)
+        page_data = resp.content.decode('utf8')
+        match = re.search(r'href="([\w_/]*?)manifest\.js" as="script">', page_data, re.DOTALL)
+        nuxt_revision = match.group(1)
+        cache_mgr.version = nuxt_revision
+    url = ''.join(('https://cinetree.nl', nuxt_revision, slug))
     return url
 
 
@@ -57,12 +57,11 @@ def get_jsonp(path):
         resp = fetch.get_document(url)
     except errors.HttpError as err:
         if err.code == 404:
-            # Due to reuselanguageinvoker and the timestamp in the path, the path may become
-            # invalid if the plugin is active for a long time.
-            url = get_jsonp_url(path, force_refresh=True)
+            # Cinetree's revision timestamp may have changed.
+            cache_mgr.revalidate()
+            storyblok.st_cache_mgr.revalidate()
+            url = get_jsonp_url(path)
             resp = fetch.get_document(url)
-            # Although the timestamps are not the same, expect storyblok's cache version to have been updated as well
-            storyblok.clear_cache_version()
         else:
             raise
 
@@ -114,7 +113,7 @@ def get_stream_info(url):
     film or trailer.
 
     """
-    data = fetch.fetch_authenticated(fetch.get_json, url)
+    data = fetch.fetch_authenticated(fetch.get_json, url, max_age=-1)
     return data
 
 
@@ -141,7 +140,7 @@ def get_watched_films():
     """Get the list of 'Mijn Films'.
 
     """
-    history = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/watch-history')
+    history = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/watch-history', max_age=10)
     sb_films, _ = storyblok.stories_by_uuids(film['assetId'] for film in history)
     sb_films = {film['uuid']: film for film in sb_films}
 
@@ -175,7 +174,7 @@ def remove_watched_film(film_uuid):
 
 
 def get_rented_films():
-    resp = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/purchased')
+    resp = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/purchased', max_age=3)
     # contrary to watched, this returns a plain list of uuids
     if resp:
         rented_films, _ = storyblok.stories_by_uuids(resp)
@@ -255,7 +254,7 @@ def get_payment_info(film_uid: str):
 
     """
     url = 'https://api.cinetree.nl/payments/info/rental/' + film_uid
-    payment_data = fetch.fetch_authenticated(fetch.post_json, url, data=None)
+    payment_data = fetch.fetch_authenticated(fetch.post_json, url, data=None, max_age=-1)
     return float(payment_data['amount']), payment_data['transaction']
 
 
@@ -263,7 +262,7 @@ def get_ct_credits():
     """Return the current amount of available cinetree credits
 
     """
-    my_data = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/me')
+    my_data = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/me', max_age=0)
     return float(my_data['credit'])
 
 
@@ -305,7 +304,8 @@ def pay_film(film_uid: str, film_title: str, transaction_id: str, price: float):
             'https://api.cinetree.nl/payments/credit',
             method='post',
             headers={'Accept': 'application/json, text/plain, */*'},
-            data=payment_data
+            data=payment_data,
+            max_age=-1
         )
         content = resp.content.decode('utf8')
         if content:

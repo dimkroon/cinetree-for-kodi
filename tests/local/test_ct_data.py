@@ -46,7 +46,7 @@ class CreateFilmItem(TestCase):
     def test_create_film_item(self):
         item_data = film_item({}).data
         has_keys(item_data, 'label', 'art', 'info', 'params')
-        has_keys(item_data['params'], 'title', 'slug', 'end_date')
+        has_keys(item_data['params'], 'title', 'slug')
 
     def test_end_date(self):
         # date in the future

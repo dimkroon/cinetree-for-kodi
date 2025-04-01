@@ -117,10 +117,8 @@ class FilmItem:
             },
             'params': {
                 'title': title,
-                'uuid': self.film_info.get('uuid'),
-                'slug': self.film_info.get('full_slug'),
-                # TODO: Do we need this?
-                'end_date': subscr_end_date
+                'uuid': self.uuid,
+                'slug': self.film_info.get('full_slug')
             },
         }
         self.playtime = self.film_info.get('playtime')
@@ -267,9 +265,9 @@ class FilmItem:
         if not short_synopsis:
             return None
         else:
-            return '\n\n'.join(t for t in(replace_markdown(short_synopsis),
-                                          self.price_info,
-                                          self.availability) if t)
+            return '\n\n'.join(t for t in (replace_markdown(short_synopsis),
+                                           self.price_info,
+                                           self.availability) if t)
 
     def _quote(self):
         """Return the first found quote in film data.

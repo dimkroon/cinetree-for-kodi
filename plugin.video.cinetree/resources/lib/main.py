@@ -90,7 +90,7 @@ def list_my_films(addon, subcategory=None):
         yield li
 
 
-@Route.register(cache_ttl=-1, content_type='movies')
+@Route.register(content_type='movies')
 def list_films_and_docus(_, category):
     """List subscription films"""
     if category == 'subscription':
@@ -105,7 +105,7 @@ def list_films_and_docus(_, category):
     return items
 
 
-@Route.register(cache_ttl=480)
+@Route.register()
 def list_rental_collections(addon):
     collections = ct_api.get_preferred_collections()
     for coll in collections:
@@ -113,14 +113,14 @@ def list_rental_collections(addon):
     yield Listitem.from_dict(list_all_collections, addon.localize(TXT_ALL_COLLECTIONS))
 
 
-@Route.register(cache_ttl=480)
+@Route.register()
 def list_all_collections(_):
     collections = ct_api.get_collections()
     for coll in collections:
         yield Listitem.from_dict(list_films_by_collection, **coll)
 
 
-@Route.register(cache_ttl=480)
+@Route.register()
 def list_genres(_):
     for genre in ct_api.GENRES:
         yield Listitem.from_dict(list_films_by_genre, label=genre, params={'genre': genre})
@@ -146,14 +146,14 @@ def do_search(_, search_query):
         return False
 
 
-@Route.register(cache_ttl=480, content_type='movies')
+@Route.register(content_type='movies')
 def list_films_by_collection(_, slug):
     data = ct_api.get_jsonp(slug + '/payload.js')
     films = ct_data.create_films_list(data)
     return [Listitem.from_dict(play_film, **film) for film in films]
 
 
-@Route.register(cache_ttl=480, content_type='movies')
+@Route.register(content_type='movies')
 def list_films_by_genre(_, genre, page=1):
     list_len = 50
     films, num_films = storyblok.search(genre=genre, page=page, items_per_page=list_len)
@@ -272,14 +272,14 @@ def play_ct_video(stream_info: dict, title: str = ''):
 
 
 @Resolver.register
-def play_film(plugin, title, uuid, slug, end_date=None):
-    logger.info('play film - title=%s, uuid=%s, slug=%s, end_date=%s', title, uuid, slug, end_date)
+def play_film(plugin, title, uuid, slug):
+    logger.info('play film - title=%s, uuid=%s, slug=%s', title, uuid, slug)
     try:
         stream_info = ct_api.get_stream_info(ct_api.create_stream_info_url(uuid, slug))
         logger.debug("play_info = %s", stream_info)
     except errors.NotPaidError:
         if pay_from_ct_credit(title, uuid):
-            return play_film(plugin, title, uuid, slug, end_date)
+            return play_film(plugin, title, uuid, slug)
         else:
             return False
     except errors.NoSubscriptionError:
