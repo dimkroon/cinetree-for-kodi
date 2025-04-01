@@ -35,8 +35,6 @@ def get_url(path, **kwargs):
         'Sec-Fetch-Dest': 'empty',
         'Sec-Fetch-Mode': 'cors',
         'Sec-Fetch-Site': 'cross-site',
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache',
     }
     params = {'token': token, 'version': 'published', 'cv': cache_version}
     if 'headers' in kwargs:

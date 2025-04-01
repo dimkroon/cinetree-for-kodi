@@ -25,8 +25,7 @@ setUpModule = fixtures.setup_local_tests
 tearDownModule = fixtures.tear_down_local_tests
 
 URL = 'https://mydoc'
-STD_HEADERS = ['User-Agent', 'Referer', 'Origin', 'Sec-Fetch-Dest', 'Sec-Fetch-Mode',
-               'Sec-Fetch-Site', 'Cache-Control', 'Pragma']
+STD_HEADERS = ['User-Agent', 'Referer', 'Origin', 'Sec-Fetch-Dest', 'Sec-Fetch-Mode', 'Sec-Fetch-Site']
 
 
 class WebRequest(TestCase):

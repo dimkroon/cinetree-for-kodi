@@ -28,8 +28,6 @@ def web_request(method, url, headers=None, data=None, **kwargs):
         'Sec-Fetch-Dest': 'empty',
         'Sec-Fetch-Mode': 'cors',
         'Sec-Fetch-Site': 'same-site',
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache',
     }
     if headers:
         std_headers.update(headers)
