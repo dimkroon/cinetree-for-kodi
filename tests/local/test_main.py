@@ -37,7 +37,7 @@ class MainTest(unittest.TestCase):
     @patch('resources.lib.fetch.fetch_authenticated', return_value=open_json('watch-history.json'))
     @patch('resources.lib.storyblok.stories_by_uuids', new=get_sb_film)
     def test_mijn_films(self, _):
-        items = list(main.list_my_films.test())
+        items = main.list_my_films.test()
         self.assertGreater(len(items), 5)
         for item in items:
             self.assertIsInstance(item, Listitem)
@@ -45,13 +45,13 @@ class MainTest(unittest.TestCase):
                 self.assertEqual(1, len(item.context))
         self.assertGreater(len(items), 1)
 
-        items = list(main.list_my_films.test('finished'))
+        items = main.list_my_films.test('finished')
         for item in items:
             self.assertIsInstance(item, (Listitem, type(False)))
             if items.index(item) > 1:  # the first 2 items are folders
                 self.assertEqual(1, len(item.context))
 
-        items = list(main.list_my_films.test('purchased'))
+        items = main.list_my_films.test('purchased')
         for item in items:
             self.assertIsInstance(item, (Listitem, type(False)))
 
@@ -59,7 +59,7 @@ class MainTest(unittest.TestCase):
     def test_list_films_and_docus_deze_maand(self):
         # all subscription films
         with patch('resources.lib.fetch.get_json', return_value=open_json('films-svod.json')):
-            items = list(main.list_films_and_docus.test(category='subscription'))
+            items = main.list_films_and_docus.test(category='subscription')
             self.assertAlmostEqual(19, len(items), delta=3)
             for item in items:
                 self.assertIsInstance(item, Listitem)
@@ -67,27 +67,27 @@ class MainTest(unittest.TestCase):
         # Hero items
         with patch('resources.lib.storyblok.get_url',
                    new=lambda *args, **kwargs: (open_json('st_blok/films-en-documentaires.json'), None)):
-            items = list(main.list_films_and_docus.test(category='recommended'))
+            items = main.list_films_and_docus.test(category='recommended')
             self.assertAlmostEqual(3, len(items), delta=1)
             for item in items:
                 self.assertIsInstance(item, Listitem)
 
     @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('films-payload.js'))
     def test_list_rental_collections(self, _):
-        items = list(main.list_rental_collections.test())
+        items = main.list_rental_collections.test()
         self.assertEqual(9, len(items))
         for item in items:
             self.assertIsInstance(item, Listitem)
 
     @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('collecties-payload.js'))
     def test_list_all_collections(self, _):
-        items = list(main.list_all_collections(MagicMock()))
+        items = main.list_all_collections.test()
         self.assertGreater(len(items), 10)
         for item in items:
             self.assertIsInstance(item, Listitem)
 
     def test_list_genres(self):
-        items = list(main.list_genres(MagicMock()))
+        items = main.list_genres.test()
         self.assertEqual(len(GENRES), len(items))
         for item in items:
             self.assertIsInstance(item, Listitem)
@@ -95,11 +95,11 @@ class MainTest(unittest.TestCase):
     @patch('resources.lib.storyblok.stories_by_uuids', new=get_sb_film)
     def test_do_search(self):
         # no search_query
-        self.assertFalse(main.do_search(MagicMock(), ''))
+        self.assertFalse(main.do_search.test(''))
 
         # test search return a few items
         with patch('resources.lib.ctree.ct_api.search_films', return_value=["18ae971a-1ba5-4e2c-987f-5ba06c42fca8", "93d595ed-fcaf-4250-8ee3-87b006b92b87"]) as p_search:
-            items = main.do_search(MagicMock(), 'some_term')
+            items = main.do_search.test('some_term')
             self.assertEqual(2, len(items))
 
         # Test returned list is limited to a max of 100 items
@@ -267,7 +267,6 @@ class PlayFilm(unittest.TestCase):
         with patch('resources.lib.kodi_utils.ask_resume_film', return_value=-1):
             item = main.play_film.test('', 'ec0407a8-24a1-47a1-8bbf-61ada5f6610f', None)
             self.assertIsInstance(item, type(False))
-
 
 
 @patch('resources.lib.kodi_utils.show_low_credit_msg')

@@ -9,7 +9,7 @@
 from tests.support import fixtures
 fixtures.global_setup()
 
-from tests.support.object_checks import check_stream_info, check_films_data_list, check_collection
+from tests.support.object_checks import check_stream_info, check_films_data_list, check_collection, has_keys
 from tests.support.testutils import is_uuid
 
 from unittest import TestCase
@@ -122,7 +122,9 @@ class Gen(TestCase):
         check_films_data_list(resp, allow_none_values=False)
 
     def get_stream_info(self):
-        resp = ct_api.get_stream_info()
+        # Get info of free film 'Intercepted'
+        resp = ct_api.get_stream_info('https://api.cinetree.nl/films/d63ffb56-7fa3-4965-ba3c-03e95d7179b0')
+        has_keys(resp, 'subtitles', 'url', 'watchHistoryId')
 
     def test_get_payment_info(self):
         amount, transaction = ct_api.get_payment_info('ef51ee02-0635-4547-a35d-d7844e0c5426')
