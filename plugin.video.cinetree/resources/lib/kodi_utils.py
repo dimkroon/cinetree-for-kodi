@@ -9,13 +9,16 @@
 import logging
 import time
 import sys
+from collections.abc import Callable
 
 import xbmcgui
-from xbmc import Player, Monitor
+from xbmc import Player, Monitor, executeJSONRPC
 
 
 from codequick import Script, utils
-from codequick.support import addon_data, logger_id
+from codequick.support import addon_data, logger_id, build_path
+
+from resources.lib.ctree.ct_data import FilmItem
 
 
 logger = logging.getLogger('.'.join((logger_id, __name__)))
@@ -240,9 +243,19 @@ def yes_no_dialog(msg, heading=None, autoclose=12000):
     return xbmcgui.Dialog().yesno(heading, msg, autoclose=autoclose)
 
 
-def kodi_resumes():
-    """Return True when Kodi intents to resume a video,"""
-    try:
-        return sys.argv[3] == 'resume:true'
-    except IndexError:
-        return False
+def sync_play_state(callback: Callable, film_item: FilmItem):
+    """Sync the play state of the film to the Kodi database."""
+    params = film_item.data['params']
+    full_url = build_path(callback, _title_=params['title'], **params)
+    resume_point = film_item.playtime
+    if resume_point > 0:
+        json_str = '{"jsonrpc": "2.0", "method": "Files.SetFileDetails", "params": {"file":"%s", ' \
+                   '"media": "video", "resume": {"position": %s, "total": %s}}, "id": 1}' % (
+                   full_url, resume_point, film_item.duration)
+    else:
+        json_str = '{"jsonrpc": "2.0", "method": "Files.SetFileDetails", "params": {"file":"%s", ' \
+                   '"media": "video", "playcount": 1, "resume": {"position": 0, "total": %s}}, "id": 1}' % (
+                   full_url, film_item.duration)
+    response = executeJSONRPC(json_str)
+    logger.debug("sync_play_state of '%s' to %s of %s, JSONRPC response: %s",
+                 params['title'], resume_point, film_item.duration, response)

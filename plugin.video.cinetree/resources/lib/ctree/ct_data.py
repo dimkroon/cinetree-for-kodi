@@ -126,8 +126,9 @@ class FilmItem:
             # Duration seems to be rounded up to whole minutes, so actual playing time could
             # still differ by 60 seconds when the video has been fully watched.
             if duration - self.playtime < max(60, duration * (1 - FULLY_WATCHED_PERCENTAGE)):
-                self.playtime = duration
+                self.playtime = 0
             film_item['properties'] = {
+                'playcount': '1',
                 'resumetime': str(self.playtime),
                 'totaltime': str(duration)
             }

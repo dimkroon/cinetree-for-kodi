@@ -21,7 +21,7 @@ from codequick import Listitem
 from resources.lib import main
 from resources.lib import errors
 from resources.lib.ctree import ct_api
-
+from resources.lib.ctree.ct_data import FilmItem
 
 def setUpModule():
     fixtures.setup_local_tests()
@@ -34,11 +34,13 @@ tearDownModule = fixtures.tear_down_local_tests
 
 @patch('resources.lib.storyblok.stories_by_uuids', new=get_sb_film)
 class MainTest(unittest.TestCase):
-    def test_root(self):
+    @patch('resources.lib.main.sync_watched_state')
+    def test_root(self, p_sync):
         items = main.root.test()
         self.assertEqual(8, len(items))
         for item in items:
             self.assertIsInstance(item, Listitem)
+        p_sync.assert_called_once()
 
     @patch('resources.lib.fetch.fetch_authenticated', return_value=open_json('watch-history.json'))
     @patch('xbmcaddon.Addon.getLocalizedString', lambda s, x: 'my list')
@@ -356,3 +358,30 @@ class PayFromCredit(unittest.TestCase):
         p_show_low_credit.assert_not_called()
         p_pay_film.assert_called_once()
         p_ok_dlg.assert_called_with(MSG_ID_PAYMENT_FAILED)
+
+
+@patch('resources.lib.kodi_utils.executeJSONRPC')
+class SyncWatchedState(unittest.TestCase):
+    def test_sync_films(self, p_jsonrpc):
+        watched = [FilmItem({'uuid': 'film-uid-1',
+                             'content': {'endDate': '2050-01-01 01:01', 'duration': '60'},
+                             'playtime': 900}),
+                   FilmItem({'uuid': 'film-uid-2',
+                             'content': {'endDate': '2050-01-01 01:01', 'duration': '90'},
+                             'playtime': 1200})
+                   ]
+        with patch('resources.lib.ctree.ct_api.get_watched_films', return_value=watched), \
+             patch('resources.lib.main.PersistentDict._load', return_value={}):
+            main.sync_watched_state()
+            self.assertEqual(p_jsonrpc.call_count, 2)
+        # Now it has been synced it will not sync the same status again.
+        p_jsonrpc.reset_mock()
+        with patch('resources.lib.ctree.ct_api.get_watched_films', return_value=watched):
+            main.sync_watched_state()
+            p_jsonrpc.assert_not_called()
+        # But changes will be synced.
+        p_jsonrpc.reset_mock()
+        watched[0].playtime = 0
+        with patch('resources.lib.ctree.ct_api.get_watched_films', return_value=watched):
+            main.sync_watched_state()
+            p_jsonrpc.assert_called_once()

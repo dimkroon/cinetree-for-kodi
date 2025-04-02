@@ -17,6 +17,7 @@ from xbmcgui import ListItem as XbmcListItem
 
 from codequick import Route, Resolver, Listitem, Script
 from codequick import run as cc_run
+from codequick.storage import PersistentDict
 
 from resources.lib.addon_log import logger
 from resources.lib.ctree import ct_api
@@ -68,6 +69,7 @@ def root(_):
     yield Listitem.from_dict(list_rental_collections, Script.localize(TXT_RENTALS_COLLECTIONS))
     yield Listitem.from_dict(list_genres, Script.localize(TXT_RENTALS_GENRES))
     yield Listitem.search(do_search, Script.localize(TXT_SEARCH))
+    sync_watched_state()
 
 
 @Route.register(content_type='movies')
@@ -96,9 +98,9 @@ def list_my_films(addon, subcategory=None):
     else:
         watched_films = ct_api.get_watched_films()
         if subcategory == 'finished':
-            films = (film for film in watched_films if film.playtime >= film.duration)
+            films = (film for film in watched_films if film.playtime == 0)
         else:
-            films = (film for film in watched_films if film.playtime < film.duration)
+            films = (film for film in watched_films if film.playtime > 0)
 
     if not films:
         # yield False
@@ -274,6 +276,24 @@ def monitor_progress(watch_id):
     ct_api.set_resume_time(watch_id, player.playtime)
     player.wait_while_playing()
     ct_api.set_resume_time(watch_id, player.playtime)
+
+
+def sync_watched_state():
+    """Sync the play progress to Kodi for every film that has changed
+    since the last time it was checked.
+
+    """
+    history = list(ct_api.get_watched_films())
+    logger.debug("[sync_watched] History has %s items", len(history))
+    with PersistentDict(constants.HISTORY_CACHE) as prev_watched:
+        changed = {film for film in history if prev_watched.get(film.uuid) != film.playtime}
+        if not changed:
+            return
+        logger.info("[sync_watched] %s items changed", len(changed))
+        for film in changed:
+            kodi_utils.sync_play_state(play_film, film)
+        prev_watched.clear()
+        prev_watched.update((film.uuid, film.playtime) for film in history)
 
 
 def create_hls_item(url, title):
