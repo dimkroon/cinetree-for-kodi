@@ -289,8 +289,8 @@ msgstr "Mijn lijst"
 
 # Context Menu
 msgctxt "#30859"
-msgid "Remove from list"
-msgstr "Uit lijst verwijderen"
+msgid "Remove from '{listname}'"
+msgstr "Van '{listname}' verwijderen"
 
 msgctxt "#30860"
 msgid "Add to Watch list"

@@ -284,7 +284,7 @@ msgstr ""
 
 # Context Menu
 msgctxt "#30859"
-msgid "Remove from list"
+msgid "Remove from '{listname}'"
 msgstr ""
 
 msgctxt "#30860"

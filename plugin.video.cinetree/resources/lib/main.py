@@ -87,10 +87,10 @@ def list_my_films(addon, subcategory=None):
     else:
         watched_films = ct_api.get_watched_films()
         if subcategory == 'finished':
-            list_name = TXT_ALREADY_WATCHED
+            list_name = addon.localize(TXT_ALREADY_WATCHED)
             films = (film for film in watched_films if film.playtime >= film.duration)
         else:
-            list_name = TXT_CONTINUE_WATCHING
+            list_name = addon.localize(TXT_CONTINUE_WATCHING)
             films = (film for film in watched_films if film.playtime < film.duration)
 
     if not films:
