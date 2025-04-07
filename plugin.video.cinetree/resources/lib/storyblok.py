@@ -115,14 +115,17 @@ def stories_by_uuids(uuids, page=None, items_per_page=None):
 
     if isinstance(uuids, str):
         uuids = (uuids, )
+    else:
+        uuids = list(uuids)
 
-    stories = _get_url_page(
+    stories, total = _get_url_page(
             'stories',
             page,
             items_per_page,
             params={'by_uuids': ','.join(uuids)})
-    # print(" {} stories retrieved".format(len(stories[0])))
-    return stories
+    if len(uuids) != len(stories):
+        logger.warning("%s stories requested by uuid, only %s returned.", len(uuids), len(stories))
+    return stories, total
 
 
 def story_by_name(slug: str):
