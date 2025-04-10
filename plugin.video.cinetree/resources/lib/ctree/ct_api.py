@@ -92,6 +92,17 @@ def get_subscription_films():
     return resp
 
 
+def get_originals():
+    """Return the list of Cinetree Originals"""
+    data = get_jsonp('originals/payload.js')
+    # Data has several fields, of which 2 are a list of films. One has only 1 or 2 highlights,
+    # while the other is the full list. Since the exact names of the fields are unknown,
+    # return the one with the longest list.
+    film_lists = (v['films'] for k, v in data['fetch'].items() if k.startswith('data-v-'))
+    longest_list = max(film_lists, key=len)
+    return longest_list
+
+
 def create_stream_info_url(film_uuid, slug=None):
     """Return the url to the stream info (json) document.
 

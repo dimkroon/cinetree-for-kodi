@@ -277,6 +277,10 @@ msgctxt "#30812"
 msgid "Watch list"
 msgstr ""
 
+msgctxt "#30813"
+msgid "Originals"
+msgstr ""
+
 
 # Context Menu
 msgctxt "#30859"

@@ -35,8 +35,8 @@ tearDownModule = fixtures.tear_down_local_tests
 @patch('resources.lib.storyblok.stories_by_uuids', new=get_sb_film)
 class MainTest(unittest.TestCase):
     def test_root(self):
-        items = list(main.root(MagicMock()))
-        self.assertEqual(6, len(items))
+        items = main.root.test()
+        self.assertEqual(7, len(items))
         for item in items:
             self.assertIsInstance(item, Listitem)
 
@@ -118,6 +118,13 @@ class MainTest(unittest.TestCase):
         with patch('resources.lib.ctree.ct_api.search_films', return_value=all_uuids):
             items = main.do_search(MagicMock(), 'some_term')
             self.assertLessEqual(len(items), 100)       # some items could (will) be filtered out on endDate
+
+    @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('originals_payload.js'))
+    def test_list_originals(self, _):
+        items = main.list_originals.test()
+        self.assertGreater(len(items), 10)
+        for item in items:
+            self.assertIsInstance(item, Listitem)
 
     @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('collecties-prijswinnaars-payload.js'))
     def test_list_films_by_collection(self, _):

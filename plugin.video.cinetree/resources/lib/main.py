@@ -43,6 +43,7 @@ TXT_RENTED = 30809
 TXT_ALL_COLLECTIONS = 30810
 TXT_CONTINUE_WATCHING = 30811
 TXT_MY_LIST = 30812
+TXT_ORIGINALS = 30813
 TXT_REMOVE_FROM_LIST = 30859
 TXT_NOTHING_FOUND = 30608
 TXT_TOO_MANY_RESULTS = 30609
@@ -60,6 +61,7 @@ def root(_):
                              params={'category': 'recommended'})
     yield Listitem.from_dict(list_films_and_docus, Script.localize(TXT_MONTH_SELECTION),
                              params={'category': 'subscription'})
+    yield Listitem.from_dict(list_originals, Script.localize(TXT_ORIGINALS))
     yield Listitem.from_dict(list_rental_collections, Script.localize(TXT_RENTALS_COLLECTIONS))
     yield Listitem.from_dict(list_genres, Script.localize(TXT_RENTALS_GENRES))
     yield Listitem.search(do_search, Script.localize(TXT_SEARCH))
@@ -209,6 +211,13 @@ def do_search(_, search_query):
                       Script.localize(TXT_NOTHING_FOUND),
                       Script.NOTIFY_INFO, 7000)
         return False
+
+
+@Route.register(content_type='movies')
+def list_originals(_):
+    data = ct_api.get_originals()
+    films = ct_data.create_films_list(data, 'storyblok')
+    yield from _create_playables(films)
 
 
 @Route.register(content_type='movies')
