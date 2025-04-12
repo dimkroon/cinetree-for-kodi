@@ -36,7 +36,7 @@ tearDownModule = fixtures.tear_down_local_tests
 class MainTest(unittest.TestCase):
     def test_root(self):
         items = main.root.test()
-        self.assertEqual(7, len(items))
+        self.assertEqual(8, len(items))
         for item in items:
             self.assertIsInstance(item, Listitem)
 
@@ -125,6 +125,21 @@ class MainTest(unittest.TestCase):
         self.assertGreater(len(items), 10)
         for item in items:
             self.assertIsInstance(item, Listitem)
+
+    def test_list_shorts(self):
+        # Submenu
+        with patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('kort_payload.js')):
+            items = main.list_shorts.test()
+            self.assertEqual(len(items), 5)
+            for item in items:
+                self.assertIsInstance(item, Listitem)
+        # All short films
+        with patch('resources.lib.storyblok._get_url_page',
+                   return_value=(open_json('st_blok/shorts.json').values(), 73)):
+            items = main.list_shorts.test(list_films=True)
+            self.assertEqual(len(items), 53)
+            for item in items:
+                self.assertIsInstance(item, Listitem)
 
     @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('collecties-prijswinnaars-payload.js'))
     def test_list_films_by_collection(self, _):

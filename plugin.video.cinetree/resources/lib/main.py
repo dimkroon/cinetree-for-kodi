@@ -44,6 +44,8 @@ TXT_ALL_COLLECTIONS = 30810
 TXT_CONTINUE_WATCHING = 30811
 TXT_MY_LIST = 30812
 TXT_ORIGINALS = 30813
+TXT_SHORT = 30814
+TXT_ALL_SHORT_FILMS = 30815
 TXT_REMOVE_FROM_LIST = 30859
 TXT_NOTHING_FOUND = 30608
 TXT_TOO_MANY_RESULTS = 30609
@@ -62,6 +64,7 @@ def root(_):
     yield Listitem.from_dict(list_films_and_docus, Script.localize(TXT_MONTH_SELECTION),
                              params={'category': 'subscription'})
     yield Listitem.from_dict(list_originals, Script.localize(TXT_ORIGINALS))
+    yield Listitem.from_dict(list_shorts, Script.localize(TXT_SHORT))
     yield Listitem.from_dict(list_rental_collections, Script.localize(TXT_RENTALS_COLLECTIONS))
     yield Listitem.from_dict(list_genres, Script.localize(TXT_RENTALS_GENRES))
     yield Listitem.search(do_search, Script.localize(TXT_SEARCH))
@@ -218,6 +221,20 @@ def list_originals(_):
     data = ct_api.get_originals()
     films = ct_data.create_films_list(data, 'storyblok')
     yield from _create_playables(films)
+
+
+@Route.register(content_type='movies')
+def list_shorts(addon, list_films=False):
+    if not list_films:
+        # List a submenu of collections of short films
+        collections = ct_api.get_shorts()
+        for coll in collections:
+            yield Listitem.from_dict(list_films_by_collection, **coll)
+        yield Listitem.from_dict(list_shorts, addon.localize(TXT_ALL_SHORT_FILMS), params={'list_films':True})
+    else:
+        # List all short films
+        stories, _ = storyblok._get_url_page('stories', params={'starts_with': 'shorts/'})
+        yield from _create_playables(ct_data.create_films_list(stories, 'storyblok'))
 
 
 @Route.register(content_type='movies')

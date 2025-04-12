@@ -23,7 +23,7 @@ setUpModule = fixtures.setup_web_test
 
 class MainTest(unittest.TestCase):
     def test_root(self):
-        NUM_MAIN_MNU_ITEMS = 6
+        NUM_MAIN_MNU_ITEMS = 8
         items = list(main.root(MagicMock()))
         self.assertEqual(NUM_MAIN_MNU_ITEMS, len(items),
                          "Expected {} items in main menu, got {}".format(NUM_MAIN_MNU_ITEMS, len(items)))

@@ -171,6 +171,13 @@ class Gen(TestCase):
         self.assertIsInstance(data, list)
         self.assertGreater(len(data), 10)
 
+    @patch('resources.lib.utils.CacheMgr.version', PropertyMock(return_value='abcde'))
+    @patch('resources.lib.fetch.get_document', open_doc('kort_payload.js'))
+    def test_get_shorts(self):
+        data = list(ct_api.get_shorts())
+        self.assertIsInstance(data, list)
+        self.assertGreater(len(data), 3)
+
     def test_get_subtitles(self):
         # noinspection PyTypeChecker
         # Check return value when url to subtitles is not provided.

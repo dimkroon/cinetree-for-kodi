@@ -103,6 +103,14 @@ def get_originals():
     return longest_list
 
 
+def get_shorts():
+    """Return a list of available collections with short films."""
+    data = get_jsonp('kort/payload.js')
+    for k, v in data['fetch'].items():
+        if k.startswith('data-v-'):
+            return (create_collection_item(col_data) for col_data in v['collections'])
+
+
 def create_stream_info_url(film_uuid, slug=None):
     """Return the url to the stream info (json) document.
 
