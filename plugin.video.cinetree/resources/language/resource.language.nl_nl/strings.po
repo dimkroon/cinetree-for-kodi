@@ -263,8 +263,8 @@ msgid "Search"
 msgstr "Zoeken"
 
 msgctxt "#30808"
-msgid "Already Watched"
-msgstr "Reeds Bekeken"
+msgid "Already watched"
+msgstr "Reeds bekeken"
 
 msgctxt "#30809"
 msgid "Rented"
@@ -274,10 +274,27 @@ msgctxt "#30810"
 msgid "All Collections"
 msgstr "Alle Collecties"
 
+msgctxt "#30811"
+msgid "Continue watching"
+msgstr "Kijk verder"
+
+msgctxt "#30812"
+msgid "Watch list"
+msgstr "Opgeslagen"
+
+
 # Context Menu
 msgctxt "#30859"
 msgid "Remove from list"
 msgstr "Uit lijst verwijderen"
+
+msgctxt "#30860"
+msgid "Save to watch list"
+msgstr "Opslaan in mijn films"
+
+msgctxt "#30861"
+msgid "Remove from watch list"
+msgstr "Verwijderen uit mijn films"
 
 
 # Error texts

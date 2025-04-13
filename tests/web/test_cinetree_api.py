@@ -10,6 +10,7 @@ fixtures.global_setup()
 
 import requests
 import unittest
+from datetime import datetime, timezone
 import time
 
 from tests.support import testutils, object_checks
@@ -290,3 +291,77 @@ class RemoveFromMyFilms(unittest.TestCase):
                                          headers={'accept': 'application/json, text/plain, */*'})
         self.assertEqual(200, resp.status_code)
         self.assertEqual(b'', resp.content)
+
+
+class Favourites(unittest.TestCase):
+    ISO_FMT = '%Y-%m-%dT%H:%M:%S.%fZ'
+
+    def test_add_and_remove_favourite(self):
+        # Ensure the film is on the list. May already exist, so don't check response body
+        film_uuid = 'f621c2d2-4206-4824-a2d6-6e41427db6c1'
+        fetch.fetch_authenticated(
+            fetch.web_request,
+            method='put',
+            url='https://api.cinetree.nl/favorites/' + film_uuid
+        )
+
+        # Delete
+        resp = fetch.fetch_authenticated(
+            fetch.web_request,
+            method='delete',
+            url='https://api.cinetree.nl/favorites/' + film_uuid
+        )
+        self.assertEqual(200, resp.status_code)
+        resp_data = resp.json()
+        self.assertIs(resp_data['acknowledged'], True)
+        self.assertEqual(resp_data['deletedCount'], 1)
+
+        # Delete a film not on the list
+        resp = fetch.fetch_authenticated(
+            fetch.web_request,
+            method='delete',
+            url='https://api.cinetree.nl/favorites/' + film_uuid
+        )
+        self.assertEqual(200, resp.status_code)
+        resp_data = resp.json()
+        self.assertIs(resp_data['acknowledged'], True)
+        self.assertEqual(resp_data['deletedCount'], 0)
+
+        # Add again now the film is definitely not on the list.
+        film_uuid = 'f621c2d2-4206-4824-a2d6-6e41427db6c1'
+        resp = fetch.fetch_authenticated(
+            fetch.web_request,
+            method='put',
+            url='https://api.cinetree.nl/favorites/' + film_uuid
+        )
+        self.assertEqual(200, resp.status_code)
+        resp_data = resp.json()
+        self.assertEqual(film_uuid, resp_data['storyUuid'])
+        self.assertAlmostEqual(
+                datetime.strptime(resp_data['createdAt'], self.ISO_FMT).replace(tzinfo=timezone.utc).timestamp(),
+                datetime.now(timezone.utc).timestamp(),
+                delta=2)
+        self.assertEqual(resp_data['createdAt'], resp_data['updatedAt'])
+
+        # Add a film which is already on the list.
+        film_uuid = 'f621c2d2-4206-4824-a2d6-6e41427db6c1'
+        resp = fetch.fetch_authenticated(
+            fetch.web_request,
+            method='put',
+            url='https://api.cinetree.nl/favorites/' + film_uuid
+        )
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual(b'',  resp.content)
+
+    def test_get_favourites(self):
+        resp = fetch.fetch_authenticated(
+            fetch.web_request,
+            method='get',
+            url='https://api.cinetree.nl/favorites/'
+        )
+        self.assertEqual(200, resp.status_code)
+        data = resp.json()
+        self.assertIsInstance(data, list)
+        for item in data:
+            object_checks.has_keys(item, 'createdAt', 'uuid')
+            self.assertEqual(2, len(tuple(item.keys())))  # Just to flag when other fields become available.

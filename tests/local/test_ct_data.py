@@ -102,16 +102,16 @@ class CreateFilmItem(TestCase):
 class GetFilmsList(TestCase):
     def test_create_film_list_storyblok(self):
         sb_films = itertools.islice(open_json('st_blok/films.json').values(), 4)
-        films = ct_data.create_films_list(sb_films, 'storyblok')
+        films = list(ct_data.create_films_list(sb_films, 'storyblok'))
         self.assertEqual(len(films), 4)
 
     def test_create_film_list_collection_drama(self):
         data = open_jsonp('collecties-drama-payload.js')
-        films = ct_data.create_films_list(data)
+        films = list(ct_data.create_films_list(data))
         self.assertGreater(len(films), 10)
         for item in films:
             # check if a Listitem can be created
-            Listitem.from_dict(MagicMock(), **item)
+            Listitem.from_dict(MagicMock(), **item.data)
 
     def test_create_film_with_invalid_data(self):
         data = open_jsonp('films_en_docus-payload.js')
@@ -132,7 +132,7 @@ class Collections(TestCase):
         coll_data = open_jsonp('collecties-cinetree-originals-payload.js')
         film_list = list(ct_data.create_films_list(coll_data))
         for film in film_list:
-            Listitem.from_dict(MagicMock(), **film)
+            Listitem.from_dict(MagicMock(), **film.data)
 
 
 @patch('resources.lib.ctree.ct_data.TXT_FOR_MEMBERS', 'for members')

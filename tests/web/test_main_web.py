@@ -1,6 +1,6 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -51,6 +51,12 @@ class MainTest(unittest.TestCase):
                 self.assertEqual(1, len(items))
             else:
                 self.assertIsInstance(item, (Listitem, type(False)))
+
+    def test_watch_list(self):
+        items = main.list_watchlist.test()
+        self.assertIsInstance(items, list)
+        for item in items:
+            self.assertIsInstance(item, Listitem)
 
     def test_list_subscription_films(self):
         items = list(main.list_films_and_docus.test( category='subscription'))

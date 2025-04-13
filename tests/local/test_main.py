@@ -1,6 +1,6 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -20,13 +20,19 @@ from codequick import Listitem
 
 from resources.lib import main
 from resources.lib import errors
-from resources.lib.ctree.ct_api import GENRES
+from resources.lib.ctree import ct_api
 
 
-setUpModule = fixtures.setup_local_tests
+def setUpModule():
+    fixtures.setup_local_tests()
+    # Prevent webrequests to /favorites each time a film list is created.
+    ct_api.favourites = []
+
+
 tearDownModule = fixtures.tear_down_local_tests
 
 
+@patch('resources.lib.storyblok.stories_by_uuids', new=get_sb_film)
 class MainTest(unittest.TestCase):
     def test_root(self):
         items = list(main.root(MagicMock()))
@@ -35,27 +41,33 @@ class MainTest(unittest.TestCase):
             self.assertIsInstance(item, Listitem)
 
     @patch('resources.lib.fetch.fetch_authenticated', return_value=open_json('watch-history.json'))
-    @patch('resources.lib.storyblok.stories_by_uuids', new=get_sb_film)
+    @patch('xbmcaddon.Addon.getLocalizedString', lambda s, x: 'my list')
     def test_mijn_films(self, _):
         items = main.list_my_films.test()
-        self.assertGreater(len(items), 5)
+        self.assertEqual(len(items), 4)
         for item in items:
             self.assertIsInstance(item, Listitem)
-            if items.index(item) > 1:           # the first 2 items are folders
-                self.assertEqual(1, len(item.context))
-        self.assertGreater(len(items), 1)
 
         items = main.list_my_films.test('finished')
+        self.assertEqual(len(items), 2)
         for item in items:
-            self.assertIsInstance(item, (Listitem, type(False)))
-            if items.index(item) > 1:  # the first 2 items are folders
+            self.assertIsInstance(item, Listitem)
+            self.assertEqual(1, len(item.context))
+
+        items = main.list_my_films.test('continue')
+        self.assertEqual(len(items), 3)
+        for item in items:
+            self.assertIsInstance(item, Listitem)
+            self.assertEqual(1, len(item.context))
+
+        with patch('resources.lib.fetch.fetch_authenticated',
+                   return_value=["3d3e2bb8-31ff-444f-909e-2a16a0fc4375", "070f9abd-9df9-47d1-bfbc-e83fdfea2e43"]):
+            items = main.list_my_films.test('purchased')
+            self.assertEqual(len(items), 2)
+            for item in items:
+                self.assertIsInstance(item, Listitem)
                 self.assertEqual(1, len(item.context))
 
-        items = main.list_my_films.test('purchased')
-        for item in items:
-            self.assertIsInstance(item, (Listitem, type(False)))
-
-    @patch('resources.lib.storyblok.stories_by_uuids', new=get_sb_film)
     def test_list_films_and_docus_deze_maand(self):
         # all subscription films
         with patch('resources.lib.fetch.get_json', return_value=open_json('films-svod.json')):
@@ -88,11 +100,10 @@ class MainTest(unittest.TestCase):
 
     def test_list_genres(self):
         items = main.list_genres.test()
-        self.assertEqual(len(GENRES), len(items))
+        self.assertEqual(len(ct_api.GENRES), len(items))
         for item in items:
             self.assertIsInstance(item, Listitem)
 
-    @patch('resources.lib.storyblok.stories_by_uuids', new=get_sb_film)
     def test_do_search(self):
         # no search_query
         self.assertFalse(main.do_search.test(''))
@@ -203,6 +214,33 @@ class MainTest(unittest.TestCase):
         # trailer from something else
         item = main.play_trailer(plugin, "https://cloud.com/bla/bla")
         self.assertFalse(item)
+
+
+@patch('resources.lib.storyblok.stories_by_uuids', get_sb_film)
+class WatchList(unittest.TestCase):
+    favourites = {
+        'f621c2d2-4206-4824-a2d6-6e41427db6c1': '2024-11-11T20:19:18.007Z',
+        '0577ba31-ff91-45a5-aa0a-4a81baaa4b6a': '2025-02-02T21:22:23.004Z'
+    }
+
+    def test_list_watch_list(self):
+        with patch("resources.lib.ctree.ct_api.get_favourites", return_value=self.favourites):
+            items = main.list_watchlist.test()
+            self.assertEqual(2, len(items))
+            for item in items:
+                self.assertIsInstance(item, Listitem)
+                self.assertEqual(1, len(item.context))
+
+    def test_add_remove(self):
+        with patch("resources.lib.ctree.ct_api.edit_favourites") as p_edit, \
+             patch('xbmc.executebuiltin') as p_exec:
+            main.edit_watchlist.test('my-uui-id', 'add')
+        p_edit.assert_called_once_with('my-uui-id', 'add')
+        p_exec.assert_called_once()
+
+        with patch("resources.lib.ctree.ct_api.edit_favourites") as p_edit:
+            main.edit_watchlist.test('my-uui-id', 'remove')
+        p_edit.assert_called_once_with('my-uui-id', 'remove')
 
 
 @patch("resources.lib.ctree.ct_api.get_subtitles", return_value=None)

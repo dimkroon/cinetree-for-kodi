@@ -7,6 +7,7 @@
 # ------------------------------------------------------------------------------
 
 import logging
+from datetime import datetime, timezone
 from enum import Enum
 
 import urlquick
@@ -27,6 +28,8 @@ cache_mgr = utils.CacheMgr(fetch.cache_location)
 
 GENRES = ('Action', 'Adventure', 'Biography', 'Comedy', 'Coming-of-age', 'Crime', 'Drama', 'Documentary',
           'Family', 'Fantasy', 'History', 'Horror', 'Mystery', 'Sci-Fi', 'Romance', 'Thriller')
+
+favourites = None
 
 
 def get_jsonp_url(slug, force_refresh=False):
@@ -171,6 +174,39 @@ def remove_watched_film(film_uuid):
                                      method='delete',
                                      url='https://api.cinetree.nl/watch-history/by-asset/' + film_uuid)
     return resp.status_code == 200
+
+
+def get_favourites(refresh=False):
+    """Films saved to the personal watch list at Cinetreee."""
+    global favourites
+    if refresh or favourites is None:
+        resp = fetch.fetch_authenticated(
+                fetch.get_json,
+                url='https://api.cinetree.nl/favorites/',
+                max_age=0)
+
+        favourites = {item['uuid']: item['createdAt'] for item in resp}
+    return favourites
+
+
+def edit_favourites(film_uuid, action):
+    """Add or remove a film to/from the personal watch list."""
+    method = {
+        'remove': 'delete',
+        'add': 'put'
+    }[action]
+    resp = fetch.fetch_authenticated(
+            fetch.web_request,
+            method = method,
+            url='https://api.cinetree.nl/favorites/' + film_uuid)
+    if resp.status_code != 200:
+        return False
+    global favourites
+    if action == 'remove':
+        del favourites[film_uuid]
+    else:
+        favourites[film_uuid] = datetime.now(timezone.utc).isoformat()
+    return True
 
 
 def get_rented_films():

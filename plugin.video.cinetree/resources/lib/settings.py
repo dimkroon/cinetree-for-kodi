@@ -1,6 +1,6 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2023 Dimitri Kroon.
+#  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -12,6 +12,7 @@ from codequick import Script
 from codequick.support import addon_data, logger_id
 
 from resources.lib.ctree import ct_account
+from resources.lib.ctree import ct_api
 from resources.lib import kodi_utils
 from resources.lib import addon_log as ct_logging
 
@@ -20,8 +21,8 @@ logger = logging.getLogger('.'.join((logger_id, __name__)))
 
 @Script.register()
 def login(_):
-    # just to provide a route for settings' log in
-    ct_account.session().login()
+    if ct_account.session().login():
+        ct_api.favourites = None
 
 
 @Script.register()
@@ -31,6 +32,7 @@ def logout(_):
         Script.notify(Script.localize(kodi_utils.TXT_CINETREE_ACCOUNT),
                       Script.localize(kodi_utils.MSG_LOGGED_OUT_SUCCESS),
                       Script.NOTIFY_INFO)
+        ct_api.favourites = None
 
 
 @Script.register()

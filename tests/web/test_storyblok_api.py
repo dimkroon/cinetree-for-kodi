@@ -125,6 +125,19 @@ class FilmListByUuid(TestCase):
         self.assertIsInstance(stories, list)
         self.assertEqual(num_stories, len(stories))
 
+    def test_get_list_with_a_non_existing_uuid(self):
+        """Request a number of films, where only one of the uuid's does not exist.
+
+        Storyblok ignores invalid uuids and just returns a list of films that do exist.
+
+        """
+        film_uuids = ['de57210e-4fd2-485a-8f1a-26c7caff2a7b', 'ddf98776-1b85-4675-9369-dc646a33a110',
+                      'f00fffff-ffff-0000-0000-ff00ff00ff00', 'a2a916c7-dd71-4820-b556-2b005c51da10']
+        # film_uuids = ['4414d3b2-bb7d-4553-a2ad-6178a59e93ec']
+        stories, num_stories = storyblok.stories_by_uuids(film_uuids)
+        self.assertIsInstance(stories, list)
+        self.assertEqual(num_stories, len(film_uuids) -1)
+
     def test_get_single_film(self):
         stories, num_stories = storyblok.stories_by_uuids('de57210e-4fd2-485a-8f1a-26c7caff2a7b')
         self.assertIsInstance(stories, list)

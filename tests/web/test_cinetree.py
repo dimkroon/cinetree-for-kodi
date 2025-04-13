@@ -80,7 +80,7 @@ class GetFilmsList(TestCase):
         self.assertGreater(len(films), 10)
         for item in films:
             # check if a Listitem can be created
-            Listitem.from_dict(MagicMock(), **item)
+            Listitem.from_dict(MagicMock(), **item.data)
 
 
 # noinspection PyMethodMayBeStatic
@@ -106,7 +106,7 @@ class GetCollections(TestCase):
         coll_data = ct_api.get_jsonp('collecties/cinetree-originals/payload.js')
         film_list = list(ct_data.create_films_list(coll_data))
         for film in film_list:
-            Listitem.from_dict(MagicMock(), **film)
+            Listitem.from_dict(MagicMock(), **film.data)
 
 
 # noinspection PyMethodMayBeStatic
