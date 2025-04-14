@@ -32,7 +32,7 @@
     <forum>https://forum.kodi.tv/showthread.php?tid=370761</forum>
     <source>https://github.com/dimkroon/cinetree-for-kodi</source>
     <assets>
-      <icon>resources/icon.png</icon>
+      <icon>resources/cinetree-logo.png</icon>
       <fanart>resources/fanart.jpg</fanart>
     </assets>
     <reuselanguageinvoker>true</reuselanguageinvoker>
