@@ -282,6 +282,18 @@ msgctxt "#30812"
 msgid "Watch list"
 msgstr "Opgeslagen"
 
+msgctxt "#30813"
+msgid "Originals"
+msgstr ""
+
+msgctxt "#30814"
+msgid "Short"
+msgstr "Kort"
+
+msgctxt "#30815"
+msgid "All short films"
+msgstr "Alle korte films"
+
 
 # Context Menu
 msgctxt "#30859"

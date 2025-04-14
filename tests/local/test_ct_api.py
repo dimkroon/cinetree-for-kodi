@@ -11,7 +11,7 @@ fixtures.global_setup()
 import os.path
 
 from unittest import TestCase
-from unittest.mock import patch
+from unittest.mock import patch, PropertyMock
 
 from tests.support.testutils import open_jsonp, open_doc, open_json, HttpResponse
 from tests.support.object_checks import check_collection
@@ -164,6 +164,20 @@ class EditFavourites(TestCase):
 
 
 class Gen(TestCase):
+    @patch('resources.lib.utils.CacheMgr.version', PropertyMock(return_value='abcde'))
+    @patch('resources.lib.fetch.get_document', open_doc('originals_payload.js'))
+    def test_get_originals(self):
+        data = ct_api.get_originals()
+        self.assertIsInstance(data, list)
+        self.assertGreater(len(data), 10)
+
+    @patch('resources.lib.utils.CacheMgr.version', PropertyMock(return_value='abcde'))
+    @patch('resources.lib.fetch.get_document', open_doc('kort_payload.js'))
+    def test_get_shorts(self):
+        data = list(ct_api.get_shorts())
+        self.assertIsInstance(data, list)
+        self.assertGreater(len(data), 3)
+
     def test_get_subtitles(self):
         # noinspection PyTypeChecker
         # Check return value when url to subtitles is not provided.

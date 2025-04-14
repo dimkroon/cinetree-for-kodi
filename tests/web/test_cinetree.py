@@ -1,6 +1,6 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -50,6 +50,10 @@ class FetchJsonp(TestCase):
         resp = ct_api.get_jsonp('films/ema/payload.js')
         # with open('../experiments/film_details.json', 'w') as f:
         #     json.dump(resp, f, indent=4)
+        assert type(resp) is dict
+
+    def test_fetch_cinetree_originals(self):
+        resp = ct_api.get_jsonp('originals/payload.js')
         assert type(resp) is dict
 
 
