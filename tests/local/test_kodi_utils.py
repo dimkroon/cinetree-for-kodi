@@ -57,12 +57,6 @@ class TestKodiUtils(unittest.TestCase):
             self.assertIsNone(kodi_utils.show_low_credit_msg(0, 3.25))
             p_viewer.asser_called_once()
 
-    @patch('xbmcgui.Dialog.contextmenu')
-    def test_ask_resume_film(self, _):
-        kodi_utils.ask_resume_film(10.1235)
-        kodi_utils.ask_resume_film(300.1235)
-        kodi_utils.ask_resume_film(3732.1235)
-
     def test_ask_log_handler(self):
         with patch('xbmcgui.Dialog.contextmenu', return_value=1):
             # return user selection
@@ -90,3 +84,25 @@ class TestKodiUtils(unittest.TestCase):
             result = kodi_utils.confirm_rent_from_credit('some film', 2.49, 10.0)
             self.assertIs(result, False)
             p_dlg.assert_called_once()
+
+    @patch('resources.lib.kodi_utils.executeJSONRPC')
+    def test_sync_play_state(self, p_jsonrpc):
+        from resources.lib.ctree.ct_data import FilmItem
+        from resources.lib.main import play_film
+        film = FilmItem({'uuid': 'film-uid-1',
+                         'content': {'endDate': '2050-01-01 01:01', 'duration': '60'},
+                         'playtime': 900})
+        film.data['params']['title'] = 'some film'
+
+        # A partially watched film
+        kodi_utils.sync_play_state(play_film, film)
+        call_arg = p_jsonrpc.call_args.args[0]
+        self.assertTrue('"position": 900' in call_arg)  # resume point is being set
+        self.assertFalse('playcount' in call_arg)       # play count is left untouched
+
+        # A fully watched film
+        film.playtime = 0
+        kodi_utils.sync_play_state(play_film, film)
+        call_arg = p_jsonrpc.call_args.args[0]
+        self.assertTrue('"playcount": 1' in call_arg)   # play count is being set
+        self.assertTrue('"position": 0' in call_arg)    # resume point is cleared

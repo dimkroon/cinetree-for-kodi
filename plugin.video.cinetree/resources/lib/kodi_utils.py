@@ -1,6 +1,6 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -8,13 +8,17 @@
 
 import logging
 import time
+import sys
+from collections.abc import Callable
 
 import xbmcgui
-from xbmc import Player, Monitor
+from xbmc import Player, Monitor, executeJSONRPC
 
 
 from codequick import Script, utils
-from codequick.support import addon_data, logger_id
+from codequick.support import addon_data, logger_id, build_path
+
+from resources.lib.ctree.ct_data import FilmItem
 
 
 logger = logging.getLogger('.'.join((logger_id, __name__)))
@@ -192,23 +196,6 @@ def show_low_credit_msg(price, credit):
         dlg.textviewer(dlg_title, Script.localize(MSG_MORE_PAYMENT_INFO))
 
 
-def ask_resume_film(resume_time):
-    """Show a dialog asking the user if the film is to be started from the resume
-    point, or from the start.
-
-    """
-    minutes, seconds = divmod(int(resume_time), 60)
-    hours, minutes = divmod(minutes, 60)
-    if hours:
-        resume_text = '{} {:d}:{:02d}:{:02d}'.format(Script.localize(TXT_RESUME_FROM), hours, minutes, seconds)
-    else:
-        resume_text = '{} {:d}:{:02d}'.format(Script.localize(TXT_RESUME_FROM), minutes, seconds)
-
-    dlg = xbmcgui.Dialog()
-    result = dlg.contextmenu([resume_text, Script.localize(TXT_PLAY_FROM_START)])
-    return result
-
-
 def ask_log_handler(default):
     options = Script.localize(TXT_LOG_TARGETS).split(',')
     dlg = xbmcgui.Dialog()
@@ -254,3 +241,21 @@ def yes_no_dialog(msg, heading=None, autoclose=12000):
     if isinstance(msg, int):
         msg = Script.localize(msg)
     return xbmcgui.Dialog().yesno(heading, msg, autoclose=autoclose)
+
+
+def sync_play_state(callback: Callable, film_item: FilmItem):
+    """Sync the play state of the film to the Kodi database."""
+    params = film_item.data['params']
+    full_url = build_path(callback, _title_=params['title'], **params)
+    resume_point = film_item.playtime
+    if resume_point > 0:
+        json_str = '{"jsonrpc": "2.0", "method": "Files.SetFileDetails", "params": {"file":"%s", ' \
+                   '"media": "video", "resume": {"position": %s, "total": %s}}, "id": 1}' % (
+                   full_url, resume_point, film_item.duration)
+    else:
+        json_str = '{"jsonrpc": "2.0", "method": "Files.SetFileDetails", "params": {"file":"%s", ' \
+                   '"media": "video", "playcount": 1, "resume": {"position": 0, "total": %s}}, "id": 1}' % (
+                   full_url, film_item.duration)
+    response = executeJSONRPC(json_str)
+    logger.debug("sync_play_state of '%s' to %s of %s, JSONRPC response: %s",
+                 params['title'], resume_point, film_item.duration, response)

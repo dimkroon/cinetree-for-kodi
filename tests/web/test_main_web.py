@@ -106,3 +106,6 @@ class MainTest(unittest.TestCase):
         items = list(main.list_films_by_genre.test(genre='documentary'))
         self.assertAlmostEqual(51, len(items), delta=10)       # some films can be filtered out on expired endDate
         self.assertLessEqual(len(items), 51)
+
+    def test_sync_watched_state(self):
+        main.sync_watched_state()

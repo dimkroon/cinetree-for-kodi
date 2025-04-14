@@ -174,3 +174,13 @@ def patch_listitem():
             return self._path
 
     xbmcgui.ListItem = LI
+
+
+def jsonrpc(jsonstr: str) -> str:
+    import requests
+    import json
+    resp = requests.post(
+        url='http://127.0.0.1:8880/jsonrpc',
+        json = json.loads(jsonstr)
+    )
+    return resp.text
