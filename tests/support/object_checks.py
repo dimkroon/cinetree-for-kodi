@@ -9,6 +9,7 @@
 import time
 
 from resources.lib.ctree import ct_api
+from resources.lib.ctree.ct_data import parse_end_date
 
 
 def has_keys(dict_obj, *keys, obj_name='dictionary'):
@@ -51,6 +52,11 @@ def check_stream_info(strm_inf, additional_keys=None):
 
 def check_film_data(film_info, additional_content_keys=None):
     """Check that a film info object retrieved from the web meets expectations"""
+    _, expired = parse_end_date(film_info['content'].get('endDate'))
+    if expired:
+        # No need to check film data that is going to be rejected anyway
+        return
+
     mandatory_content_keys = {'poster', 'background', 'blocks', 'title'}
     if additional_content_keys:
         mandatory_content_keys.update(additional_content_keys)
