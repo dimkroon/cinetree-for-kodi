@@ -30,7 +30,7 @@ msgid "Genres sorting"
 msgstr ""
 
 msgctxt "#30106"
-msgid "Sort method"
+msgid "Sort by"
 msgstr ""
 
 msgctxt "#30107"
