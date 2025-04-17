@@ -10,7 +10,7 @@ from tests.support import fixtures
 fixtures.global_setup()
 
 import unittest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 import xbmcgui
 
@@ -95,13 +95,15 @@ class MainTest(unittest.TestCase):
         playitem = main.play_film.test('', '63c77a7f-c84b-4143-9cda-68a99c042fe9', None)
         self.assertIsInstance(playitem, xbmcgui.ListItem)
 
-    def test_list_genre_drama(self):
+    @patch('xbmcaddon.Addon.getSetting', return_value='0')
+    def test_list_genre_drama(self, _):
         """As there are a lot of film in genre drama, only the maximum of 50 per page ar returned."""
         items = main.list_films_by_genre.test(genre='drama')
         self.assertAlmostEqual(51, len(items), delta=10)       # some films can be filtered out on expired endDate
         self.assertLessEqual(len(items), 51)
 
-    def test_list_genre_documentaries(self):
+    @patch('xbmcaddon.Addon.getSetting', return_value='0')
+    def test_list_genre_documentaries(self, _):
         """As there are a lot of film in genre drama, only the maximum of 50 per page ar returned."""
         items = list(main.list_films_by_genre.test(genre='documentary'))
         self.assertAlmostEqual(51, len(items), delta=10)       # some films can be filtered out on expired endDate

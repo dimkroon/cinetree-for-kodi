@@ -25,6 +25,18 @@ msgctxt "#30104"
 msgid "Prefer original trailer"
 msgstr ""
 
+msgctxt "#30105"
+msgid "Genres sorting"
+msgstr ""
+
+msgctxt "#30106"
+msgid "Sort method"
+msgstr ""
+
+msgctxt "#30107"
+msgid "Sort order"
+msgstr ""
+
 msgctxt "#30110"
 msgid "Logging"
 msgstr ""

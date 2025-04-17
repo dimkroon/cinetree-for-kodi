@@ -249,9 +249,17 @@ def list_films_by_collection(addon, slug):
 
 @Route.register(content_type='movies')
 def list_films_by_genre(addon, genre, page=1):
+    sort_by = addon.setting.get_int('genre-sort-method')
+    sort_order = addon.setting.get_int('genre-sort-order')
+    logger.debug("*** Genre %s, pag %s, sorted by %s:%r", genre, page, sort_by, repr(sort_order))
+    addon.add_sort_methods(xbmcplugin.SORT_METHOD_NONE, disable_autosort=True)
     list_len = 50
-    films, num_films = storyblok.search(genre=genre, page=page, items_per_page=list_len)
-    yield from _create_playables(addon, (ct_data.FilmItem(film) for film in films))
+    films, num_films = storyblok.search(genre=genre,
+                                        page=page,
+                                        items_per_page=list_len,
+                                        sort_method=sort_by,
+                                        sort_order=sort_order)
+    yield from _create_playables(None, (ct_data.FilmItem(film) for film in films))
     if num_films > page * list_len:
         yield Listitem.next_page(genre=genre, page=page + 1)
 
