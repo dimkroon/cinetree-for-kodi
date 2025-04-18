@@ -343,6 +343,29 @@ class ParseEndDate(TestCase):
         self.assertIs(expired, True)
 
 
+class TestDateAdded(TestCase):
+    def test_date_with_time(self):
+        fi = ct_data.FilmItem({'first_published_at': '2023-06-18T09:54:32.023Z',
+                               'content': {'startDate': '2022-09-14 18:32'}})
+        self.assertEqual('2022-09-14 18:32:00', fi.date_added())
+
+    def test_date_only(self):
+        fi = film_item({'startDate': '2022-09-14'})
+        self.assertEqual('2022-09-14 00:00:00', fi.date_added())
+
+    def test_date_absent(self):
+        fi = ct_data.FilmItem({'first_published_at': '2023-06-18T09:54:32.023Z', 'content': {}})
+        self.assertEqual('2023-06-18 09:54:32', fi.date_added())
+
+    def test_all_dates_absent(self):
+        fi = film_item({})
+        self.assertEqual('1970-01-01 00:00:00', fi.date_added())
+
+    def test_invalid_date(self):
+        fi = film_item({'startDate': ''})
+        self.assertIs(fi.date_added(), None)
+
+
 class Generic(TestCase):
     def test_list_from_items_string(self):
         # noinspection PyTypeChecker

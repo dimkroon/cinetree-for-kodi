@@ -93,7 +93,7 @@ def list_my_films(addon, subcategory=None):
 
     if subcategory == 'purchased':
         films = ct_data.create_films_list(ct_api.get_rented_films(), 'storyblok')
-        yield from _create_playables(films)
+        yield from _create_playables(addon, films)
         return
     else:
         watched_films = ct_api.get_watched_films()
@@ -116,11 +116,14 @@ def list_my_films(addon, subcategory=None):
         yield li
 
 
-def _create_playables(films: Iterable[ct_data.FilmItem]):
+def _create_playables(addon, films: Iterable[ct_data.FilmItem]):
     """Create playable Codequick.Listitems from FilmItems with a
     context menu items to add or remove from Watch List.
 
     """
+    if addon:
+        addon.add_sort_methods(xbmcplugin.SORT_METHOD_UNSORTED,
+                               xbmcplugin.SORT_METHOD_DATEADDED)
     favourites = ct_api.get_favourites()
 
     for film_item in films:
@@ -140,7 +143,6 @@ def _create_playables(films: Iterable[ct_data.FilmItem]):
 
 @Route.register(content_type='movies')
 def list_watchlist(addon):
-    addon.add_sort_methods(xbmcplugin.SORT_METHOD_DATEADDED)
     favourites = ct_api.get_favourites(refresh=True)
     films_list, _ = storyblok.stories_by_uuids(favourites.keys())
     films = []
@@ -153,7 +155,7 @@ def list_watchlist(addon):
         films.append(film_item)
     if not films:
         return False
-    return _create_playables(films)
+    return _create_playables(addon, films)
 
 
 @Script.register()
@@ -163,7 +165,7 @@ def edit_watchlist(_, film_uuid, action):
 
 
 @Route.register(content_type='movies')
-def list_films_and_docus(_, category):
+def list_films_and_docus(addon, category):
     """List subscription films"""
     if category == 'subscription':
         film_ids = ct_api.get_subscription_films()
@@ -173,7 +175,7 @@ def list_films_and_docus(_, category):
         return None
     stories, _ = storyblok.stories_by_uuids(film_ids)
     films = ct_data.create_films_list(stories, 'storyblok', add_price=False)
-    return list(_create_playables(films))
+    return list(_create_playables(addon, films))
 
 
 @Route.register()
@@ -198,7 +200,7 @@ def list_genres(_):
 
 
 @Route.register()
-def do_search(_, search_query):
+def do_search(addon, search_query):
     uuids = ct_api.search_films(search_term=search_query)
 
     if len(uuids) > 100:
@@ -210,7 +212,7 @@ def do_search(_, search_query):
 
     if stories:
         films = ct_data.create_films_list(stories, 'storyblok')
-        return list(_create_playables(films))
+        return list(_create_playables(addon, films))
     else:
         Script.notify('Cinetree - ' + Script.localize(TXT_SEARCH),
                       Script.localize(TXT_NOTHING_FOUND),
@@ -219,10 +221,10 @@ def do_search(_, search_query):
 
 
 @Route.register(content_type='movies')
-def list_originals(_):
+def list_originals(addon):
     data = ct_api.get_originals()
     films = ct_data.create_films_list(data, 'storyblok')
-    yield from _create_playables(films)
+    yield from _create_playables(addon, films)
 
 
 @Route.register(content_type='movies')
@@ -232,24 +234,24 @@ def list_shorts(addon, list_films=False):
         collections = ct_api.get_shorts()
         for coll in collections:
             yield Listitem.from_dict(list_films_by_collection, **coll)
-        yield Listitem.from_dict(list_shorts, addon.localize(TXT_ALL_SHORT_FILMS), params={'list_films':True})
+        yield Listitem.from_dict(list_shorts, addon.localize(TXT_ALL_SHORT_FILMS), params={'list_films': True})
     else:
         # List all short films
         stories, _ = storyblok._get_url_page('stories', params={'starts_with': 'shorts/'})
-        yield from _create_playables(ct_data.create_films_list(stories, 'storyblok'))
+        yield from _create_playables(addon, ct_data.create_films_list(stories, 'storyblok'))
 
 
 @Route.register(content_type='movies')
-def list_films_by_collection(_, slug):
+def list_films_by_collection(addon, slug):
     data = ct_api.get_jsonp(slug + '/payload.js')
-    yield from _create_playables(ct_data.create_films_list(data))
+    yield from _create_playables(addon, ct_data.create_films_list(data))
 
 
 @Route.register(content_type='movies')
-def list_films_by_genre(_, genre, page=1):
+def list_films_by_genre(addon, genre, page=1):
     list_len = 50
     films, num_films = storyblok.search(genre=genre, page=page, items_per_page=list_len)
-    yield from _create_playables(ct_data.FilmItem(film) for film in films)
+    yield from _create_playables(addon, (ct_data.FilmItem(film) for film in films))
     if num_films > page * list_len:
         yield Listitem.next_page(genre=genre, page=page + 1)
 

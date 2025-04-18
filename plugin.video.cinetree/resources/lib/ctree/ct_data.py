@@ -106,6 +106,7 @@ class FilmItem:
                 'title': title,
                 'mediatype': 'movie',
                 'year': data.get('productionYear'),
+                'dateadded': self.date_added(),
                 'director': data.get('director'),
                 'cast': list_from_items_string(data.get('cast')),
                 'plot': self._create_long_plot(),
@@ -301,6 +302,20 @@ class FilmItem:
 
         """
         return [block.get('image') for block in self.content.get('blocks', []) if block.get('component') == 'image']
+
+    def date_added(self):
+        start_date = self.content.get('startDate')
+        if start_date is None:
+            first_published = self.film_info.get('first_published_at', '1970-01-01T00:00:00')
+            return first_published[:19].replace('T', ' ')
+        if len(start_date) == 10:
+            # Y-m-d only; add hrs, mins and secs
+            return start_date + ' 00:00:00'
+        if len(start_date) == 16:
+            # includes hours and minutes; add secs
+            return start_date + ':00'
+        else:
+            logger.warning("Unexpected startDate format: '%s'", start_date)
 
     def __bool__(self):
         return self._data is not None
