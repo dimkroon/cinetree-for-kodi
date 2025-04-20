@@ -255,8 +255,8 @@ msgid "Recommended"
 msgstr "Aanbevolen"
 
 msgctxt "#30803"
-msgid "Month selection"
-msgstr "Maand Selectie"
+msgid "Subscription"
+msgstr "Abonnement"
 
 msgctxt "#30804"
 msgid "Rental Films"

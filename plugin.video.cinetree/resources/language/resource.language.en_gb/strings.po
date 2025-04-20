@@ -250,7 +250,7 @@ msgid "Recommended"
 msgstr ""
 
 msgctxt "#30803"
-msgid "Month selection"
+msgid "Subscription"
 msgstr ""
 
 msgctxt "#30804"
