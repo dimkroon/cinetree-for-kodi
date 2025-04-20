@@ -15,6 +15,8 @@ from tests.support.testutils import HttpResponse, open_json
 import json
 import unittest
 from unittest.mock import patch
+
+import xbmcplugin
 from requests import exceptions
 
 from resources.lib import storyblok
@@ -110,6 +112,34 @@ class StoryByName(unittest.TestCase):
     def test_story_by_name(self, _):
         data = storyblok.story_by_name('sldkjfv')
         self.assertEqual('Druk', data['name'])
+
+
+@patch('resources.lib.storyblok.get_url', return_value=({'stories': []},{}))
+class TestSearch(unittest.TestCase):
+    def test_search_genre(self, p_get_url):
+        storyblok.search(genre='drama')
+        params = p_get_url.call_args.kwargs['params']
+        self.assertEqual(params['filter_query[genre][like]'], '*drama*')
+        self.assertTrue('sort_by' not in params)
+
+    def test_search_genre_sort_method(self, p_get_url):
+        storyblok.search(genre='drama', sort_method=xbmcplugin.SORT_METHOD_TITLE)
+        params = p_get_url.call_args.kwargs['params']
+        self.assertTrue('content.title' in params['sort_by'])
+        # An unsupported sort method
+        storyblok.search(genre='drama', sort_method=xbmcplugin.SORT_METHOD_NONE)
+        params = p_get_url.call_args.kwargs['params']
+        self.assertTrue('sort_by' not in params)
+
+    def test_search_genre_sort_order(self, p_get_url):
+        storyblok.search(genre='drama', sort_method=xbmcplugin.SORT_METHOD_TITLE, sort_order=0)
+        params = p_get_url.call_args.kwargs['params']
+        self.assertTrue(':asc' in params['sort_by'])
+        # An unsupported sort method
+        storyblok.search(genre='drama', sort_method=xbmcplugin.SORT_METHOD_TITLE, sort_order=1)
+        params = p_get_url.call_args.kwargs['params']
+        self.assertTrue(':desc' in params['sort_by'])
+
 
 
 @unittest.skip

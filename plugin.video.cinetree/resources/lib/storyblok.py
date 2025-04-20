@@ -11,6 +11,7 @@ import time
 import logging
 
 import urlquick
+import xbmcplugin
 from codequick.support import logger_id
 
 from resources.lib.utils import CacheMgr
@@ -145,7 +146,7 @@ def story_by_name(slug: str):
 
 
 def search(search_term=None, genre=None, duration_min=None, duration_max=None,
-           country=None, page=None, items_per_page=None):
+           country=None, page=None, items_per_page=None, sort_method=0, sort_order=0):
 
     # query_str = {'starts_with': 'films/'}
     query_str = {'filter_query[component][in]': 'film'}
@@ -169,5 +170,18 @@ def search(search_term=None, genre=None, duration_min=None, duration_max=None,
             raise ValueError("Invalid duration")
         query_str['filter_query[duration][gt_int]'] = duration_min,
         query_str['filter_query[duration][lt_int]'] = duration_max
+
+    sort_field = {
+        xbmcplugin.SORT_METHOD_DURATION: 'content.duration',
+        xbmcplugin.SORT_METHOD_DATEADDED: 'content.startDate',
+        xbmcplugin.SORT_METHOD_TITLE: 'content.title',
+        xbmcplugin.SORT_METHOD_VIDEO_YEAR: 'content.productionYear'
+    }.get(sort_method)
+    if sort_field is not None:
+        order = 'asc' if sort_order == 0 else 'desc'
+        if sort_method == xbmcplugin.SORT_METHOD_DURATION:
+            query_str['sort_by'] = ':'.join((sort_field, order, 'float'))
+        else:
+            query_str['sort_by'] = ':'.join((sort_field, order))
 
     return _get_url_page('stories', page, items_per_page, params=query_str)

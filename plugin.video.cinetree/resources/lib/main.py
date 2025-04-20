@@ -30,7 +30,8 @@ from resources.lib import utils
 
 logger.critical('-------------------------------------')
 
-
+TXT_SORT_BY = 30106
+TXT_SORT_ORDER = 30107
 MSG_FILM_NOT_AVAILABLE = 30606
 MSG_ONLY_WITH_SUBSCRIPTION = 30607
 TXT_MY_FILMS = 30801
@@ -249,9 +250,26 @@ def list_films_by_collection(addon, slug):
 
 @Route.register(content_type='movies')
 def list_films_by_genre(addon, genre, page=1):
+    sort_by = addon.setting.get_int('genre-sort-method')
+    sort_order = addon.setting.get_int('genre-sort-order')
+    logger.debug("*** Genre %s, pag %s, sorted by %s:%r", genre, page, sort_by, repr(sort_order))
+    addon.add_sort_methods(xbmcplugin.SORT_METHOD_NONE, disable_autosort=True)
     list_len = 50
-    films, num_films = storyblok.search(genre=genre, page=page, items_per_page=list_len)
-    yield from _create_playables(addon, (ct_data.FilmItem(film) for film in films))
+    films, num_films = storyblok.search(genre=genre,
+                                        page=page,
+                                        items_per_page=list_len,
+                                        sort_method=sort_by,
+                                        sort_order=sort_order)
+    # Context menu item to set the sort method and sort order for all genres.
+    ctx_sort_by = (
+        addon.localize(TXT_SORT_BY) + '    >>',
+        ''.join(('RunPlugin(plugin://',
+                 utils.addon_info['id'],
+                 '/resources/lib/settings/genre_sort_method)'))
+    )
+    for li in _create_playables(None, (ct_data.FilmItem(film) for film in films)):
+        li.context.insert(0, ctx_sort_by)
+        yield li
     if num_films > page * list_len:
         yield Listitem.next_page(genre=genre, page=page + 1)
 

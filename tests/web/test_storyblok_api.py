@@ -15,6 +15,8 @@ import json
 import time
 from unittest import TestCase
 
+import xbmcplugin
+
 from resources.lib import storyblok
 from resources.lib.ctree import ct_api
 from resources.lib.ctree import ct_data
@@ -227,3 +229,40 @@ class Search(TestCase):
 
     def test_search_nothing(self):
         self.assertRaises(ValueError, storyblok.search)
+
+    def test_search_sorted_ascending(self):
+        film_list, num_films = storyblok.search(search_term='is',
+                                                sort_method=xbmcplugin.SORT_METHOD_TITLE)
+        self.assertEqual(num_films, len(film_list))
+        prev_title = ''
+        for film in film_list:
+            # Cinetree sorts case-insensitive and ignores non-alphabetical characters
+            title = film['content']['title'].replace(' ', '').replace("'", '').replace(',', '').lower()
+            self.assertTrue(title >= prev_title)
+            prev_title = title
+
+    def test_search_sorted_decending(self):
+        film_list, num_films = storyblok.search(search_term='is',
+                                                sort_method=xbmcplugin.SORT_METHOD_TITLE,
+                                                sort_order=1)
+        self.assertEqual(num_films, len(film_list))
+        prev_title = 'zzzzzzzzzz'
+        for film in film_list:
+            # Cinetree sorts case-insensitive and ignores non-alphabetical characters
+            title = film['content']['title'].replace(' ', '').replace("'", '').replace(',', '').lower()
+            self.assertTrue(title <= prev_title)
+            prev_title = title
+
+    def test_search_sort_on_duration(self):
+        film_list, num_films = storyblok.search(genre='Documentary',
+                                                sort_method=xbmcplugin.SORT_METHOD_DURATION,
+                                                sort_order=0)
+        self.assertEqual(num_films, len(film_list))
+        prev_duration = 0
+        i = 0
+        for film in film_list:
+            # Cinetree sorts case-insensitive and ignores non-alphabetical characters
+            duration = float(film['content']['duration'].split()[0])
+            self.assertTrue(duration >= prev_duration)
+            prev_duration = duration
+            i += 1

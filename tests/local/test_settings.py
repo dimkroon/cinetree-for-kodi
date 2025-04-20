@@ -1,6 +1,6 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2023 Dimitri Kroon.
+#  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -61,3 +61,15 @@ class TestSettings(unittest.TestCase):
             with patch.object(logger, 'handlers', new=[py_logging.Handler()]):
                 settings.change_logger(MagicMock())
                 p_ask.assert_called_with(0)
+
+    @patch("xbmcaddon.Addon.setSettingInt")
+    def test_genre_sort_method(self, p_xbmc_settings):
+        with patch("xbmcgui.Dialog.contextmenu", side_effect=(0, 1, 2, 3, 4, 5, 6, 7, 8)):
+            for _ in range(9):
+                settings.genre_sort_method.test()
+        self.assertEqual(p_xbmc_settings.call_count, 18)
+        # Dialog canceled
+        p_xbmc_settings.reset_mock()
+        with patch("xbmcgui.Dialog.contextmenu", return_value=-1):
+            settings.genre_sort_method.test()
+        p_xbmc_settings.assert_not_called()
