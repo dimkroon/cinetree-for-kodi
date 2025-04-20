@@ -84,7 +84,7 @@ class FilmItem:
                     self._price_info_txt = TXT_SUBCRIPTION_FILM
                 if subscr_days <= 1:
                     title = '{}    [COLOR orange]{}[/COLOR]'.format(title, Script.localize(MSG_ONLY_TODAY))
-                elif subscr_days <= 10:
+                elif subscr_days <= 14:
                     title = ''.join(('{}    [COLOR orange]', Script.localize(MSG_DAYS_AVAILABLE), '[/COLOR]')).format(
                         title, int(subscr_days) + 1)
         except (KeyError, ValueError):
