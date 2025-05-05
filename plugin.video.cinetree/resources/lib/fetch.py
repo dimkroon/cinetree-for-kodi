@@ -132,6 +132,7 @@ def fetch_authenticated(funct, url, **kwargs):
                     if not (kodi_utils.show_msg_not_logged_in() and account.login()):
                         raise
             else:
-                # A NotAuthenticatedError even after refresh or login succeeded:
+                # A NotAuthenticatedError even after a refresh or login succeeded:
                 # No access with this account; e.g. trying to play a subscription film on a free account.
                 raise AccessRestrictedError from None
+    return None

@@ -34,7 +34,7 @@ class StoriesListing(TestCase):
         tree = {}
         total_pages = 1
         page = 1
-        all_stories  = []
+        all_stories = []
 
         while page <= total_pages:
             data, headers = storyblok.get_url('stories', params={'page': str(page), 'per_page': 100})
@@ -71,9 +71,9 @@ class StoriesListing(TestCase):
     def test_get_all_collections(self):
         data, _ = storyblok.get_url('stories',
                                     params={'starts_with': 'collections/',
-                                             'page': 1,
-                                             'per_page': 100,
-                                             'version': 'published'})
+                                            'page': 1,
+                                            'per_page': 100,
+                                            'version': 'published'})
         stories = data.get('stories')
         self.assertIsInstance(stories, list)
 
@@ -87,7 +87,11 @@ class StoriesListing(TestCase):
         stories = []
 
         while page <= total_pages:
-            data, headers = storyblok.get_url('stories', params={'starts_with': 'films/', 'page': str(page), 'per_page': 100})
+            data, headers = storyblok.get_url(
+                'stories',
+                params={'starts_with': 'films/',
+                        'page': str(page),
+                        'per_page': 100})
             total_pages = int(headers.get('total')) / 100
             stories.extend(data.get('stories'))
             page += 1
@@ -138,7 +142,7 @@ class FilmListByUuid(TestCase):
         # film_uuids = ['4414d3b2-bb7d-4553-a2ad-6178a59e93ec']
         stories, num_stories = storyblok.stories_by_uuids(film_uuids)
         self.assertIsInstance(stories, list)
-        self.assertEqual(num_stories, len(film_uuids) -1)
+        self.assertEqual(num_stories, len(film_uuids) - 1)
 
     def test_get_single_film(self):
         stories, num_stories = storyblok.stories_by_uuids('de57210e-4fd2-485a-8f1a-26c7caff2a7b')

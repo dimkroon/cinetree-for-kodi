@@ -286,7 +286,7 @@ class FilmItem:
         """Return the duration in seconds, or None if duration is empty or not present in
         `data`.
 
-        The duration field can be absent, empty, None, a sting in the format '104 min', or
+        The duration field can be absent, empty, None, a string in the format '104 min', or
         a string with just a number, that even may be a float or int. However, if there is a value,
         it always represents the duration in minutes.
 

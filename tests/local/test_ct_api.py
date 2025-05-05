@@ -108,10 +108,10 @@ class Collections(TestCase):
 
 
 @patch('resources.lib.fetch.fetch_authenticated',
-       return_value= [
-           {'uuid': 'f621c2d2-4206-4824-a2d6-6e41427db6c1', 'createdAt': '2024-11-11T20:19:18.007Z'},
-           {'uuid': '0577ba31-ff91-45a5-aa0a-4a81baaa4b6a', 'createdAt': '2025-02-02T21:22:23.004Z'}
-    ])
+       return_value=[
+            {'uuid': 'f621c2d2-4206-4824-a2d6-6e41427db6c1', 'createdAt': '2024-11-11T20:19:18.007Z'},
+            {'uuid': '0577ba31-ff91-45a5-aa0a-4a81baaa4b6a', 'createdAt': '2025-02-02T21:22:23.004Z'}
+       ])
 class GetFavourites(TestCase):
     def test_get_favourites_new(self, p_fetch):
         ct_api.favourites = None

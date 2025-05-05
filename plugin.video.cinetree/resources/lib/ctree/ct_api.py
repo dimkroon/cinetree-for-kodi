@@ -10,7 +10,6 @@ import logging
 from datetime import datetime, timezone
 from enum import Enum
 
-import urlquick
 from codequick import Script
 from codequick.support import logger_id
 
@@ -32,7 +31,7 @@ GENRES = ('Action', 'Adventure', 'Biography', 'Comedy', 'Coming-of-age', 'Crime'
 favourites = None
 
 
-def get_jsonp_url(slug, force_refresh=False):
+def get_jsonp_url(slug):
     """Append *slug* to the base path for .js requests and return the full url.
 
     Part of the base url is a timestamp that changes every so often. We obtain
@@ -78,7 +77,7 @@ def get_jsonp(path):
 def get_recommended():
     """Return the uuids of the hero items on the subscription page"""
     data, _ = storyblok.get_url('stories//films-en-documentaires',
-                                params={'from_release': 'undefined', 'resolve_relations': 'menu,selectedBy'})
+                                params={'from_release': 'undefined'})
     page_top = data['story']['content']['top']
     for section in page_top:
         if section['component'] == 'row-featured-films':
@@ -216,7 +215,7 @@ def edit_favourites(film_uuid, action):
     }[action]
     resp = fetch.fetch_authenticated(
             fetch.web_request,
-            method = method,
+            method=method,
             url='https://api.cinetree.nl/favorites/' + film_uuid)
     if resp.status_code != 200:
         return False
@@ -314,7 +313,7 @@ def get_payment_info(film_uid: str):
 
 
 def get_ct_credits():
-    """Return the current amount of available cinetree credits
+    """Return the current balance of pre-paid credit
 
     """
     my_data = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/me', max_age=0)

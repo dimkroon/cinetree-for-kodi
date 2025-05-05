@@ -223,7 +223,7 @@ def confirm_rent_from_credit(title, price, credit):
 
 def ok_dialog(msg, heading=None):
     if heading is None:
-        heading  = 'Cinetree'
+        heading = 'Cinetree'
     elif isinstance(heading, int):
         heading = Script.localize(heading)
 

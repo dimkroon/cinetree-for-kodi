@@ -288,7 +288,7 @@ class SelectTrailerUrl(TestCase):
     def test_prefer_original_but_originalTrailer_selected_is_None(self):
         # noinspection PyTypedDict
         self.FilmItem.content['originalTrailer']['selected'] = None
-        trailer = self.FilmItem._select_trailer_url( True)
+        trailer = self.FilmItem._select_trailer_url(True)
         self.assertEqual(self.expect_youtube, trailer)
 
     def test_prefer_original_but_originalTrailer_selected_is_None_and_originalUrl_is_empty(self):
