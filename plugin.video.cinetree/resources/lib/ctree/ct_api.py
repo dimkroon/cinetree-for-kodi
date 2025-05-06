@@ -102,14 +102,6 @@ def get_originals():
     return longest_list
 
 
-def get_shorts():
-    """Return a list of available collections with short films."""
-    data = get_jsonp('kort/payload.js')
-    for k, v in data['fetch'].items():
-        if k.startswith('data-v-'):
-            return (create_collection_item(col_data) for col_data in v['collections'])
-
-
 def create_stream_info_url(film_uuid, slug=None):
     """Return the url to the stream info (json) document.
 
@@ -237,16 +229,18 @@ def get_rented_films():
         return resp
 
 
-def get_preferred_collections():
-    """Get a short list of the currently preferred collection.
+def get_preferred_collections(page):
+    """Get a short list of the preferred collection.
 
     This is a short selection of all available collections that the user gets
-    presented on the website when he clicks on 'huur films'
+    presented on the website when he clicks on pages like 'huur films', or 'kort'.
     """
-    data = get_jsonp('films/payload.js')['fetch']
+    slug = page + '/payload.js'
+    data = get_jsonp(slug)['fetch']
     for k, v in data.items():
         if k.startswith('data-v'):
             return (create_collection_item(col_data) for col_data in v['collections'])
+    return None
 
 
 def get_collections():

@@ -94,7 +94,7 @@ class GetCollections(TestCase):
         'huur films', which is only a small subset of all available collections
 
         """
-        coll_list = ct_api.get_preferred_collections()
+        coll_list = ct_api.get_preferred_collections(page='films')
         for col in coll_list:
             check_collection(self, col)
 

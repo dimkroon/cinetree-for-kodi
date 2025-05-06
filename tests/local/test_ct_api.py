@@ -93,11 +93,17 @@ class CreateStreamInfoUrl(TestCase):
 # noinspection PyMethodMayBeStatic
 class Collections(TestCase):
     @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('films-payload.js'))
-    def test_get_preferred_collections(self, _):
-        col_list = list(ct_api.get_preferred_collections())
+    def test_get_preferred_film_collections(self, _):
+        col_list = list(ct_api.get_preferred_collections(page='films'))
         self.assertGreater(len(col_list), 1)
         for col in col_list:
             check_collection(self, col)
+
+    @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('kort_payload.js'))
+    def test_get_preferred_short_collections(self, _):
+        data = list(ct_api.get_preferred_collections(page='short'))
+        self.assertIsInstance(data, list)
+        self.assertGreater(len(data), 3)
 
     @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('collecties-payload.js'))
     def test_get_all_collections(self, _):
@@ -170,13 +176,6 @@ class Gen(TestCase):
         data = ct_api.get_originals()
         self.assertIsInstance(data, list)
         self.assertGreater(len(data), 10)
-
-    @patch('resources.lib.utils.CacheMgr.version', PropertyMock(return_value='abcde'))
-    @patch('resources.lib.fetch.get_document', open_doc('kort_payload.js'))
-    def test_get_shorts(self):
-        data = list(ct_api.get_shorts())
-        self.assertIsInstance(data, list)
-        self.assertGreater(len(data), 3)
 
     def test_get_subtitles(self):
         # noinspection PyTypeChecker

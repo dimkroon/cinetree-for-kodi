@@ -181,7 +181,7 @@ def list_films_and_docus(addon, category):
 
 @Route.register()
 def list_rental_collections(addon):
-    collections = ct_api.get_preferred_collections()
+    collections = ct_api.get_preferred_collections(page='films')
     for coll in collections:
         yield Listitem.from_dict(list_films_by_collection, **coll)
     yield Listitem.from_dict(list_all_collections, addon.localize(TXT_ALL_COLLECTIONS))
@@ -232,7 +232,7 @@ def list_originals(addon):
 def list_shorts(addon, list_films=False):
     if not list_films:
         # List a submenu of collections of short films
-        collections = ct_api.get_shorts()
+        collections = ct_api.get_preferred_collections(page='kort')
         for coll in collections:
             yield Listitem.from_dict(list_films_by_collection, **coll)
         yield Listitem.from_dict(list_shorts, addon.localize(TXT_ALL_SHORT_FILMS), params={'list_films': True})
