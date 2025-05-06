@@ -1,3 +1,6 @@
+v 2.0.1
+  same as 2.0.0
+
 v 2.0.0
 - New logo image.
 - Now possible to directly rent a film with your prepaid credit at Cinetree.
