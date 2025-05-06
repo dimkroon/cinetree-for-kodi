@@ -1,23 +1,26 @@
 
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2025 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
 fixtures.global_setup()
 
-from tests.support.testutils import doc_path
-
+import os
 import platform
+import shutil
 
 from unittest import TestCase
+from unittest.mock import patch
 
 import resources.lib
 from resources.lib import utils
+
+from tests.support.testutils import doc_path
 
 
 setUpModule = fixtures.setup_local_tests
@@ -325,3 +328,71 @@ class RemoveMarkdown(TestCase):
         self.assertEqual('', utils.remove_markdown(''))
         self.assertIsNone(utils.remove_markdown(None))
         self.assertEqual('', utils.remove_markdown(['dfg', 1]))
+
+
+class CacheMgr(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.cache_dir = os.path.join(utils.addon_info['profile'], 'test_cache')
+
+    def setUp(self):
+        try:
+            shutil.rmtree(self.cache_dir)
+        except FileNotFoundError:
+            pass
+
+    @classmethod
+    def tearDownClass(cls):
+        # noinspection PyTypeChecker
+        cls.setUp(cls)
+
+    def test_create_dir_at_initialisation(self):
+        self.assertFalse(os.path.exists(self.cache_dir))
+        utils.CacheMgr(self.cache_dir)
+        self.assertTrue(os.path.exists(self.cache_dir))
+
+    @patch('urlquick.CacheHTTPAdapter.wipe')
+    def test_version(self, p_wipe):
+        mgr = utils.CacheMgr(self.cache_dir)
+        # Return None when version file does not exist
+        self.assertIs(mgr.version, None)
+        # Change version should wipe the database
+        mgr.version = 'version1'
+        self.assertEqual(mgr.version, 'version1')
+        p_wipe.assert_called_once()
+        # A new instance should load the version
+        mgr = utils.CacheMgr(self.cache_dir)
+        self.assertEqual(mgr.version, 'version1')
+        with patch("builtins.open") as p_open:
+            p_wipe.reset_mock()
+            # Settings the same version is a nop
+            mgr.version = 'version1'
+            self.assertEqual(mgr.version, 'version1')
+            # Setting version to None is a nop
+            mgr.version = None
+            self.assertEqual(mgr.version, 'version1')
+            # Setting version to an empty string is a nop
+            mgr.version = ''
+            self.assertEqual(mgr.version, 'version1')
+            # All of the above have not been saved and database has not been cleaned
+            p_open.assert_not_called()
+            p_wipe.assert_not_called()
+
+    def test_revalidate(self):
+        """After revalidate() `version` return None until `version` has been set again."""
+        mgr = utils.CacheMgr(self.cache_dir)
+        mgr.version = 'version1'
+        with patch('urlquick.CacheHTTPAdapter.wipe') as p_wipe:
+            mgr.revalidate()
+            self.assertIs(mgr.version, None)
+            self.assertIs(mgr.version, None)
+            mgr.version = 'version1'
+            self.assertEqual(mgr.version, 'version1')
+            p_wipe.assert_not_called()
+
+    def test_save_error_fails_silently(self):
+        mgr = utils.CacheMgr(self.cache_dir)
+        with patch("builtins.open", side_effect=FileNotFoundError) as p_open:
+            mgr.version = 'version1'
+            self.assertEqual(mgr.version, 'version1')
+            p_open.assert_called_once()

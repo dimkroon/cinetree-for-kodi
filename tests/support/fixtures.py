@@ -1,6 +1,10 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
+#  Copyright (c) 2022-2025 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
+# ------------------------------------------------------------------------------
 #
 #  SPDX-License-Identifier: GPL-2.0-or-later
 #  This file is part of plugin.video.cinetree
@@ -41,7 +45,7 @@ def global_setup():
 
         # Enable logging to file during tests with a new file each test run.
         try:
-            os.remove(os.path.join(profile_dir, 'addon.log'))
+            os.remove(os.path.join(profile_dir, 'Cinetree.log'))
         except FileNotFoundError:
             pass
         patch('xbmcaddon.Addon.getSettingString',
@@ -170,3 +174,13 @@ def patch_listitem():
             return self._path
 
     xbmcgui.ListItem = LI
+
+
+def jsonrpc(jsonstr: str) -> str:
+    import requests
+    import json
+    resp = requests.post(
+        url='http://127.0.0.1:8880/jsonrpc',
+        json = json.loads(jsonstr)
+    )
+    return resp.text

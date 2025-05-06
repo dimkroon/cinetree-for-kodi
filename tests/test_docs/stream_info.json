@@ -1,1 +1,11 @@
-{"playtime": 1122.1170654296875, "watchHistoryId": "62e0630aad082eb5a594d7a5", "type": "vaem", "url": "https://api2.cinetree.nl/streams/orvhDDCkaA3xvKehuExTDLfjnElsOnqIKrJnwF9D3tg/1659078288331/62d79c4bfc3474f05c02ef9c.m3u8", "duration": null, "subtitles": {"nl": "https://api2.cinetree.nl/streams/orvhDDCkaA3xvKehuExTDLfjnElsOnqIKrJnwF9D3tg/1659078288331/62d79c4bfc3474f05c02ef9c/subtitles/nl.vtt"}}
+{
+  "playtime": 924.29,
+  "watchHistoryId": "66183b88a4ec4bc88b08a702",
+  "type": "vaem",
+  "url": "https://cdn.api.cinetree.nl/streams/kwRkf7JtIMBVrQG1jBfsUrKCVe8gZ0WR3niTt98icHo/1731211895722/5f7589020cd770001b38fb4d.m3u8",
+  "duration": 3127.168,
+  "subtitles": {
+    "nl": "https://cdn.api.cinetree.nl/streams/kwRkf7JtIMBVrQG1jBfsUrKCVe8gZ0WR3niTt98icHo/1731211895722/5f7589020cd770001b38fb4d/subtitles/nl.vtt",
+    "en": "https://cdn.api.cinetree.nl/streams/kwRkf7JtIMBVrQG1jBfsUrKCVe8gZ0WR3niTt98icHo/1731211895722/5f7589020cd770001b38fb4d/subtitles/en.vtt"
+  }
+}

@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2025 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
@@ -14,6 +14,8 @@ from tests.support import object_checks, testutils
 import json
 import time
 from unittest import TestCase
+
+import xbmcplugin
 
 from resources.lib import storyblok
 from resources.lib.ctree import ct_api
@@ -32,7 +34,7 @@ class StoriesListing(TestCase):
         tree = {}
         total_pages = 1
         page = 1
-        all_stories  = []
+        all_stories = []
 
         while page <= total_pages:
             data, headers = storyblok.get_url('stories', params={'page': str(page), 'per_page': 100})
@@ -58,7 +60,7 @@ class StoriesListing(TestCase):
 
     def test_get_rentals(self):
         """Does not return a list of films, but data concerning rentals. Like available filters,
-        filter items, a list of preferred collections, etc. Basically the contents of cinetree's
+        filter items, a list of preferred collections, etc. Basically, the contents of cinetree's
         page 'huurfilms'
 
         """
@@ -69,9 +71,9 @@ class StoriesListing(TestCase):
     def test_get_all_collections(self):
         data, _ = storyblok.get_url('stories',
                                     params={'starts_with': 'collections/',
-                                             'page': 1,
-                                             'per_page': 100,
-                                             'version': 'published'})
+                                            'page': 1,
+                                            'per_page': 100,
+                                            'version': 'published'})
         stories = data.get('stories')
         self.assertIsInstance(stories, list)
 
@@ -85,19 +87,22 @@ class StoriesListing(TestCase):
         stories = []
 
         while page <= total_pages:
-            data, headers = storyblok.get_url('stories', params={'starts_with': 'films/', 'page': str(page), 'per_page': 100})
+            data, headers = storyblok.get_url(
+                'stories',
+                params={'starts_with': 'films/',
+                        'page': str(page),
+                        'per_page': 100})
             total_pages = int(headers.get('total')) / 100
             stories.extend(data.get('stories'))
             page += 1
             time.sleep(0.05)
 
-        self.assertGreater(len(stories), 0)
+        # # Save al stories locally
+        # storymap = {story['uuid']: story for story in stories}
+        # testutils.save_json(storymap, 'st_blok/films.json')
+
         for story in stories:
             object_checks.check_film_data(story)
-        # Save al stories locally
-        # storymap = {story['uuid']: story for story in stories}
-        # with open(testutils.doc_path('st_blok/films.json'), 'w') as f:
-        #     json.dump(storymap, f, indent=4)
 
     def test_get_all_shorts(self):
         data, _ = storyblok.get_url('stories', params={'starts_with': 'shorts/', 'page': 1, 'per_page': 100})
@@ -105,6 +110,9 @@ class StoriesListing(TestCase):
         self.assertGreater(len(stories), 0)
         for story in stories:
             object_checks.check_film_data(story)
+        # Save al shorts locally
+        # storymap = {story['uuid']: story for story in stories}
+        # testutils.save_json(storymap, 'st_blok/shorts.json')
 
     def test_get_all_kids(self):
         data, _ = storyblok.get_url('stories', params={'starts_with': 'kids/', 'page': 1, 'per_page': 100})
@@ -122,6 +130,19 @@ class FilmListByUuid(TestCase):
         stories, num_stories = storyblok.stories_by_uuids(film_uuids)
         self.assertIsInstance(stories, list)
         self.assertEqual(num_stories, len(stories))
+
+    def test_get_list_with_a_non_existing_uuid(self):
+        """Request a number of films, where only one of the uuid's does not exist.
+
+        Storyblok ignores invalid uuids and just returns a list of films that do exist.
+
+        """
+        film_uuids = ['de57210e-4fd2-485a-8f1a-26c7caff2a7b', 'ddf98776-1b85-4675-9369-dc646a33a110',
+                      'f00fffff-ffff-0000-0000-ff00ff00ff00', 'a2a916c7-dd71-4820-b556-2b005c51da10']
+        # film_uuids = ['4414d3b2-bb7d-4553-a2ad-6178a59e93ec']
+        stories, num_stories = storyblok.stories_by_uuids(film_uuids)
+        self.assertIsInstance(stories, list)
+        self.assertEqual(num_stories, len(film_uuids) - 1)
 
     def test_get_single_film(self):
         stories, num_stories = storyblok.stories_by_uuids('de57210e-4fd2-485a-8f1a-26c7caff2a7b')
@@ -194,7 +215,7 @@ class Search(TestCase):
         film_list, num_films = storyblok.search(duration_min=60, duration_max=80)
         self.assertEqual(num_films, len(film_list))
         for film in film_list:
-            duration = ct_data.get_duration(film['content']) / 60
+            duration = ct_data.FilmItem(film).get_duration() / 60
             self.assertGreater(duration, 60)
             self.assertLess(duration, 80)
 
@@ -202,7 +223,7 @@ class Search(TestCase):
         film_list, num_films = storyblok.search(duration_min=75.3, duration_max=80)
         self.assertEqual(num_films, len(film_list))
         for film in film_list:
-            duration = ct_data.get_duration(film['content']) / 60
+            duration = ct_data.FilmItem(film).get_duration() / 60
             self.assertGreater(duration, 75.3)
             self.assertLess(duration, 80)
 
@@ -212,3 +233,40 @@ class Search(TestCase):
 
     def test_search_nothing(self):
         self.assertRaises(ValueError, storyblok.search)
+
+    def test_search_sorted_ascending(self):
+        film_list, num_films = storyblok.search(search_term='is',
+                                                sort_method=xbmcplugin.SORT_METHOD_TITLE)
+        self.assertEqual(num_films, len(film_list))
+        prev_title = ''
+        for film in film_list:
+            # Cinetree sorts case-insensitive and ignores non-alphabetical characters
+            title = film['content']['title'].replace(' ', '').replace("'", '').replace(',', '').lower()
+            self.assertTrue(title >= prev_title)
+            prev_title = title
+
+    def test_search_sorted_decending(self):
+        film_list, num_films = storyblok.search(search_term='is',
+                                                sort_method=xbmcplugin.SORT_METHOD_TITLE,
+                                                sort_order=1)
+        self.assertEqual(num_films, len(film_list))
+        prev_title = 'zzzzzzzzzz'
+        for film in film_list:
+            # Cinetree sorts case-insensitive and ignores non-alphabetical characters
+            title = film['content']['title'].replace(' ', '').replace("'", '').replace(',', '').lower()
+            self.assertTrue(title <= prev_title)
+            prev_title = title
+
+    def test_search_sort_on_duration(self):
+        film_list, num_films = storyblok.search(genre='Documentary',
+                                                sort_method=xbmcplugin.SORT_METHOD_DURATION,
+                                                sort_order=0)
+        self.assertEqual(num_films, len(film_list))
+        prev_duration = 0
+        i = 0
+        for film in film_list:
+            # Cinetree sorts case-insensitive and ignores non-alphabetical characters
+            duration = float(film['content']['duration'].split()[0])
+            self.assertTrue(duration >= prev_duration)
+            prev_duration = duration
+            i += 1

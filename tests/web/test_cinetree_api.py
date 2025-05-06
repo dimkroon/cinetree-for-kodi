@@ -1,8 +1,8 @@
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2025 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
@@ -10,6 +10,8 @@ fixtures.global_setup()
 
 import requests
 import unittest
+from datetime import datetime, timezone
+import time
 
 from tests.support import testutils, object_checks
 
@@ -56,7 +58,7 @@ class SubscriptionFilms(unittest.TestCase):
     def test_get_list_of_subscription_film_ids(self):
         """This endpoint returns just a list of ID's of the current subscription films"""
         resp = ct_api.get_subscription_films()
-        testutils.save_json(resp, 'films-svod.json')
+        # testutils.save_json(resp, 'films-svod.json')
         self.assertIsInstance(resp, list)
         self.assertAlmostEqual(20, len(resp), delta=3)
         for item in resp:
@@ -94,8 +96,7 @@ class GetStreamsOfFilm(unittest.TestCase):
         resp = fetch.fetch_authenticated(fetch.get_json, url)
         object_checks.check_stream_info(resp)
         # optionally store the content for use in local tests
-        # with open('../test_docs/stream_info.json', 'w') as f:
-        #     json.dump(resp, f)
+        # testutils.save_json(resp, 'stream_info.json')
 
     def test_stream_info_without_subscription(self):
         # Ensure to select a currently available film from the subscription
@@ -141,7 +142,7 @@ class Genres(unittest.TestCase):
             fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/genre')
 
     def test_get_genres_from_films_payload(self):
-        """films/paylaod has a field 'filterGenreItems' with contains a comma separated list of all
+        """films/payload has a field 'filterGenreItems' with contains a comma separated list of all
         available genres.
         """
         resp = ct_api.get_jsonp('films/payload.js')
@@ -218,3 +219,149 @@ class FetchSubtitles(unittest.TestCase):
         # with open('test_docs/subtitle-film-you_were_never_really_here.vtt', 'w') as f:
         #     f.write(resp.text)
         # pass
+
+
+class GetPaymentInfo(unittest.TestCase):
+    base_url = 'https://api.cinetree.nl/payments/info/rental/'
+
+    def test_payment_info_data(self):
+        film_uuid = 'ef51ee02-0635-4547-a35d-d7844e0c5426'
+        resp = fetch.fetch_authenticated(fetch.post_json, self.base_url + film_uuid, data=None)
+        self.assertIsInstance(resp['amount'], float)
+        transaction_id = resp['transaction']
+        self.assertIsInstance(transaction_id, str)
+        self.assertEqual(len(transaction_id), 24)
+        self.assertTrue(transaction_id.isalnum())
+
+
+class GetMeData(unittest.TestCase):
+    """Data returned by an authenticated request to /me
+
+    Currently only used to obtain the amount of credit, but this checks some other fields as well.
+    """
+    def test_me_data(self):
+        resp = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/me')
+        object_checks.has_keys(resp, 'name', 'displayName', 'subscription', 'purchased', 'credit',
+                               'currentSubscription', 'renewalSubscription', 'favorites')
+        self.assertIsInstance(resp['credit'], float)
+
+
+class RemoveFromMyFilms(unittest.TestCase):
+    test_uid = 'be785e6b-c517-426e-a22c-f5ec1b496d20'  # Free short film 'Morgen gaat het beter' of 11 min
+    rental_uid = 'e824fe57-b3fe-40b1-849a-88049f8849c5' # Rental film 'Maggie's Plan'; very unlikely to be already on the list.
+
+    def put_item_on_list(self, film_uuid):
+        """Does NOT seem to work
+        Once an item has been removed, playing it again does not seem to add it to the watched list. """
+        stream_info = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/films/' + film_uuid)
+        watchhistoryid = stream_info['watchHistoryId']
+        ct_api.set_resume_time(watchhistoryid, 360.0)
+        time.sleep(1)
+        ct_api.set_resume_time(watchhistoryid, 370.0)
+        time.sleep(3)
+        self.assertTrue(self.is_on_list(film_uuid))
+
+    def is_on_list(self, film_uuid):
+        watched = fetch.fetch_authenticated(fetch.get_json, 'https://api.cinetree.nl/watch-history')
+        watched_uuids = [item['assetId'] for item in watched]
+        return film_uuid in watched_uuids
+
+    # def test_remove_exiting_item(self):
+    #     # Ensure the item is on the list
+    #     self.put_item_on_list(self.test_uid)
+    #     resp = fetch.fetch_authenticated(fetch.get_document,
+    #                                      url='https://api.cinetree.nl/watch-history/by-asset/' + self.test_uid,
+    #                                      headers={'accept': 'application/json, text/plain, */*'})
+    #     self.assertEqual(200, resp.status_code)
+    #     self.assertEqual(b'', resp.content)
+
+    def test_remove_item_not_on_list(self):
+        self.assertFalse(self.is_on_list(self.rental_uid))
+        resp = fetch.fetch_authenticated(fetch.web_request,
+                                         method='delete',
+                                         url='https://api.cinetree.nl/watch-history/by-asset/' + self.rental_uid,
+                                         headers={'accept': 'application/json, text/plain, */*'})
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual(b'', resp.content)
+
+    def test_remove_non_existing_item(self):
+        resp = fetch.fetch_authenticated(fetch.web_request,
+                                         method='delete',
+                                         url='https://api.cinetree.nl/watch-history/by-asset/' + 'fbsfhfttrds',
+                                         headers={'accept': 'application/json, text/plain, */*'})
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual(b'', resp.content)
+
+
+class Favourites(unittest.TestCase):
+    ISO_FMT = '%Y-%m-%dT%H:%M:%S.%fZ'
+
+    def test_add_and_remove_favourite(self):
+        # Ensure the film is on the list. May already exist, so don't check response body
+        film_uuid = 'f621c2d2-4206-4824-a2d6-6e41427db6c1'
+        fetch.fetch_authenticated(
+            fetch.web_request,
+            method='put',
+            url='https://api.cinetree.nl/favorites/' + film_uuid
+        )
+
+        # Delete
+        resp = fetch.fetch_authenticated(
+            fetch.web_request,
+            method='delete',
+            url='https://api.cinetree.nl/favorites/' + film_uuid
+        )
+        self.assertEqual(200, resp.status_code)
+        resp_data = resp.json()
+        self.assertIs(resp_data['acknowledged'], True)
+        self.assertEqual(resp_data['deletedCount'], 1)
+
+        # Delete a film not on the list
+        resp = fetch.fetch_authenticated(
+            fetch.web_request,
+            method='delete',
+            url='https://api.cinetree.nl/favorites/' + film_uuid
+        )
+        self.assertEqual(200, resp.status_code)
+        resp_data = resp.json()
+        self.assertIs(resp_data['acknowledged'], True)
+        self.assertEqual(resp_data['deletedCount'], 0)
+
+        # Add again now the film is definitely not on the list.
+        film_uuid = 'f621c2d2-4206-4824-a2d6-6e41427db6c1'
+        resp = fetch.fetch_authenticated(
+            fetch.web_request,
+            method='put',
+            url='https://api.cinetree.nl/favorites/' + film_uuid
+        )
+        self.assertEqual(200, resp.status_code)
+        resp_data = resp.json()
+        self.assertEqual(film_uuid, resp_data['storyUuid'])
+        self.assertAlmostEqual(
+                datetime.strptime(resp_data['createdAt'], self.ISO_FMT).replace(tzinfo=timezone.utc).timestamp(),
+                datetime.now(timezone.utc).timestamp(),
+                delta=2)
+        self.assertEqual(resp_data['createdAt'], resp_data['updatedAt'])
+
+        # Add a film which is already on the list.
+        film_uuid = 'f621c2d2-4206-4824-a2d6-6e41427db6c1'
+        resp = fetch.fetch_authenticated(
+            fetch.web_request,
+            method='put',
+            url='https://api.cinetree.nl/favorites/' + film_uuid
+        )
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual(b'',  resp.content)
+
+    def test_get_favourites(self):
+        resp = fetch.fetch_authenticated(
+            fetch.web_request,
+            method='get',
+            url='https://api.cinetree.nl/favorites/'
+        )
+        self.assertEqual(200, resp.status_code)
+        data = resp.json()
+        self.assertIsInstance(data, list)
+        for item in data:
+            object_checks.has_keys(item, 'createdAt', 'uuid')
+            self.assertEqual(2, len(tuple(item.keys())))  # Just to flag when other fields become available.

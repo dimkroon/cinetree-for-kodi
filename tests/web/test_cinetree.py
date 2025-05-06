@@ -1,6 +1,6 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2023 Dimitri Kroon.
+#  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
@@ -9,7 +9,7 @@
 from tests.support import fixtures
 fixtures.global_setup()
 
-from tests.support.object_checks import check_stream_info, check_films_data_list, check_collection
+from tests.support.object_checks import check_stream_info, check_films_data_list, check_collection, has_keys
 from tests.support.testutils import is_uuid
 
 from unittest import TestCase
@@ -52,12 +52,20 @@ class FetchJsonp(TestCase):
         #     json.dump(resp, f, indent=4)
         assert type(resp) is dict
 
+    def test_fetch_cinetree_originals(self):
+        resp = ct_api.get_jsonp('originals/payload.js')
+        assert type(resp) is dict
+
 
 # noinspection PyMethodMayBeStatic
 class GetFilmUrls(TestCase):
     def test_get_urls_by_uuid(self):
         # To view films from the selected list, which have uuid
         url = ct_api.create_stream_info_url('c1321650-7394-4106-952d-e38872ab5f47', None)
+        stream_info = ct_api.get_stream_info(url)
+        check_stream_info(stream_info)
+        # Morgen gaat het beter
+        url = ct_api.create_stream_info_url('c1e7f9fd-43fa-41e7-ab54-a8f1bcda1e8f', None)
         stream_info = ct_api.get_stream_info(url)
         check_stream_info(stream_info)
 
@@ -76,7 +84,7 @@ class GetFilmsList(TestCase):
         self.assertGreater(len(films), 10)
         for item in films:
             # check if a Listitem can be created
-            Listitem.from_dict(MagicMock(), **item)
+            Listitem.from_dict(MagicMock(), **item.data)
 
 
 # noinspection PyMethodMayBeStatic
@@ -86,7 +94,7 @@ class GetCollections(TestCase):
         'huur films', which is only a small subset of all available collections
 
         """
-        coll_list = ct_api.get_preferred_collections()
+        coll_list = ct_api.get_preferred_collections(page='films')
         for col in coll_list:
             check_collection(self, col)
 
@@ -102,25 +110,30 @@ class GetCollections(TestCase):
         coll_data = ct_api.get_jsonp('collecties/cinetree-originals/payload.js')
         film_list = list(ct_data.create_films_list(coll_data))
         for film in film_list:
-            Listitem.from_dict(MagicMock(), **film)
+            Listitem.from_dict(MagicMock(), **film.data)
 
 
 # noinspection PyMethodMayBeStatic
 class Gen(TestCase):
-    def test_get_continue_watching(self):
-        resp = ct_api.get_watched_films()
-        check_films_data_list(resp, allow_none_values=False)
-
-    def test_get_finished_watching(self):
-        resp = ct_api.get_watched_films('finished')
-        check_films_data_list(resp, allow_none_values=False)
+    def test_get_watched(self):
+        result = ct_api.get_watched_films()
+        for film in result:
+            self.assertIsInstance(film, ct_data.FilmItem)
+            self.assertTrue(film)
 
     def test_get_purchased(self):
         resp = ct_api.get_rented_films()
         check_films_data_list(resp, allow_none_values=False)
 
     def get_stream_info(self):
-        resp = ct_api.get_stream_info()
+        # Get info of free film 'Intercepted'
+        resp = ct_api.get_stream_info('https://api.cinetree.nl/films/d63ffb56-7fa3-4965-ba3c-03e95d7179b0')
+        has_keys(resp, 'subtitles', 'url', 'watchHistoryId')
+
+    def test_get_payment_info(self):
+        amount, transaction = ct_api.get_payment_info('ef51ee02-0635-4547-a35d-d7844e0c5426')
+        self.assertGreater(amount, 0.0)
+        self.assertIsInstance(transaction, str)
 
 
 class SearchFilm(TestCase):

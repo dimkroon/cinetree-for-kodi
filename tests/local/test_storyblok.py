@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022 Dimitri Kroon
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
+#  Copyright (c) 2022-2025 Dimitri Kroon.
+#  This file is part of plugin.video.cinetree.
+#  SPDX-License-Identifier: GPL-2.0-or-later.
+#  See LICENSE.txt
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
@@ -15,6 +15,8 @@ from tests.support.testutils import HttpResponse, open_json
 import json
 import unittest
 from unittest.mock import patch
+
+import xbmcplugin
 from requests import exceptions
 
 from resources.lib import storyblok
@@ -24,44 +26,31 @@ setUpModule = fixtures.setup_local_tests
 tearDownModule = fixtures.tear_down_local_tests
 
 
-class TestClear(unittest.TestCase):
-    def test_clear_cache_version(self):
-        storyblok.cache_version = '1231645'
-        storyblok.clear_cache_version()
-        self.assertEqual('undefined', storyblok.cache_version)
-
-
 class GetUrl(unittest.TestCase):
-    @patch('resources.lib.storyblok.requests.get')
+    @patch('urlquick.Session.request')
     def test_get_url(self, mocked_get):
         storyblok.get_url("doc.js")
         mocked_get.assert_called_once()
-        url = mocked_get.call_args[0][0]
+        url = mocked_get.call_args[0][1]
         self.assertTrue(url.startswith('https://api.storyblok.com') and url.endswith('doc.js'))
 
-    @patch('resources.lib.storyblok.requests.get')
+    @patch('urlquick.Session.request')
     def test_get_url_with_params(self, mocked_get):
         """Test if the function adds its own parameters of the same type as the caller has passed."""
-        # params as string
-        storyblok.get_url("doc.js", params="q=1")
-        params = mocked_get.call_args[1]['params']
-        self.assertIsInstance(params, str)
-        self.assertTrue('&token=' in params and '&version=' in params and 'q=1' in params)
-        # params as dict
         mocked_get.reset_mock()
         storyblok.get_url("doc.js", params={'q': 1})
         params = mocked_get.call_args[1]['params']
         self.assertIsInstance(params, dict)
         has_keys(params, 'q', 'token', 'version')
         # invalid object as params
-        self.assertRaises(TypeError, storyblok.get_url, "doc.js", params=[('q', 1)])
+        self.assertRaises(ValueError, storyblok.get_url, "doc.js", params=['q', 1])
 
-    @patch('resources.lib.storyblok.requests.get', return_value=HttpResponse(status_code=400))
+    @patch('urlquick.Session.request', return_value=HttpResponse(status_code=400))
     def test_get_url_runs_into_http_error(self, mocked_get):
         self.assertRaises(exceptions.HTTPError, storyblok.get_url, "doc.js")
         mocked_get.assert_called_once()
 
-    @patch('resources.lib.storyblok.requests.get', return_value=HttpResponse(status_code=429))
+    @patch('urlquick.Session.request', return_value=HttpResponse(status_code=429))
     def test_get_url_with_too_many_requests(self, mocked_get):
         """When the server returns HTTP status 429 (Too manyrequests) a retry is
         attempted after a delay of 1 sec.
@@ -69,13 +58,13 @@ class GetUrl(unittest.TestCase):
         self.assertRaises(exceptions.HTTPError, storyblok.get_url, "doc.js")
         self.assertEqual(2, mocked_get.call_count)
 
-    @patch('resources.lib.storyblok.requests.get')
+    @patch('urlquick.Session.request')
     def test_add_header(self, mocked_get):
         """Check that a header passed to function is added to the default headers"""
         storyblok.get_url("doc.js", headers={'custom_type': 'custom_value'})
         has_keys(mocked_get.call_args[1]['headers'], 'Referer', 'Origin', 'Accept', 'custom_type')
 
-    @patch('resources.lib.storyblok.requests.get')
+    @patch('urlquick.Session.request')
     def test_replace_header(self, mocked_get):
         """Check that a header passed to the function replaces the default header"""
         storyblok.get_url("doc.js", headers={'Accept': 'custom_value'})
@@ -84,7 +73,7 @@ class GetUrl(unittest.TestCase):
 
 
 class GetUrlPage(unittest.TestCase):
-    @patch('resources.lib.storyblok.requests.get',
+    @patch('urlquick.Session.request',
            return_value=HttpResponse(headers={'total': 50}, content=json.dumps({'stories': ['a'] * 50}).encode()))
     def test_get_url_single_paging(self, mocked_get):
         resp, total = storyblok._get_url_page("mypage")
@@ -92,7 +81,7 @@ class GetUrlPage(unittest.TestCase):
         self.assertEqual(50, total)
         mocked_get.assert_called_once()
 
-    @patch('resources.lib.storyblok.requests.get',
+    @patch('urlquick.Session.request',
            side_effect=[
                 HttpResponse(headers={'total': 150}, content=json.dumps({'stories': ['a'] * 100}).encode()),
                 HttpResponse(headers={'total': 150}, content=json.dumps({'stories': ['a'] * 50}).encode())])
@@ -102,7 +91,7 @@ class GetUrlPage(unittest.TestCase):
         self.assertEqual(150, total)
         self.assertEqual(2, mocked_get.call_count)
 
-    @patch('resources.lib.storyblok.requests.get',
+    @patch('urlquick.Session.request',
            side_effect=[
                 HttpResponse(headers={'total': 150}, content=json.dumps({'stories': ['a'] * 100}).encode()),
                 HttpResponse(headers={'total': 150}, content=json.dumps({'stories': ['a'] * 50}).encode())])
@@ -112,8 +101,7 @@ class GetUrlPage(unittest.TestCase):
         self.assertEqual(150, total)
         self.assertEqual(1, mocked_get.call_count)
 
-    @patch('resources.lib.storyblok.requests.get')
-    def test_invalid_arguments(self, _):
+    def test_invalid_arguments(self):
         self.assertRaises(ValueError, storyblok._get_url_page, "page", page=0)
         self.assertRaises(ValueError, storyblok._get_url_page, "page", items_per_page=0)
         self.assertRaises(ValueError, storyblok._get_url_page, "page", items_per_page=101)
@@ -124,6 +112,34 @@ class StoryByName(unittest.TestCase):
     def test_story_by_name(self, _):
         data = storyblok.story_by_name('sldkjfv')
         self.assertEqual('Druk', data['name'])
+
+
+@patch('resources.lib.storyblok.get_url', return_value=({'stories': []},{}))
+class TestSearch(unittest.TestCase):
+    def test_search_genre(self, p_get_url):
+        storyblok.search(genre='drama')
+        params = p_get_url.call_args.kwargs['params']
+        self.assertEqual(params['filter_query[genre][like]'], '*drama*')
+        self.assertTrue('sort_by' not in params)
+
+    def test_search_genre_sort_method(self, p_get_url):
+        storyblok.search(genre='drama', sort_method=xbmcplugin.SORT_METHOD_TITLE)
+        params = p_get_url.call_args.kwargs['params']
+        self.assertTrue('content.title' in params['sort_by'])
+        # An unsupported sort method
+        storyblok.search(genre='drama', sort_method=xbmcplugin.SORT_METHOD_NONE)
+        params = p_get_url.call_args.kwargs['params']
+        self.assertTrue('sort_by' not in params)
+
+    def test_search_genre_sort_order(self, p_get_url):
+        storyblok.search(genre='drama', sort_method=xbmcplugin.SORT_METHOD_TITLE, sort_order=0)
+        params = p_get_url.call_args.kwargs['params']
+        self.assertTrue(':asc' in params['sort_by'])
+        # An unsupported sort method
+        storyblok.search(genre='drama', sort_method=xbmcplugin.SORT_METHOD_TITLE, sort_order=1)
+        params = p_get_url.call_args.kwargs['params']
+        self.assertTrue(':desc' in params['sort_by'])
+
 
 
 @unittest.skip
@@ -147,3 +163,10 @@ class TestStoryContent(unittest.TestCase):
             end_date = film['content'].get('endDate')
             if end_date:
                 print("Film {} has end date {}".format(film['content']['title'], end_date))
+
+    def test_films_without_shops(self):
+        films = open_json('st_blok/films.json')
+        for film in films.values():
+            shops = film['content'].get('shops')
+            if not shops:
+                print("Film {} has no shops: '{}'".format(film['content']['title'], shops))
