@@ -1,3 +1,6 @@
+v 2.0.2
+- fixed add-on failed to open when not logged in to Cinetree.
+
 v 2.0.1
   same as 2.0.0
 
