@@ -42,6 +42,14 @@ class MainTest(unittest.TestCase):
             self.assertIsInstance(item, Listitem)
         p_sync.assert_called_once()
 
+    @patch('resources.lib.fetch.fetch_authenticated', side_effect=errors.AuthenticationError)
+    def test_root_not_signed_in(self, p_sync):
+        items = main.root.test()
+        self.assertEqual(8, len(items))
+        for item in items:
+            self.assertIsInstance(item, Listitem)
+        p_sync.assert_called_once()
+
     @patch('resources.lib.fetch.fetch_authenticated', return_value=open_json('watch-history.json'))
     @patch('xbmcaddon.Addon.getLocalizedString', lambda s, x: 'my list')
     def test_mijn_films(self, _):
