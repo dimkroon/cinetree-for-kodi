@@ -105,8 +105,8 @@ class GetFilmsList(TestCase):
         films = list(ct_data.create_films_list(sb_films, 'storyblok'))
         self.assertEqual(len(films), 4)
 
-    def test_create_film_list_collection_drama(self):
-        data = open_jsonp('collecties-drama-payload.js')
+    def test_create_film_list_collection_best_bekeken(self):
+        data = open_jsonp('collecties_best-bekeken_payload.js')
         films = list(ct_data.create_films_list(data))
         self.assertGreater(len(films), 10)
         for item in films:
@@ -114,7 +114,7 @@ class GetFilmsList(TestCase):
             Listitem.from_dict(MagicMock(), **item.data)
 
     def test_create_film_with_invalid_data(self):
-        data = open_jsonp('films_en_docus-payload.js')
+        data = open_jsonp('films-payload.js')
         self.assertRaises(ValueError, ct_data.create_films_list, data, 'something')     # unknown list type
         data = {'some': 'dict'}
         self.assertRaises(ValueError, ct_data.create_films_list, data)              # invalid data
@@ -129,7 +129,7 @@ class Collections(TestCase):
             check_collection(self, col_dict)
 
     def test_create_film_list_from_a_collection(self):
-        coll_data = open_jsonp('collecties-cinetree-originals-payload.js')
+        coll_data = open_jsonp('collecties_best-bekeken_payload.js')
         film_list = list(ct_data.create_films_list(coll_data))
         for film in film_list:
             Listitem.from_dict(MagicMock(), **film.data)

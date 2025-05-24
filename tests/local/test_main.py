@@ -97,7 +97,7 @@ class MainTest(unittest.TestCase):
     @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('films-payload.js'))
     def test_list_rental_collections(self, _):
         items = main.list_rental_collections.test()
-        self.assertEqual(9, len(items))
+        self.assertEqual(6, len(items))
         for item in items:
             self.assertIsInstance(item, Listitem)
 
@@ -151,7 +151,7 @@ class MainTest(unittest.TestCase):
             for item in items:
                 self.assertIsInstance(item, Listitem)
 
-    @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('collecties-prijswinnaars-payload.js'))
+    @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('collecties-de-grote-winnaars-payload.js'))
     def test_list_films_by_collection(self, _):
         items = list(main.list_films_by_collection(MagicMock(), ''))
         self.assertGreater(len(items), 10)

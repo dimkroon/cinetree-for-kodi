@@ -25,7 +25,7 @@ class FindQuotedStrings(unittest.TestCase):
         )
 
     def test_file_collecties_drama(self):
-        with open(doc_path("collecties-drama-payload.js")) as f:
+        with open(doc_path("collecties_best-bekeken_payload.js")) as f:
             doc = f.read()
         matches = self.pattern.findall(doc)
         self.assertGreater(len(matches), 100)
