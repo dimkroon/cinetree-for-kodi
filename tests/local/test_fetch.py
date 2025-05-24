@@ -238,13 +238,26 @@ class GetAuthenticated(TestCase):
 
     @patch("resources.lib.ctree.ct_account.session", return_value=AccountMock())
     @patch("resources.lib.fetch.get_json", side_effect=[errors.AuthenticationError, {'a': 1}])
-    def test_authenticated_refresh_fails_login_rejectd(self, mocked_get, mocked_account):
+    def test_authenticated_refresh_fails_login_rejected(self, mocked_get, mocked_account):
         """Refresh tokens failed and the user canceled the request to log in."""
         mocked_account.return_value.refresh.return_value = False
-        with patch("resources.lib.kodi_utils.show_msg_not_logged_in", return_value=False):
+        with patch("resources.lib.kodi_utils.show_msg_not_logged_in", return_value=False) as p_dialog:
             self.assertRaises(errors.AuthenticationError, fetch.fetch_authenticated, fetch.get_json, URL)
         mocked_account.return_value.refresh.assert_called_once()
+        p_dialog.assert_called_once()
         mocked_account.return_value.login.assert_not_called()
+        self.assertEqual(1, mocked_get.call_count)
+
+    @patch("resources.lib.ctree.ct_account.session", return_value=AccountMock())
+    @patch("resources.lib.fetch.get_json", side_effect=[errors.AuthenticationError, {'a': 1}])
+    def test_authenticated_refresh_fails_not_asking_for_login(self, mocked_get, mocked_account):
+        """Refresh tokens failed and ask_login is False."""
+        mocked_account.return_value.refresh.return_value = False
+        with patch("resources.lib.kodi_utils.show_msg_not_logged_in", return_value=True) as p_dialog:
+            self.assertRaises(errors.AuthenticationError, fetch.fetch_authenticated, fetch.get_json, URL, ask_login=False)
+        mocked_account.return_value.refresh.assert_called_once()
+        mocked_account.return_value.login.assert_not_called()
+        p_dialog.assert_not_called()
         self.assertEqual(1, mocked_get.call_count)
 
     @patch("resources.lib.ctree.ct_account.session", return_value=AccountMock())
