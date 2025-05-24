@@ -292,11 +292,11 @@ class RemoveMarkdownFromQuotedString(TestCase):
             self.assertEqual(new_doc[pos-1], '\\', f"'* character found at position {pos}: {new_doc[pos-100:pos+100]}")
             pos = new_doc.find('*', pos + 1)
 
-    def test_remove_from_films_and_docus(self):
-        self.handle_saved_doc("films_en_docus-payload.js")
+    def test_remove_from_originals(self):
+        self.handle_saved_doc("originals_payload.js")
 
-    def test_remove_from_collecties_drama(self):
-        self.handle_saved_doc("collecties-drama-payload.js")
+    def test_remove_from_collecties_best_bekeken(self):
+        self.handle_saved_doc("collecties_best-bekeken_payload.js")
 
 
 class RemoveMarkdown(TestCase):

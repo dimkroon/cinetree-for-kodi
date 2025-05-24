@@ -35,50 +35,33 @@ class ParseNuxtJsonp(TestCase):
             content = film['content']
             self.assertEqual(film_keys, set(content.keys()).intersection(film_keys))
 
-    def test__parse_films_en_docus_state(self):
-        result = open_jsonp('films_en_docus-state.js')
-        self.assertIsInstance(result, dict)
-
-    def test__parse_films_en_docus_payload(self):
-        result = open_jsonp('films_en_docus-payload.js')
+    def test__parse_originals_payload(self):
+        result = open_jsonp('originals_payload.js')
         # films and docu's has usually 2 listings of films; one with a few recommended films and another with al films
         film_lists = sorted([v['films'] for k, v in result['fetch'].items() if k.startswith('data-')], key=len)
         # noinspection PyTypeChecker
         self.check_recommended_films_data_structure(film_lists[0])
         check_films_data_list(film_lists[1], ('svodEndDate', ))
 
-    def test__parse_collecties_drama_payload(self):
-        result = open_jsonp('collecties-drama-payload.js')
+    def test__parse_collecties_kids_payload(self):
+        result = open_jsonp('collecties_kids_payload.js')
         content = result['data'][0]['story']['content']
         self.assertIsInstance(content, dict)
         films = content['films']
         check_films_data_list(films, ('tvodPrice', 'tvodSubscribersPrice'))
 
-    def test__parse_collecties_cinetree_originals_payload(self):
-        result = open_jsonp('collecties-cinetree-originals-payload.js')
+    def test__parse_collecties_best_bekeken_payload(self):
+        result = open_jsonp('collecties_best-bekeken_payload.js')
         content = result['data'][0]['story']['content']
         self.assertIsInstance(content, dict)
         check_films_data_list(content['films'], ('tvodPrice', 'tvodSubscribersPrice'))
         check_films_data_list(content['shorts'], ('tvodPrice', 'tvodSubscribersPrice'))
 
-    def test__parse_collecties_prijswinnars_payload(self):
-        result = open_jsonp('collecties-prijswinnaars-payload.js')
-        self.assertIsInstance(result, dict)
-        content = result['data'][0]['story']['content']
-        check_films_data_list(content['films'], ('tvodPrice', 'tvodSubscribersPrice'))
-
-    def test__parse_collecties_de_grote_winnars(self):
+    def test__parse_collecties_de_grote_winnaars(self):
         result = open_jsonp('collecties-de-grote-winnaars-payload.js')
         content = result['data'][0]['story']['content']
         self.assertIsInstance(content, dict)
         check_films_data_list(content['films'], ('tvodPrice', 'tvodSubscribersPrice'))
-
-    def test__parse_collecties_voor_een_glimlach_payload(self):
-        result = open_jsonp('collecties-voor_een_glimlach-payload.js')
-        content = result['data'][0]['story']['content']
-        self.assertIsInstance(content, dict)
-        check_films_data_list(content['films'], ('tvodPrice', 'tvodSubscribersPrice'))
-        check_films_data_list(content['shorts'], ('tvodPrice', 'tvodSubscribersPrice'))
 
     def test__parse_collecties_payload(self):
         """Returns data containing a list of all available collections, within each collection a list
