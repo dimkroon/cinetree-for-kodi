@@ -303,7 +303,10 @@ def sync_watched_state():
     since the last time it was checked.
 
     """
-    history = list(ct_api.get_watched_films())
+    try:
+        history = list(ct_api.get_watched_films())
+    except errors.AuthenticationError:
+        return
     logger.debug("[sync_watched] History has %s items", len(history))
     with PersistentDict(constants.HISTORY_CACHE) as prev_watched:
         changed = {film for film in history if prev_watched.get(film.uuid) != film.playtime}
