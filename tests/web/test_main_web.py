@@ -1,4 +1,3 @@
-
 # ------------------------------------------------------------------------------
 #  Copyright (c) 2022-2025 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
@@ -10,25 +9,34 @@ from tests.support import fixtures
 fixtures.global_setup()
 
 import unittest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, patch, PropertyMock
 
 import xbmcgui
 
 from codequick import Listitem
 from resources.lib import main
-
+from resources.lib import errors
+from resources.lib.ctree import ct_account
 
 setUpModule = fixtures.setup_web_test
+
+NUM_MAIN_MNU_ITEMS = 8
 
 
 class MainTest(unittest.TestCase):
     def test_root(self):
-        NUM_MAIN_MNU_ITEMS = 8
         items = list(main.root(MagicMock()))
         self.assertEqual(NUM_MAIN_MNU_ITEMS, len(items),
                          "Expected {} items in main menu, got {}".format(NUM_MAIN_MNU_ITEMS, len(items)))
         for item in items:
             self.assertIsInstance(item, Listitem)
+
+    @patch('resources.lib.ctree.ct_account.Session.access_token', PropertyMock(side_effect=errors.AuthenticationError))
+    @patch('resources.lib.ctree.ct_account.Session.refresh', return_value=False)
+    @patch('resources.lib.ctree.ct_account.Session.login', return_value=False)
+    def test_root_not_signed_in(self, p_login, p_refresh):
+        items = main.root.test()
+        self.assertEqual(NUM_MAIN_MNU_ITEMS, len(items), NUM_MAIN_MNU_ITEMS)
 
     def test_mijn_films(self):
         items = list(main.list_my_films.test())
