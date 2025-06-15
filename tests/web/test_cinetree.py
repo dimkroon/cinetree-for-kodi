@@ -79,7 +79,7 @@ class GetFilmUrls(TestCase):
 class GetFilmsList(TestCase):
     # TODO: this more of an api test
     def test_create_film_list_collection_drama_fromweb(self):
-        data = ct_api.get_jsonp('collecties/drama/payload.js')
+        data = ct_api.get_jsonp('collecties/best-bekeken/payload.js')
         films = list(ct_data.create_films_list(data))
         self.assertGreater(len(films), 10)
         for item in films:
