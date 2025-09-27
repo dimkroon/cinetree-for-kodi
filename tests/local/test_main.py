@@ -138,9 +138,9 @@ class MainTest(unittest.TestCase):
 
     def test_list_shorts(self):
         # Submenu
-        with patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('kort_payload.js')):
+        with patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('collecties_de-korte-filmcollectie_payload.js')):
             items = main.list_shorts.test()
-            self.assertEqual(len(items), 5)
+            self.assertEqual(len(items), 26)
             for item in items:
                 self.assertIsInstance(item, Listitem)
         # All short films

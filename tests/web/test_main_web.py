@@ -78,6 +78,18 @@ class MainTest(unittest.TestCase):
         for item in items:
             self.assertIsInstance(item, Listitem)
 
+    def test_list_shorts(self):
+        # Cinetree's limited list of shorts plus an folder item to open all shorts
+        items = list(main.list_shorts.test())
+        self.assertGreater(len(items), 20)
+        for item in items:
+            self.assertIsInstance(item, Listitem)
+        # All shorts from Storyblok
+        items = list(main.list_shorts.test(list_films=True))
+        self.assertGreater(len(items), 50)
+        for item in items:
+            self.assertIsInstance(item, Listitem)
+
     def test_list_rental_collections(self):
         items = list(main.list_rental_collections.test())
         self.assertAlmostEqual(6, len(items), delta=2)
