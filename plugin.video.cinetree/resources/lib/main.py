@@ -234,11 +234,12 @@ def list_originals(addon):
 @Route.register(content_type='movies')
 def list_shorts(addon, list_films=False):
     if not list_films:
-        # List a submenu of collections of short films
-        collections = ct_api.get_preferred_collections(page='kort')
-        for coll in collections:
-            yield Listitem.from_dict(list_films_by_collection, **coll)
-        yield Listitem.from_dict(list_shorts, addon.localize(TXT_ALL_SHORT_FILMS), params={'list_films': True})
+        # List short films collection, like Cinetree's website.
+        yield from list_films_by_collection(addon, 'collecties/de-korte-filmcollectie')
+        yield Listitem.from_dict(list_shorts,
+                                 addon.localize(TXT_ALL_SHORT_FILMS),
+                                 params={'list_films': True},
+                                 properties={'SpecialSort': "bottom"})
     else:
         # List all short films
         stories, _ = storyblok._get_url_page('stories', params={'starts_with': 'shorts/'})
