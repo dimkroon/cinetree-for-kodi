@@ -5,10 +5,6 @@
 #  SPDX-License-Identifier: GPL-2.0-or-later.
 #  See LICENSE.txt
 # ------------------------------------------------------------------------------
-#
-#  SPDX-License-Identifier: GPL-2.0-or-later
-#  This file is part of plugin.video.cinetree
-# ------------------------------------------------------------------------------
 
 from __future__ import annotations
 import os
@@ -52,6 +48,8 @@ def global_setup():
               new=lambda self, item: 'file' if item == 'log-handler' else '').start()
         # Import module to setup logging
         from resources.lib import addon_log
+        # Apply patches
+        from resources.lib import cc_patch
 
         # Use an xbmcgui.ListItem that stores the values which have been set.
         patch_listitem()
@@ -97,7 +95,7 @@ def patch_listitem():
         def __init__(self, label: str = "",
                      label2: str = "",
                      path: str = "",
-                     offscreen: bool = False) -> None:
+                     offscreen: bool = True) -> None:
             super().__init__()
             assert isinstance(label, str)
             assert isinstance(label2, str)
