@@ -403,3 +403,21 @@ class SyncWatchedState(unittest.TestCase):
                 patch('resources.lib.main.PersistentDict._load', return_value={}) as p_load:
             main.sync_watched_state()
             p_load.assert_not_called()
+
+
+class Run(unittest.TestCase):
+    @patch('sys.argv', return_value=['script', '1'])
+    @patch('resources.lib.main.cc_run', return_value=ValueError())
+    @patch('xbmcplugin.endOfDirectory')
+    def test_run_failure(self, p_end_of_dir, _, __):
+        main.run()
+        p_end_of_dir.assert_called_once_with(1, False)
+
+    @patch('resources.lib.main.cc_run', return_value=None)
+    @patch.object(main, 'running_version', '1.0.0')
+    @patch('xbmcaddon.Addon.getAddonInfo', lambda _, s: '2.0.0' if s == 'version' else '')
+    def test_run_outdated_version(self, _):
+        with self.assertRaises(SystemExit) as cm:
+            main.run()
+        err = cm.exception
+        self.assertEqual(1, err.code)

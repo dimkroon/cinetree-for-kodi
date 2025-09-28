@@ -7,6 +7,8 @@
 # ------------------------------------------------------------------------------
 from __future__ import annotations
 
+import xbmcaddon
+
 import xbmc
 import xbmcplugin
 import sys
@@ -28,6 +30,11 @@ from resources.lib import constants
 from resources.lib import utils
 
 
+running_version = utils.addon_info['version']
+
+
+logger.critical('-------------------------------------')
+logger.critical('--- version: %s', running_version)
 logger.critical('-------------------------------------')
 
 TXT_SORT_BY = 30106
@@ -463,3 +470,13 @@ def pay_from_ct_credit(title, uuid):
 def run():
     if isinstance(cc_run(), Exception):
         xbmcplugin.endOfDirectory(int(sys.argv[1]), False)
+    # Due to reuselanguageinvoker the addon may have been updated, while it still
+    # keeps running the old version. Exit with non-zero status to force the current
+    # LanguageInvoker thread to end.
+    installed_version = xbmcaddon.Addon().getAddonInfo('version')
+    if running_version != installed_version:
+        logger.warning("Detected add-on upgrade to %s while still running %s. "
+                       "Exiting non-zero now to end this LanguageInvoker thread",
+                       installed_version,
+                       running_version)
+        sys.exit(1)
