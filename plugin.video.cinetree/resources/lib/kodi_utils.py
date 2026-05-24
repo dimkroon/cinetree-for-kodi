@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2025 Dimitri Kroon.
+#  Copyright (c) 2022-2026 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
-#  See LICENSE.txt
+#  See LICENSE.txt or https://www.gnu.org/licenses/gpl-2.0.txt.
 # ------------------------------------------------------------------------------
 
 import logging
@@ -189,7 +189,7 @@ def show_low_credit_msg(price, credit):
             Script.localize(MSG_CREDITS_LOW).format(credit=credit, amount=price),
             nolabel=Script.localize(BTN_TXT_OK),
             yeslabel=Script.localize(TXT_MORE_INFO),
-            autoclose=15000)
+            autoclose=20000)
 
     if result:
         # Show a message with more detailed info on how to pay for a film.
