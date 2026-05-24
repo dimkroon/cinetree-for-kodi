@@ -1,15 +1,14 @@
-
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2025 Dimitri Kroon.
+#  Copyright (c) 2022-2026 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
-#  See LICENSE.txt
+#  See LICENSE.txt or https://www.gnu.org/licenses/gpl-2.0.txt.
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
 fixtures.global_setup()
 
-from tests.support.testutils import open_jsonp, open_json, get_sb_film
+from tests.support.testutils import open_nuxt3_json, open_json, get_sb_film, open_doc
 
 import unittest
 from unittest.mock import MagicMock, patch
@@ -23,11 +22,12 @@ from resources.lib import errors
 from resources.lib.ctree import ct_api
 from resources.lib.ctree.ct_data import FilmItem
 
+
 def setUpModule():
     fixtures.setup_local_tests()
     # Prevent webrequests to /favorites each time a film list is created.
     ct_api.favourites = []
-
+    ct_api.cache_mgr.version = "abcde"
 
 tearDownModule = fixtures.tear_down_local_tests
 
@@ -94,14 +94,14 @@ class MainTest(unittest.TestCase):
             for item in items:
                 self.assertIsInstance(item, Listitem)
 
-    @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('films-payload.js'))
+    @patch('resources.lib.ctree.ct_api.get_nuxt_json', return_value=open_nuxt3_json('films-_payload.json'))
     def test_list_rental_collections(self, _):
         items = main.list_rental_collections.test()
-        self.assertEqual(6, len(items))
+        self.assertEqual(7, len(items))
         for item in items:
             self.assertIsInstance(item, Listitem)
 
-    @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('collecties-payload.js'))
+    @patch('resources.lib.ctree.ct_api.get_nuxt_json', return_value=open_nuxt3_json('collecties-_payload.json'))
     def test_list_all_collections(self, _):
         items = main.list_all_collections.test()
         self.assertGreater(len(items), 10)
@@ -129,7 +129,7 @@ class MainTest(unittest.TestCase):
             items = main.do_search(MagicMock(), 'some_term')
             self.assertLessEqual(len(items), 100)       # some items could (will) be filtered out on endDate
 
-    @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('originals_payload.js'))
+    @patch('resources.lib.ctree.ct_api.get_nuxt_json', return_value=open_nuxt3_json('originals-_payload.json'))
     def test_list_originals(self, _):
         items = main.list_originals.test()
         self.assertGreater(len(items), 10)
@@ -138,9 +138,9 @@ class MainTest(unittest.TestCase):
 
     def test_list_shorts(self):
         # Submenu
-        with patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('collecties_de-korte-filmcollectie_payload.js')):
+        with patch('resources.lib.fetch.get_document', new=open_doc('collecties-de-korte-filmcollectie-_payload.json')):
             items = main.list_shorts.test()
-            self.assertEqual(len(items), 26)
+            self.assertEqual(len(items), 30)
             for item in items:
                 self.assertIsInstance(item, Listitem)
         # All short films
@@ -151,9 +151,9 @@ class MainTest(unittest.TestCase):
             for item in items:
                 self.assertIsInstance(item, Listitem)
 
-    @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('collecties-de-grote-winnaars-payload.js'))
-    def test_list_films_by_collection(self, _):
-        items = list(main.list_films_by_collection(MagicMock(), ''))
+    @patch('resources.lib.fetch.get_document', new=open_doc('collecties-vers-uit-het-filmhuis-_payload.json'))
+    def test_list_films_by_collection(self):
+        items = list(main.list_films_by_collection.test('blabla'))
         self.assertGreater(len(items), 10)
         for item in items:
             self.assertIsInstance(item, Listitem)

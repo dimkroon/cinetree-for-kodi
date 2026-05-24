@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  Copyright (c) 2022-2026 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
-#  See LICENSE.txt
+#  See LICENSE.txt or https://www.gnu.org/licenses/gpl-2.0.txt.
 # ------------------------------------------------------------------------------
 
 import unittest
@@ -39,7 +39,8 @@ class TestKodiUtils(unittest.TestCase):
     def test_show_login_result(self):
         self.assertIsNone(kodi_utils.show_login_result(True))
         self.assertIsNone(kodi_utils.show_login_result(True, 'some msg'))
-        self.assertIsNone(kodi_utils.show_login_result(False))
+        self.assertIsNone(kodi_utils.show_login_result(False, 'some msg'))
+        self.assertRaises(ValueError, kodi_utils.show_login_result, False)
 
     def test_ask_login_retry(self):
         self.assertTrue(kodi_utils.ask_login_retry('some_reason'))

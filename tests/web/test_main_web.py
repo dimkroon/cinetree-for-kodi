@@ -1,8 +1,8 @@
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2025 Dimitri Kroon.
+#  Copyright (c) 2022-2026 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
-#  See LICENSE.txt
+#  See LICENSE.txt or https://www.gnu.org/licenses/gpl-2.0.txt.
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
@@ -16,7 +16,6 @@ import xbmcgui
 from codequick import Listitem
 from resources.lib import main
 from resources.lib import errors
-from resources.lib.ctree import ct_account
 
 setUpModule = fixtures.setup_web_test
 
@@ -67,7 +66,7 @@ class MainTest(unittest.TestCase):
             self.assertIsInstance(item, Listitem)
 
     def test_list_subscription_films(self):
-        items = list(main.list_films_and_docus.test( category='subscription'))
+        items = list(main.list_films_and_docus.test(category='subscription'))
         self.assertAlmostEqual(20, len(items), delta=4)
         for item in items:
             self.assertIsInstance(item, Listitem)

@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2024 Dimitri Kroon.
+#  Copyright (c) 2022-2026 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
-#  See LICENSE.txt
+#  See LICENSE.txt or https://www.gnu.org/licenses/gpl-2.0.txt.
 # ------------------------------------------------------------------------------
 
 import json
@@ -12,7 +12,7 @@ import re
 
 from requests.models import Response
 
-from resources.lib import jsonp
+from resources.lib import nuxt3
 
 
 def doc_path(doc: str) -> str:
@@ -27,11 +27,11 @@ def doc_path(doc: str) -> str:
     return os.path.normpath(os.path.join(os.path.dirname(__file__), '../test_docs', doc))
 
 
-def open_jsonp(filename: str):
+def open_nuxt3_json(filename: str):
     full_path = doc_path(filename)
     with open(full_path) as f:
-        jsonp_doc = f.read()
-    data = jsonp.parse(jsonp_doc)
+        json_doc = f.read()
+    data = nuxt3.parse(json_doc)
     return data
 
 

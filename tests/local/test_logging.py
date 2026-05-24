@@ -1,18 +1,15 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2023 Dimitri Kroon.
+#  Copyright (c) 2022-2026 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
-#  See LICENSE.txt
+#  See LICENSE.txt or https://www.gnu.org/licenses/gpl-2.0.txt.
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
 fixtures.global_setup()
 
-import logging as py_logging
-
 import unittest
-from unittest.mock import MagicMock, patch
 
 from resources.lib import addon_log
 

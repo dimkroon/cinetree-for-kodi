@@ -1,10 +1,10 @@
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2025 Dimitri Kroon.
+#  Copyright (c) 2022-2026 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
-#  See LICENSE.txt
+#  See LICENSE.txt or https://www.gnu.org/licenses/gpl-2.0.txt.
 # ------------------------------------------------------------------------------
-
+from support.testutils import open_nuxt3_json
 from tests.support import fixtures
 fixtures.global_setup()
 
@@ -13,7 +13,7 @@ import os.path
 from unittest import TestCase
 from unittest.mock import patch, PropertyMock
 
-from tests.support.testutils import open_jsonp, open_doc, open_json, HttpResponse
+from tests.support.testutils import open_doc, open_json, HttpResponse
 from tests.support.object_checks import check_collection
 
 from resources.lib.ctree import ct_api
@@ -25,11 +25,11 @@ setUpModule = fixtures.setup_local_tests
 tearDownModule = fixtures.tear_down_local_tests
 
 
-@patch('resources.lib.ctree.ct_api.get_jsonp_url', lambda x, force_refresh=False: 'https://' + x)
-class GetJsonp(TestCase):
-    @patch("resources.lib.fetch.get_document", open_doc('films-payload.js'))
-    def test_get_jsonp_doc(self):
-        result = ct_api.get_jsonp("mypath")
+@patch('resources.lib.ctree.ct_api.get_nuxt_json_url', lambda x, force_refresh=False: 'https://' + x)
+class GetNuxtJson(TestCase):
+    @patch("resources.lib.fetch.get_document", open_doc('films-_payload.json'))
+    def test_get_json_doc(self):
+        result = ct_api.get_nuxt_json("mypath")
         self.assertIsInstance(result, dict)
         self.assertTrue(result)
 
@@ -38,40 +38,31 @@ class GetJsonp(TestCase):
         url invalid. The function is to update the url and try once again.
         """
         # Test second try succeeds
-        with patch("resources.lib.fetch.get_document", side_effect=(errors.HttpError(404, ''), '{}')) as mocked_get:
-            resp = ct_api.get_jsonp("mypath")
-            self.assertEqual({}, resp)
+        nuxt_json = '[{"data": 1}, ["", 2], "content"]'
+        with patch("resources.lib.fetch.get_document", side_effect=(errors.HttpError(404, ''), nuxt_json)) as mocked_get:
+            resp = ct_api.get_nuxt_json("mypath")
+            self.assertEqual(resp, 'content')
             mocked_get.assert_called_with('https://mypath')
             self.assertEqual(2, mocked_get.call_count)
 
         # Test second try fails again.
         with patch("resources.lib.fetch.get_document", side_effect=errors.HttpError(404, '')) as mocked_get:
-            self.assertRaises(errors.HttpError, ct_api.get_jsonp, "mypath")
+            self.assertRaises(errors.HttpError, ct_api.get_nuxt_json, "mypath")
             mocked_get.assert_called_with('https://mypath')
             self.assertEqual(2, mocked_get.call_count)
 
     @patch("resources.lib.fetch.get_document", side_effect=errors.HttpError(400, ''))
-    def test_get_jsop_web_other_error(self, mocked_get):
+    def test_get_json_web_other_error(self, mocked_get):
         """Other error should be raised without retrying"""
-        self.assertRaises(errors.HttpError, ct_api.get_jsonp, "mypath")
+        self.assertRaises(errors.HttpError, ct_api.get_nuxt_json, "mypath")
         mocked_get.assert_called_once_with('https://mypath')
 
-    @patch("resources.lib.jsonp.parse")
-    @patch("resources.lib.jsonp.parse_simple")
-    def test_get_jsonp_parser_selection(self, mocked_simple_parse, mocked_parse):
-        with patch("resources.lib.fetch.get_document", return_value='zdfgsdf __NUXT_=(function()'):
-            ct_api.get_jsonp('mypath')
-        with patch("resources.lib.fetch.get_document", return_value='pldfksdjgo8  '):
-            ct_api.get_jsonp('mypath')
-        mocked_parse.assert_called_once_with('zdfgsdf __NUXT_=(function()')
-        mocked_simple_parse.assert_called_once_with('pldfksdjgo8  ')
 
-
-@patch('resources.lib.ctree.ct_api.get_jsonp_url', lambda x, force_refresh=False: 'https://' + x)
+@patch('resources.lib.ctree.ct_api.get_nuxt_json_url', lambda x, force_refresh=False: 'https://' + x)
 class CreateStreamInfoUrl(TestCase):
-    @patch("resources.lib.fetch.get_document", open_doc('films_el-sicatio_room_164-payload.js'))
+    @patch("resources.lib.fetch.get_document", open_doc('films-ema-_payload.json'))
     def test_create_stream_info_url_from_uuid(self):
-        url = ct_api.create_stream_info_url('123-abc', 'films/films_el-sicatio_room_164')
+        url = ct_api.create_stream_info_url('123-abc', 'films/ema')
         self.assertEqual('https://api.cinetree.nl/films/123-abc', url)
         url = ct_api.create_stream_info_url('123-abc')
         self.assertEqual('https://api.cinetree.nl/films/123-abc', url)
@@ -85,21 +76,21 @@ class CreateStreamInfoUrl(TestCase):
     def test_create_stream_info_url_from_slug_with_web_error(self, _):
         self.assertRaises(errors.FetchError, ct_api.create_stream_info_url, None, 'films/films_el-sicatio_room_164')
 
-    @patch("resources.lib.storyblok.get_url", return_value=(open_doc('manifest.js'), None))
+    @patch("resources.lib.storyblok.get_url", return_value=(open_doc('index.html')(), None))
     def test_create_stream_info_url_from_slug_with_invalid_document(self, _):
         self.assertRaises(errors.FetchError, ct_api.create_stream_info_url, None, 'films/films_el-sicatio_room_164')
 
 
 # noinspection PyMethodMayBeStatic
 class Collections(TestCase):
-    @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('films-payload.js'))
+    @patch('resources.lib.ctree.ct_api.get_nuxt_json', return_value=open_nuxt3_json('films-_payload.json'))
     def test_get_preferred_film_collections(self, _):
         col_list = list(ct_api.get_preferred_collections(page='films'))
         self.assertGreater(len(col_list), 1)
         for col in col_list:
             check_collection(self, col)
 
-    @patch('resources.lib.ctree.ct_api.get_jsonp', return_value=open_jsonp('collecties-payload.js'))
+    @patch('resources.lib.ctree.ct_api.get_nuxt_json', return_value=open_nuxt3_json('collecties-_payload.json'))
     def test_get_all_collections(self, _):
         col_list = list(ct_api.get_collections())
         self.assertGreater(len(col_list), 1)
@@ -165,7 +156,7 @@ class EditFavourites(TestCase):
 
 class Gen(TestCase):
     @patch('resources.lib.utils.CacheMgr.version', PropertyMock(return_value='abcde'))
-    @patch('resources.lib.fetch.get_document', open_doc('originals_payload.js'))
+    @patch('resources.lib.fetch.get_document', open_doc('originals-_payload.json'))
     def test_get_originals(self):
         data = ct_api.get_originals()
         self.assertIsInstance(data, list)

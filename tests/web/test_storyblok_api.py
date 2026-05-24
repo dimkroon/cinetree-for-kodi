@@ -1,17 +1,16 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2025 Dimitri Kroon.
+#  Copyright (c) 2022-2026 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
-#  See LICENSE.txt
+#  See LICENSE.txt or https://www.gnu.org/licenses/gpl-2.0.txt.
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
 fixtures.global_setup()
 
-from tests.support import object_checks, testutils
+from tests.support import object_checks
 
-import json
 import time
 from unittest import TestCase
 
