@@ -1,8 +1,8 @@
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2025 Dimitri Kroon.
+#  Copyright (c) 2022-2026 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
-#  See LICENSE.txt
+#  See LICENSE.txt or https://www.gnu.org/licenses/gpl-2.0.txt.
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
@@ -69,14 +69,9 @@ class SubscriptionFilms(unittest.TestCase):
 class Films(unittest.TestCase):
     """Get main huurfilms payload.js"""
 
-    def test_huurfilms_payload(self):
-        resp = ct_api.get_jsonp('films/payload.js')
-        # Is the same object as returned by stories/rentals on storyblok.com.
-        object_checks.check_rentals(resp['data'][0]['story']['content'])
-
-    def test_huurfilms_with_expired_timestamp(self):
+    def test_huurfilms_with_expired_revision(self):
         with self.assertRaises(errors.HttpError) as er:
-            fetch.get_document('https://cinetree.nl/_nuxt/static/1658984774/films/payload.js')
+            fetch.get_document('https://cinetree.nl/films/_payload.js?847e185a-a08d-47cf-a7b6-8d9096830b18')
         self.assertEqual(404, er.exception.code)
 
 
@@ -100,18 +95,13 @@ class GetStreamsOfFilm(unittest.TestCase):
 
     def test_stream_info_without_subscription(self):
         # Ensure to select a currently available film from the subscription
-        resp = ct_api.get_jsonp('films-en-documentaires/payload.js')['fetch']
+        resp = ct_api.get_nuxt_json('films-en-documentaires')
         uuid = None
-        full_slug = None
 
-        for item in resp.values():
-            f_list = item.get('films')
-            if not f_list or len(f_list) > 4:
-                continue
-
-            uuid = f_list[0]['uuid']
-            full_slug = f_list[0]['full_slug']
-            break
+        for key, f_list in resp.items():
+            if key.startswith('svod-films'):
+                uuid = f_list[0]['uuid']
+                break
 
         # Get info by film uuid, should succeed
         url = 'https://api.cinetree.nl/films/' + uuid
@@ -145,10 +135,10 @@ class Genres(unittest.TestCase):
         """films/payload has a field 'filterGenreItems' with contains a comma separated list of all
         available genres.
         """
-        resp = ct_api.get_jsonp('films/payload.js')
+        resp = ct_api.get_nuxt_json('films')
         # Assert genres are up-to-date
-        genres = set(resp['data'][0]['story']['content']['filterGenreItems'].split(','))
-        self.assertEqual(set(ct_api.GENRES), genres), "Genres list has been changed to {}".format(genres)
+        genres = set(resp['genres'])
+        self.assertEqual(set(x.lower() for x in ct_api.GENRES), genres)
 
 
 class FilmsInGenre(unittest.TestCase):
@@ -225,7 +215,7 @@ class GetPaymentInfo(unittest.TestCase):
     base_url = 'https://api.cinetree.nl/payments/info/rental/'
 
     def test_payment_info_data(self):
-        film_uuid = 'ef51ee02-0635-4547-a35d-d7844e0c5426'
+        film_uuid = '41b1782b-0dbf-480b-8792-d59bf92da24c'
         resp = fetch.fetch_authenticated(fetch.post_json, self.base_url + film_uuid, data=None)
         self.assertIsInstance(resp['amount'], float)
         transaction_id = resp['transaction']

@@ -1,10 +1,10 @@
 
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2025 Dimitri Kroon.
+#  Copyright (c) 2022-2026 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
-#  See LICENSE.txt
+#  See LICENSE.txt or https://www.gnu.org/licenses/gpl-2.0.txt.
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
@@ -293,10 +293,10 @@ class RemoveMarkdownFromQuotedString(TestCase):
             pos = new_doc.find('*', pos + 1)
 
     def test_remove_from_originals(self):
-        self.handle_saved_doc("originals_payload.js")
+        self.handle_saved_doc("originals-_payload.json")
 
     def test_remove_from_collecties_best_bekeken(self):
-        self.handle_saved_doc("collecties_best-bekeken_payload.js")
+        self.handle_saved_doc("collecties-best-bekeken-_payload.json")
 
 
 class RemoveMarkdown(TestCase):

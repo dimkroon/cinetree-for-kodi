@@ -1,9 +1,8 @@
-
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2025 Dimitri Kroon.
+#  Copyright (c) 2022-2026 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
-#  See LICENSE.txt
+#  See LICENSE.txt or https://www.gnu.org/licenses/gpl-2.0.txt.
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
@@ -19,7 +18,7 @@ from unittest.mock import MagicMock, patch
 
 from codequick import Listitem
 
-from tests.support.testutils import open_jsonp, open_json
+from tests.support.testutils import open_json, open_nuxt3_json
 from tests.support.object_checks import check_collection, has_keys
 
 from resources.lib.ctree import ct_data
@@ -106,7 +105,7 @@ class GetFilmsList(TestCase):
         self.assertEqual(len(films), 4)
 
     def test_create_film_list_collection_best_bekeken(self):
-        data = open_jsonp('collecties_best-bekeken_payload.js')
+        data = open_nuxt3_json('collecties-best-bekeken-_payload.json')
         films = list(ct_data.create_films_list(data))
         self.assertGreater(len(films), 10)
         for item in films:
@@ -114,7 +113,7 @@ class GetFilmsList(TestCase):
             Listitem.from_dict(MagicMock(), **item.data)
 
     def test_create_film_with_invalid_data(self):
-        data = open_jsonp('films-payload.js')
+        data = open_nuxt3_json('films-_payload.json')
         self.assertRaises(ValueError, ct_data.create_films_list, data, 'something')     # unknown list type
         data = {'some': 'dict'}
         self.assertRaises(ValueError, ct_data.create_films_list, data)              # invalid data
@@ -123,13 +122,13 @@ class GetFilmsList(TestCase):
 # noinspection PyMethodMayBeStatic
 class Collections(TestCase):
     def test_create_collection_items(self):
-        data = open_jsonp('collecties-payload.js')
-        for col in data['data'][0]['collections']:
+        data = open_nuxt3_json('collecties-_payload.json')
+        for col in data['collections-/collecties']:
             col_dict = ct_data.create_collection_item(col)
             check_collection(self, col_dict)
 
     def test_create_film_list_from_a_collection(self):
-        coll_data = open_jsonp('collecties_best-bekeken_payload.js')
+        coll_data = open_nuxt3_json('collecties-best-bekeken-_payload.json')
         film_list = list(ct_data.create_films_list(coll_data))
         for film in film_list:
             Listitem.from_dict(MagicMock(), **film.data)

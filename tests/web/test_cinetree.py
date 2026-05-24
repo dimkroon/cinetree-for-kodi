@@ -1,9 +1,9 @@
 
 # ------------------------------------------------------------------------------
-#  Copyright (c) 2022-2025 Dimitri Kroon.
+#  Copyright (c) 2022-2026 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.
 #  SPDX-License-Identifier: GPL-2.0-or-later.
-#  See LICENSE.txt
+#  See LICENSE.txt or https://www.gnu.org/licenses/gpl-2.0.txt.
 # ------------------------------------------------------------------------------
 
 from tests.support import fixtures
@@ -25,35 +25,33 @@ setUpModule = fixtures.setup_web_test
 
 
 # noinspection PyMethodMayBeStatic
-class FetchJsonp(TestCase):
+class FetchNuxtJson(TestCase):
     """Get some js documents from the web and check if they parse"""
     def test_fetch_films_en_documents(self):
         """Films in subscription"""
-        resp = ct_api.get_jsonp('films-en-documentaires/payload.js')
+        resp = ct_api.get_nuxt_json('films-en-documentaires')
         assert type(resp) is dict
 
     def test_fetch_huur_films(self):
-        resp = ct_api.get_jsonp('films/payload.js')
-        # with open('../experiments/films-payload.json', 'w') as f:
-        #     json.dump(resp, f, indent=4)
+        resp = ct_api.get_nuxt_json('films')
         assert type(resp) is dict
 
     def test_fetch_specific_films(self):
         """Details of the film 'ema'"""
-        resp = ct_api.get_jsonp('films/ema/payload.js')
+        resp = ct_api.get_nuxt_json('films/ema')
         # with open('../experiments/film_details.json', 'w') as f:
         #     json.dump(resp, f, indent=4)
         assert type(resp) is dict
 
     def test_fetch_collections_films(self):
         """Details of the film 'ema'"""
-        resp = ct_api.get_jsonp('films/ema/payload.js')
+        resp = ct_api.get_nuxt_json('films/ema/')
         # with open('../experiments/film_details.json', 'w') as f:
         #     json.dump(resp, f, indent=4)
         assert type(resp) is dict
 
     def test_fetch_cinetree_originals(self):
-        resp = ct_api.get_jsonp('originals/payload.js')
+        resp = ct_api.get_nuxt_json('originals')
         assert type(resp) is dict
 
 
@@ -77,9 +75,8 @@ class GetFilmUrls(TestCase):
 
 
 class GetFilmsList(TestCase):
-    # TODO: this more of an api test
     def test_create_film_list_collection_drama_fromweb(self):
-        data = ct_api.get_jsonp('collecties/best-bekeken/payload.js')
+        data = ct_api.get_nuxt_json('collecties/best-bekeken')
         films = list(ct_data.create_films_list(data))
         self.assertGreater(len(films), 10)
         for item in films:
@@ -107,7 +104,7 @@ class GetCollections(TestCase):
             check_collection(self, col)
 
     def test_get_films_in_collection_cinetree_originals(self):
-        coll_data = ct_api.get_jsonp('collecties/cinetree-originals/payload.js')
+        coll_data = ct_api.get_nuxt_json('collecties/cinetree-originals')
         film_list = list(ct_data.create_films_list(coll_data))
         for film in film_list:
             Listitem.from_dict(MagicMock(), **film.data)
@@ -131,7 +128,7 @@ class Gen(TestCase):
         has_keys(resp, 'subtitles', 'url', 'watchHistoryId')
 
     def test_get_payment_info(self):
-        amount, transaction = ct_api.get_payment_info('ef51ee02-0635-4547-a35d-d7844e0c5426')
+        amount, transaction = ct_api.get_payment_info('41b1782b-0dbf-480b-8792-d59bf92da24c')
         self.assertGreater(amount, 0.0)
         self.assertIsInstance(transaction, str)
 
