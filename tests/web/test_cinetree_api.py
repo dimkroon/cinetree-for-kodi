@@ -43,7 +43,7 @@ class Login(unittest.TestCase):
         resp = requests.post('https://api.cinetree.nl/login', json=credentials)
         self.assertEqual(401, resp.status_code)
         resp_data = resp.json()
-        self.assertEqual('Invalid password', resp_data['message'] )
+        self.assertEqual('Invalid password', resp_data['message'])
 
 
 class SubscriptionFilms(unittest.TestCase):
@@ -87,7 +87,7 @@ class GetStreamsOfFilm(unittest.TestCase):
     """
     def test_stream_info_from_free_film(self):
         """Request info of free film 'Well Fed'."""
-        url ='https://api.cinetree.nl/films/63c77a7f-c84b-4143-9cda-68a99c042fe9'
+        url = 'https://api.cinetree.nl/films/63c77a7f-c84b-4143-9cda-68a99c042fe9'
         resp = fetch.fetch_authenticated(fetch.get_json, url)
         object_checks.check_stream_info(resp)
         # optionally store the content for use in local tests
@@ -238,7 +238,7 @@ class GetMeData(unittest.TestCase):
 
 class RemoveFromMyFilms(unittest.TestCase):
     test_uid = 'be785e6b-c517-426e-a22c-f5ec1b496d20'  # Free short film 'Morgen gaat het beter' of 11 min
-    rental_uid = 'e824fe57-b3fe-40b1-849a-88049f8849c5' # Rental film 'Maggie's Plan'; very unlikely to be already on the list.
+    rental_uid = 'e824fe57-b3fe-40b1-849a-88049f8849c5'  # Rental film 'Maggie's Plan'; very unlikely to be already on the list.
 
     def put_item_on_list(self, film_uuid):
         """Does NOT seem to work

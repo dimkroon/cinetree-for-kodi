@@ -226,7 +226,7 @@ def edit_favourites(film_uuid: str, action: str):
             url='https://api.cinetree.nl/favorites/' + film_uuid)
     if resp.status_code != 200:
         return False
-    global favourites
+
     if action == 'remove':
         del favourites[film_uuid]
     else:
@@ -376,7 +376,7 @@ def pay_film(film_uid: str, film_title: str, transaction_id: str, price: float):
         else:
             logger.error("[pay_film] - Unexpected response status code: '%s'", resp.status_code)
             return False
-    except:
+    except Exception:
         logger.error("[pay_film] paying failed: film_uid=%s, film_title=%s, trans_id=%s, price=%s\n",
                      film_uid, film_title, transaction_id, price, exc_info=True)
         return False

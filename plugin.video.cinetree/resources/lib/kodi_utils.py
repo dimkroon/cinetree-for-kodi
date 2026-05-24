@@ -6,9 +6,9 @@
 #  See LICENSE.txt or https://www.gnu.org/licenses/gpl-2.0.txt.
 # ------------------------------------------------------------------------------
 
+from __future__ import annotations
 import logging
 import time
-import sys
 from collections.abc import Callable
 
 import xbmcgui
@@ -76,12 +76,12 @@ class PlayTimeMonitor(Player):
         try:
             self.total_time = self.getTotalTime()
             logger.debug("PlayTimeMonitor: total play time = %s", self.playtime/60)
-        except:
+        except Exception:
             logger.warning("PlayTimeMonitor.onAVStarted: failed to get totalTime.", exc_info=True)
         # noinspection PyBroadException
         try:
             self._playtime = self.getTime()
-        except:
+        except Exception:
             logger.warning("PlayTimeMonitor.onAVStarted: failed to get Time.", exc_info=True)
         self.is_playing = True
 
@@ -114,7 +114,7 @@ class PlayTimeMonitor(Player):
                 break
 
 
-def ask_credentials(username: str = None, password: str = None):
+def ask_credentials(username: str | None = None, password: str | None = None):
     """Ask the user to enter his username and password.
     Return a tuple of (username, password). Each or both can be empty when the
     user has canceled the operation.
@@ -146,13 +146,15 @@ def show_msg_not_logged_in():
     return result
 
 
-def show_login_result(success: bool, message: str = None):
+def show_login_result(success: bool, message: str | None = None):
     if success:
         icon = Script.NOTIFY_INFO
         if not message:
             message = Script.localize(MSG_LOGIN_SUCCESS)
     else:
         icon = Script.NOTIFY_WARNING
+        if message is None:
+            raise ValueError("A Failed login dialog should include a message.")
 
     Script.notify(Script.localize(TXT_CINETREE_ACCOUNT), message, icon)
 
@@ -251,11 +253,11 @@ def sync_play_state(callback: Callable, film_item: FilmItem):
     if resume_point > 0:
         json_str = '{"jsonrpc": "2.0", "method": "Files.SetFileDetails", "params": {"file":"%s", ' \
                    '"media": "video", "resume": {"position": %s, "total": %s}}, "id": 1}' % (
-                   full_url, resume_point, film_item.duration)
+                    full_url, resume_point, film_item.duration)
     else:
         json_str = '{"jsonrpc": "2.0", "method": "Files.SetFileDetails", "params": {"file":"%s", ' \
                    '"media": "video", "playcount": 1, "resume": {"position": 0, "total": %s}}, "id": 1}' % (
-                   full_url, film_item.duration)
+                    full_url, film_item.duration)
     response = executeJSONRPC(json_str)
     logger.debug("sync_play_state of '%s' to %s of %s, JSONRPC response: %s",
                  params['title'], resume_point, film_item.duration, response)

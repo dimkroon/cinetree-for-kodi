@@ -1,5 +1,4 @@
 
-
 # ------------------------------------------------------------------------------
 #  Copyright (c) 2022-2026 Dimitri Kroon.
 #  This file is part of plugin.video.cinetree.

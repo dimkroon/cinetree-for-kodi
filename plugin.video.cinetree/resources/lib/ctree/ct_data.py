@@ -9,7 +9,6 @@ from __future__ import absolute_import, unicode_literals
 
 import itertools
 import logging
-import time
 import pytz
 
 from datetime import datetime, timedelta, timezone
@@ -17,7 +16,7 @@ from urllib.parse import quote_plus
 
 from codequick import Script
 from codequick.support import logger_id
-from resources.lib.utils import replace_markdown, remove_markdown, strptime, addon_info
+from resources.lib.utils import replace_markdown, strptime, addon_info
 from resources.lib.constants import FULLY_WATCHED_PERCENTAGE
 
 
@@ -54,9 +53,9 @@ class FilmItem:
         try:
             self._end_time, self.is_expired = parse_end_date(self.content.get('endDate'))
             self._data = self._parse()
-        except:
-            self._data = None
+        except Exception:
             logger.error("Failed to create FilmItem\n", exc_info=True)
+            self._data = None
 
     @property
     def data(self):
