@@ -20,6 +20,8 @@ from resources.lib import storyblok
 from resources.lib.ctree import ct_api
 from resources.lib.ctree import ct_data
 
+from support import testutils
+
 
 token = 'srRWSyWpIEzPm4IzGFBrkAtt'
 
@@ -91,7 +93,7 @@ class StoriesListing(TestCase):
                 params={'starts_with': 'films/',
                         'page': str(page),
                         'per_page': 100})
-            total_pages = int(headers.get('total')) / 100
+            total_pages = int(headers.get('total')) / 100 + 0.99
             stories.extend(data.get('stories'))
             page += 1
             time.sleep(0.05)

@@ -233,9 +233,7 @@ def do_search(addon, search_query):
 
 @Route.register(content_type='movies')
 def list_originals(addon):
-    data = ct_api.get_originals()
-    films = ct_data.create_films_list(data, 'storyblok')
-    yield from _create_playables(addon, films)
+    yield from list_films_by_collection(addon, 'originals')
 
 
 @Route.register(content_type='movies')
@@ -256,7 +254,13 @@ def list_shorts(addon, list_films=False):
 @Route.register(content_type='movies')
 def list_films_by_collection(addon, slug):
     data = ct_api.get_nuxt_json(slug)
-    yield from _create_playables(addon, ct_data.create_films_list(data))
+    coll_name = slug.split('/')[-1]
+    for k, v in data.items():
+        if coll_name in k:
+            film_ids = v['content']['films']
+            film_ids.extend(v['content'].get('shorts', {}))
+            film_list, _ = storyblok.stories_by_uuids(film_ids)
+            yield from _create_playables(addon, ct_data.create_films_list(film_list, 'storyblok'))
 
 
 @Route.register(content_type='movies')

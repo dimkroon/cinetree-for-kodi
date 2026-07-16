@@ -59,19 +59,19 @@ class MainTest(unittest.TestCase):
             self.assertIsInstance(item, Listitem)
 
         items = main.list_my_films.test('finished')
-        self.assertEqual(len(items), 2)
+        self.assertEqual(len(items), 1)
         for item in items:
             self.assertIsInstance(item, Listitem)
             self.assertEqual(1, len(item.context))
 
         items = main.list_my_films.test('continue')
-        self.assertEqual(len(items), 3)
+        self.assertEqual(len(items), 8)
         for item in items:
             self.assertIsInstance(item, Listitem)
             self.assertEqual(1, len(item.context))
 
         with patch('resources.lib.fetch.fetch_authenticated',
-                   return_value=["3d3e2bb8-31ff-444f-909e-2a16a0fc4375", "070f9abd-9df9-47d1-bfbc-e83fdfea2e43"]):
+                   return_value=["3d3e2bb8-31ff-444f-909e-2a16a0fc4375", "36b9011d-fb5a-414b-9cf0-83534d5049b1"]):
             items = main.list_my_films.test('purchased')
             self.assertEqual(len(items), 2)
             for item in items:
@@ -140,20 +140,20 @@ class MainTest(unittest.TestCase):
         # Submenu
         with patch('resources.lib.fetch.get_document', new=open_doc('collecties-de-korte-filmcollectie-_payload.json')):
             items = main.list_shorts.test()
-            self.assertEqual(len(items), 30)
+            self.assertEqual(len(items), 33)
             for item in items:
                 self.assertIsInstance(item, Listitem)
         # All short films
         with patch('resources.lib.storyblok._get_url_page',
                    return_value=(open_json('st_blok/shorts.json').values(), 73)):
             items = main.list_shorts.test(list_films=True)
-            self.assertEqual(len(items), 53)
+            self.assertEqual(len(items), 65)
             for item in items:
                 self.assertIsInstance(item, Listitem)
 
     @patch('resources.lib.fetch.get_document', new=open_doc('collecties-vers-uit-het-filmhuis-_payload.json'))
     def test_list_films_by_collection(self):
-        items = list(main.list_films_by_collection.test('blabla'))
+        items = list(main.list_films_by_collection.test('collecties/vers-uit-het-filmhuis'))
         self.assertGreater(len(items), 10)
         for item in items:
             self.assertIsInstance(item, Listitem)

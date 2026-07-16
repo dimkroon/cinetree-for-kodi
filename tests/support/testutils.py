@@ -110,7 +110,7 @@ def get_sb_film(uuid=None, genre=None, page=None, items_per_page=None):
             result = [film] if film else []
         else:
             uuid_list = list(uuid)
-            result = [v for k,v in films.items() if k in uuid_list]
+            result = list(filter(None, (films.get(uuid) for uuid in uuid_list)))
     elif genre:
         genre = genre.lower()
         result = [v for v in films.values() if genre in v['content'].get('genre', '').lower()]
