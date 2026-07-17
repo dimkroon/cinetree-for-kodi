@@ -114,6 +114,11 @@ class MainTest(unittest.TestCase):
         playitem = main.play_film.test('', '63c77a7f-c84b-4143-9cda-68a99c042fe9', None)
         self.assertIsInstance(playitem, xbmcgui.ListItem)
 
+    def test_list_collections(self):
+        for coll_slug in ('collecties/best-bekeken', 'collecties/cinetree-originals'):
+            items = main.list_films_by_collection.test(coll_slug)
+            self.assertGreater(len(items), 5)
+
     @patch('xbmcaddon.Addon.getSetting', return_value='0')
     def test_list_genre_drama(self, _):
         """As there are a lot of film in genre drama, only the maximum of 50 per page ar returned."""

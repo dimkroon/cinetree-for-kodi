@@ -74,16 +74,6 @@ class GetFilmUrls(TestCase):
         check_stream_info(stream_info)
 
 
-class GetFilmsList(TestCase):
-    def test_create_film_list_collection_drama_fromweb(self):
-        data = ct_api.get_nuxt_json('collecties/best-bekeken')
-        films = list(ct_data.create_films_list(data))
-        self.assertGreater(len(films), 10)
-        for item in films:
-            # check if a Listitem can be created
-            Listitem.from_dict(MagicMock(), **item.data)
-
-
 # noinspection PyMethodMayBeStatic
 class GetCollections(TestCase):
     def test_get_preferred_collection_from_web(self):
@@ -105,9 +95,20 @@ class GetCollections(TestCase):
 
     def test_get_films_in_collection_cinetree_originals(self):
         coll_data = ct_api.get_nuxt_json('collecties/cinetree-originals')
-        film_list = list(ct_data.create_films_list(coll_data))
-        for film in film_list:
-            Listitem.from_dict(MagicMock(), **film.data)
+        data = None
+        for k, v in coll_data.items():
+            if 'cinetree-originals' in k:
+                data = v
+                break
+        self.assertIsNotNone(data)
+        content = data['content']
+        self.assertIsInstance(content['films'], list)
+        shorts = content.get('shorts')
+        if shorts:
+            self.assertIsInstance(shorts, list)
+        all_films = content['films'] + shorts
+        self.assertTrue(len(all_films) > 0)
+        self.assertTrue(all(is_uuid(uid) for uid in all_films))
 
 
 # noinspection PyMethodMayBeStatic

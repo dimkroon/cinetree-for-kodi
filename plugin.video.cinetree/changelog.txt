@@ -1,3 +1,6 @@
+v3.0.1
+- Fixed collections and related lists.
+
 v 3.0.0
 - Updated for the new Cinetree website; fixes many listings.
 

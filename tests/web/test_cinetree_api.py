@@ -100,7 +100,7 @@ class GetStreamsOfFilm(unittest.TestCase):
 
         for key, f_list in resp.items():
             if key.startswith('svod-films'):
-                uuid = f_list[0]['uuid']
+                uuid = f_list[0]['film']['uuid']
                 break
 
         # Get info by film uuid, should succeed
